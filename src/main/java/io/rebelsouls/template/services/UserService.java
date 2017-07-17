@@ -48,7 +48,6 @@ public class UserService implements UserDetailsService {
 		newUser.setEmail(email);
 		newUser.setUsername(email);
 		newUser.setPassword(password);
-		newUser.setApproved(false);
 		newUser.setCredentialsExpired(false);
 		newUser.setEnabled(false);
 		newUser.setExpired(false);
