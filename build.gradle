@@ -15,11 +15,12 @@ dependencies {
 	compile "org.springframework.boot:spring-boot-starter-mail"
 	compile "org.springframework.boot:spring-boot-devtools"
 	
-	compile "org.springframework.security:spring-security-web:5.0.0.M2"
-	compile "org.springframework.security:spring-security-config:5.0.0.M2"
+	compile "org.springframework.security:spring-security-web"
+	compile "org.springframework.security:spring-security-config"
 	
 	compile "org.jtwig:jtwig-spring-boot-starter:5.85.3.RELEASE"
   compile "org.jtwig:jtwig-hot-reloading-extension:5.85.3.RELEASE"
+	compile 'org.jtwig:jtwig-spring-translate-extension:5.85.3.RELEASE'
 	
 	compile "org.liquibase:liquibase-core:3.5.3"
 	
