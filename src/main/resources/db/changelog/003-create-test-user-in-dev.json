@@ -15,7 +15,7 @@
                         { "column": { "name": "username", "value": "user" } },
                         { "column": { "name": "password", "value": "userpass" } },
                         { "column": { "name": "display_name", "value": "Pedro Lira" } },
-                        { "column": { "name": "email", "value": "client1@rebelsouls.io" } },
+                        { "column": { "name": "email", "value": "user@rebelsouls.io" } },
                         { "column": { "name": "enabled", "valueBoolean": true } },
                         { "column": { "name": "locked", "valueBoolean": false } },
                         { "column": { "name": "expired", "valueBoolean": false } },

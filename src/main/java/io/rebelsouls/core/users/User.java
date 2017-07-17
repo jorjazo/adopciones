@@ -57,7 +57,6 @@ public class User implements UserDetails {
     private boolean locked = false;
     private boolean credentialsExpired = false;
     private boolean enabled = true;
-    private boolean approved = false;
     private String validationToken;
 
     @Override

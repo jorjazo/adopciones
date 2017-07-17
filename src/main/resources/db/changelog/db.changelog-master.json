@@ -15,7 +15,7 @@
         {
           "include": {
             "relativeToChangelogFile": true,
-            "file": "003-create-test-client-in-dev.json"
+            "file": "003-create-test-user-in-dev.json"
           }
         }
         
