@@ -2,12 +2,12 @@
 
 {% block body %}
 
-<h1>Ingresar</h1>
+<h1>{{ translate("Sign in") }}</h1>
 
 <form method="POST">
 
     <div class="form-group">
-      <label for="input1">Email:</label>
+      <label for="input1">{{ translate("Nombre de usuario") }}:</label>
       <input id="input1" class="form-control" type="text" name="username" placeholder="Nombre de Usuario"/>
     </div>
     <div class="form-group">
