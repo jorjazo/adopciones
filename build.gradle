@@ -1,0 +1,52 @@
+plugins {
+    id 'org.springframework.boot' version '1.5.4.RELEASE'
+}
+
+apply plugin: 'java'
+apply plugin: 'application'
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+	compile "org.springframework.boot:spring-boot-starter-web:1.5.4.RELEASE"
+	compile "org.springframework.boot:spring-boot-starter-data-jpa"
+	compile "org.springframework.boot:spring-boot-starter-mail"
+	compile "org.springframework.boot:spring-boot-devtools"
+	
+	compile "org.springframework.security:spring-security-web:5.0.0.M2"
+	compile "org.springframework.security:spring-security-config:5.0.0.M2"
+	
+	compile "org.jtwig:jtwig-spring-boot-starter:5.85.3.RELEASE"
+  compile "org.jtwig:jtwig-hot-reloading-extension:5.85.3.RELEASE"
+	
+	compile "org.liquibase:liquibase-core:3.5.3"
+	
+	compile "com.h2database:h2"
+	compile "org.postgresql:postgresql:42.1.1"
+	
+	compile "com.mashape.unirest:unirest-java:1.4.9"
+	compile "com.amazonaws:aws-java-sdk-s3:1.11.163"
+	
+	compile "ch.qos.logback:logback-core:1.2.3"
+	compile "ch.qos.logback:logback-classic:1.2.3"
+	
+	compileOnly "org.projectlombok:lombok:1.16.18"
+	
+	testCompile "org.springframework.boot:spring-boot-starter-test"
+  testCompile "junit:junit:4.12"
+}
+
+jar {
+	baseName = "templateApp"
+	version = "1.0-SNAPSHOT"
+}
+
+test {
+    exclude "io/rebelsouls/integration/**"
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+mainClassName = "io.rebelsouls.template.TemplateApp"

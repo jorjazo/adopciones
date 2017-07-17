@@ -1,0 +1,20 @@
+{
+    "databaseChangeLog": [
+        {
+            "changeSet": {
+            "id": "create-sequences",
+            "author": "template",
+            "runOnChange": false,
+            "changes": [
+                {
+                    "createSequence": {
+                        "sequenceName": "userid",
+                        "startValue": 100,
+                        "incrementBy": 1
+                    }
+                }
+            ]
+          }
+        }
+    ]
+}

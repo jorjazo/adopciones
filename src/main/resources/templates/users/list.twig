@@ -1,0 +1,15 @@
+{% extends "/templates/base/base.twig" %}
+
+{% block body %}
+
+<span>Mostrando pagina {{ userPage.number }} de {{ userPage.totalPages }}:</span>
+<ul>
+{% for user in userPage %}
+<li><a href="{{ path(concat("/users/",user.id)) }}">Usuario: {{ user.username }}</a></li>
+{% endfor %}
+</ul>
+
+
+{% include "/templates/users/embed-form.twig" %}
+
+{% endblock %}

@@ -1,0 +1,39 @@
+{
+    "databaseChangeLog": [
+        {
+            "changeSet": {
+                "id": "create-test-client-in-dev",
+                "author": "jorge",
+                "runOnChange": false,
+                "context": "dev",
+                "changes": [
+                  {
+                   "insert": {
+                      "tableName": "users",
+                      "columns" : [
+                        { "column": { "name": "id", "value": "1" } },
+                        { "column": { "name": "username", "value": "user" } },
+                        { "column": { "name": "password", "value": "userpass" } },
+                        { "column": { "name": "display_name", "value": "Pedro Lira" } },
+                        { "column": { "name": "email", "value": "client1@rebelsouls.io" } },
+                        { "column": { "name": "enabled", "valueBoolean": true } },
+                        { "column": { "name": "locked", "valueBoolean": false } },
+                        { "column": { "name": "expired", "valueBoolean": false } },
+                        { "column": { "name": "credentials_expired", "valueBoolean": false } }
+                      ]
+                    }
+                  },
+                  {
+                   "insert": {
+                      "tableName": "user_roles",
+                      "columns" : [
+                        { "column": { "name": "user_id", "value": "1" } },
+                        { "column": { "name": "role", "value": "USER" } }
+                      ]
+                    }
+                  }
+                ]
+            }
+        }
+    ]
+}

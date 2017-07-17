@@ -1,0 +1,12 @@
+{% extends "/templates/base/base.twig" %}
+
+{% block body %}
+    {% if currentUser is null %}
+    <div class="jumbotron">
+      <h1>¡Únete!</h1>
+      <p>¡Esta app es muy buena!</p>
+      <p><a class="btn btn-primary btn-lg" href="{{ path("/users") }}" role="button">Registrarse</a></p>
+    </div>
+    {% endif %}
+
+{% endblock %}

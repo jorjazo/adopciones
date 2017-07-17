@@ -1,0 +1,116 @@
+{
+  "databaseChangeLog": [
+    {
+      "changeSet": {
+          "id": "initial-squema",
+          "author": "template",
+          "runOnChange": false,
+          "changes": [
+              {
+                  "createTable": {
+                      "tableName": "users",
+                      "columns": [
+                          {
+                              "column": {
+                                  "name": "id",
+                                  "type": "bigint",
+                                  "autoIncrement": true,
+                                  "constraints": {
+                                      "primaryKey": true,
+                                      "nullable": false
+                                  }
+                              }
+                          },
+                          {
+                              "column": {
+                                  "name": "username",
+                                  "type": "varchar(255)",
+                                  "constraints": {
+                                      "unique": true,
+                                      "nullable": false
+                                  }
+                              }
+                          },
+                          {
+                              "column": {
+                                  "name": "password",
+                                  "type": "varchar(255)"
+                              }
+                          },
+                          {
+                              "column": {
+                                  "name": "validation_token",
+                                  "type": "varchar(255)"
+                              }
+                          },
+                          {
+                              "column": {
+                                  "name": "display_name",
+                                  "type": "varchar(255)"
+                              }
+                          },
+                          {
+                              "column": {
+                                  "name": "email",
+                                  "type": "varchar(255)"
+                              }
+                          },
+                          {
+                              "column": {
+                                  "name": "enabled",
+                                  "type": "boolean"
+                              }
+                          },
+                          {
+                              "column": {
+                                  "name": "expired",
+                                  "type": "boolean"
+                              }
+                          },
+                          {
+                              "column": {
+                                  "name": "locked",
+                                  "type": "boolean"
+                              }
+                          },
+                          {
+                              "column": {
+                                  "name": "credentials_expired",
+                                  "type": "boolean"
+                              }
+                          }
+                      ]
+                  }
+              },
+              {
+                  "createTable": {
+                      "tableName": "user_roles",
+                      "columns": [
+                          {
+                              "column": {
+                                  "name": "user_id",
+                                  "type": "bigint",
+                                  "constraints": {
+                                      "nullable": false,
+                                      "foreignKeyName": "fk_user_roles_user",
+                                      "references": "users"
+                                  }
+                              }
+                          },
+                          {
+                              "column": {
+                                  "name": "role",
+                                  "type": "varchar(255)",
+                                  "constraints": {
+                                      "nullable": false
+                                  }
+                              }
+                          }
+                      ]
+                  }
+              }
+          ]
+      }
+    }
+  ]
+}

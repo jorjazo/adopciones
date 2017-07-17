@@ -1,0 +1,23 @@
+{
+    "databaseChangeLog": [
+        {
+          "include": {
+            "relativeToChangelogFile": true,
+            "file": "001-initial-schema.json"
+          }
+        },
+        {
+          "include": {
+            "relativeToChangelogFile": true,
+            "file": "002-create-sequences.json"
+          }
+        },
+        {
+          "include": {
+            "relativeToChangelogFile": true,
+            "file": "003-create-test-client-in-dev.json"
+          }
+        }
+        
+    ]
+}
