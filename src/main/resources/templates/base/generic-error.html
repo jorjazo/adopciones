@@ -6,8 +6,12 @@
   
   <div class="container">
     <div class="row">
-      Content
-    </div>
+		
+		<h1 th:text="#{error.title}">Algo salió mal :(</h1>
+		
+		<pre th:text="${stackTrace}"> stackTrace </pre>
+
+  </div>
   </div>
 </body>
 </html>

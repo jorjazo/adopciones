@@ -17,8 +17,8 @@ import io.rebelsouls.core.users.User;
 @ControllerAdvice
 public class ErrorHandlerAdvice {
 
-    @ExceptionHandler(Throwable.class)
-    public String handleError(Throwable error, Model model, HttpServletResponse response) {
+    @ExceptionHandler(Exception.class)
+    public String handleError(Exception error, Model model, HttpServletResponse response) {
         Object user = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(user != null && user instanceof User)
             model.addAttribute("currentUser", user);

@@ -1,0 +1,52 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="base/layout :: head"/>
+<body>
+  <nav th:replace="base/layout :: nav"></nav>
+  
+  <div class="container">
+    <div class="row">
+
+	<form method="post" id="userForm" th:fragment="userForm" th:object="${userRegistrationForm}" th:action="@{/users}">
+	<div class="col-sm-8 col-sm-offset-2">
+		<div class="form-group" th:classappend="${#fields.hasErrors('name')} ? 'has-error' : ''">
+	      <label th:for="${#ids.next('name')}" th:text="#{user.form.name.label}">Nombre:</label>
+	      <input class="form-control" type="text" th:placeholder="#{user.form.name.placeholder}" th:field="*{name}"/>
+	    </div>
+		
+		<div class="form-group" th:classappend="${#fields.hasErrors('email')} ? 'has-error':''">
+	      <label th:for="${#ids.next('email')}" th:text="#{user.form.email.label}">Email:</label>
+	      <input class="form-control" type="text" th:field="*{email}" th:placeholder="#{user.form.email.placeholder}"/>
+	    </div>
+	
+		<div class="form-group"  th:classappend="${#fields.hasErrors('password')} ? 'has-error':''">
+	      <label th:for="${#ids.next('password')}" th:text="#{user.form.password.label}">Contraseña inicial:</label>
+	      <input class="form-control" type="password" th:field="*{password}"/>
+	    </div>
+	
+		<div class="form-group" th:classappend="${#fields.hasErrors('passwordRepeat')} ? 'has-error':''">
+	      <label th:for="${#ids.next('passwordRepeat')}" th:text="#{user.form.passwordRepeat.label}">Repetir contraseña:</label>
+	      <input class="form-control" type="password" th:field="*{passwordRepeat}"/>
+	    </div>
+	
+		<div class="form-group"  th:classappend="${#fields.hasErrors('userType')} ? 'has-error':''">
+	      <label th:for="${#ids.next('userType')}" th:text="#{user.form.userType.label}">Tipo de registro:</label>
+	      <select th:field="*{userType}" class="form-control">
+	        <option th:each="type : ${allUserTypes}" th:value="${type}" th:text="#{${'user.type.'+type}}">bla</option>
+	      </select>
+	    </div>
+	    <script src="https://www.google.com/recaptcha/api.js" async="async" defer="defer"></script>
+	    <script>
+	    function submitForm() {
+	        $('#userForm').submit();
+	    };
+	    </script>
+	    <button class="btn btn-default g-recaptcha" th:attr="data-sitekey=${recaptchaKey}"
+	    	data-callback="submitForm" th:text="#{user.form.submit}">Registrarme</button>
+	</div>
+	</form>
+
+  </div>
+  </div>
+</body>
+</html>

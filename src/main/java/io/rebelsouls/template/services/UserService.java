@@ -2,7 +2,9 @@ package io.rebelsouls.template.services;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
@@ -71,5 +73,9 @@ public class UserService implements UserDetailsService {
 		user.setEnabled(true);
 		user.setValidationToken(null);
 		return userRepository.save(user);
+	}
+
+	public List<Role> getSelectableRoles() {
+		return Arrays.stream(Role.values()).filter(r -> !r.equals(Role.ADMIN)).collect(Collectors.toList());
 	}
 }

@@ -49,8 +49,10 @@ public class UserController {
     private String recaptchaKey;
 
     @GetMapping("")
-    public String displayUserListAndForm(@AuthenticationPrincipal User currentUser, Model model) {
+    public String displayUserListAndForm(@AuthenticationPrincipal User currentUser, Model model, UserRegistrationForm form) {
         model.addAttribute("recaptchaKey", recaptchaKey);
+        model.addAttribute("formData", new UserRegistrationForm());
+        model.addAttribute("allUserTypes", userService.getSelectableRoles());
         
         if (currentUser == null)
             return "users/form";
@@ -64,27 +66,28 @@ public class UserController {
     }
 
     @PostMapping("")
-    public String registerUser(@AuthenticationPrincipal User currentUser, @Valid UserRegistrationForm form,
-            BindingResult validation, Model model, HttpServletRequest request) {
-        model.addAttribute("formData", form);
-        model.addAttribute("validation", validation);
+    public String registerUser(@AuthenticationPrincipal User currentUser, @Valid UserRegistrationForm userRegistrationForm,
+            BindingResult bindingResult, Model model, HttpServletRequest request) {
+//        model.addAttribute("formData", formData);
+//        model.addAttribute("validation", bindingResult);
         model.addAttribute("recaptchaKey", recaptchaKey);
+        model.addAttribute("allUserTypes", userService.getSelectableRoles());
         
         if(!recaptchaVerifier.verify(request)) {
             model.addAttribute("recaptchaError", true);
             return "users/form";
         }
         
-        if (!form.getPassword().equals(form.getPasswordRepeat())) {
-            validation.rejectValue("passwordRepeat", "Debe coincidir con la contraseña ingresada");
+        if (!userRegistrationForm.getPassword().equals(userRegistrationForm.getPasswordRepeat())) {
+            bindingResult.rejectValue("passwordRepeat", "Debe coincidir con la contraseña ingresada");
         }
 
-        if (validation.hasErrors()) {
+        if (bindingResult.hasErrors()) {
             return "users/form";
         }
 
-        User newUser = userService.createUser(form.getEmail(), form.getPassword(), form.getName(),
-                Role.valueOf(form.getUserType()));
+        User newUser = userService.createUser(userRegistrationForm.getEmail(), userRegistrationForm.getPassword(), userRegistrationForm.getName(),
+                Role.valueOf(userRegistrationForm.getUserType()));
 
         Map<String, Object> values = new HashMap<>();
         values.put("newUser", newUser);
