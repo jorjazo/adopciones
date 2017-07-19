@@ -49,9 +49,8 @@ public class UserController {
     private String recaptchaKey;
 
     @GetMapping("")
-    public String displayUserListAndForm(@AuthenticationPrincipal User currentUser, Model model, UserRegistrationForm form) {
+    public String displayUserListAndForm(@AuthenticationPrincipal User currentUser, Model model, UserRegistrationForm userRegistrationForm) {
         model.addAttribute("recaptchaKey", recaptchaKey);
-        model.addAttribute("formData", new UserRegistrationForm());
         model.addAttribute("allUserTypes", userService.getSelectableRoles());
         
         if (currentUser == null)
@@ -68,8 +67,6 @@ public class UserController {
     @PostMapping("")
     public String registerUser(@AuthenticationPrincipal User currentUser, @Valid UserRegistrationForm userRegistrationForm,
             BindingResult bindingResult, Model model, HttpServletRequest request) {
-//        model.addAttribute("formData", formData);
-//        model.addAttribute("validation", bindingResult);
         model.addAttribute("recaptchaKey", recaptchaKey);
         model.addAttribute("allUserTypes", userService.getSelectableRoles());
         
@@ -95,7 +92,7 @@ public class UserController {
                 appUrl + "/users/" + newUser.getId() + "/validate?token=" + newUser.getValidationToken());
 
         emailService.emailUser(newUser, "¡Bienvenido a Template App!",
-                "classpath:/templates/users/registration-email", values);
+                "users/registration-email", values);
 
         return "users/create-success";
     }

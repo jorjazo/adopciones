@@ -29,6 +29,6 @@ public class EmailTests {
         
         String random = UUID.randomUUID().toString();
         
-        emailService.emailUser(user, "Test " + random, "classpath:test-templates/email.twig", new HashMap<>());
+        emailService.emailUser(user, "Test " + random, "users/registration-email", new HashMap<>());
     }
 }

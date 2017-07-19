@@ -6,12 +6,13 @@
   
   <div class="container">
     <div class="row">
-	    <div class="jumbotron" th:unless="${currentUser}">
-	      <h1 th:text="#{home.join}">¡Únete!</h1>
-	      <p th:text="#{home.description}">Te va a encantar...</p>
-	      <p><a class="btn btn-primary btn-lg" th:href="@{/users}" role="button" th:text="#{home.signup}">Regístrate</a></p>
-	    </div>
-    </div>
+
+		<p th:text="#{create.success}">
+		Su cuenta fue creada. En pocos minutos recibirá un correo con instrucciones para validar su cuenta y poder usarla.
+		</p>
+		<p><a th:href="@{/}" th:text="#{create.gohome}">Ir al inicio</a></p> 
+
+  </div>
   </div>
 </body>
 </html>
