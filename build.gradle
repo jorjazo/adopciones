@@ -4,6 +4,7 @@ plugins {
 
 apply plugin: 'java'
 apply plugin: 'application'
+apply plugin: 'eclipse'
 
 repositories {
     jcenter()
@@ -16,10 +17,14 @@ repositories {
     }
 }
 
+jar {
+    baseName = 'templateApp'
+    version = '1.0-SNAPSHOT'
+}
+
 dependencies {
-	compile 'org.springframework.boot:spring-boot-starter-web:1.5.4.RELEASE'
+	compile 'org.springframework.boot:spring-boot-starter-web'
 	compile 'org.springframework.boot:spring-boot-starter-data-jpa'
-	compile 'org.springframework.boot:spring-boot-starter-mail'
 	compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	compile 'org.springframework.boot:spring-boot-devtools'
 	
@@ -28,6 +33,7 @@ dependencies {
 
     compile 'io.rebelsouls.lib:rebelsouls-users:1.0'
 	compile 'io.rebelsouls.lib:rebelsouls-mail:1.0'
+    compile 'io.rebelsouls.lib:rebelsouls-util:1.1'
     
 	compile 'org.liquibase:liquibase-core:3.5.3'
 	compile 'com.h2database:h2'
@@ -42,12 +48,7 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok:1.16.18'
 	
 	testCompile 'org.springframework.boot:spring-boot-starter-test'
-  testCompile 'junit:junit:4.12'
-}
-
-jar {
-	baseName = 'templateApp'
-	version = '1.0-SNAPSHOT'
+    testCompile 'junit:junit:4.12'
 }
 
 test {

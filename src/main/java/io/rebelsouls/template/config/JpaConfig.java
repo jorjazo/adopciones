@@ -5,15 +5,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
-@EnableJpaRepositories(
-        basePackages={
-                "io.rebelsouls.template.repositories",
-                
-        })
-@EntityScan(basePackages={
-        "io.rebelsouls.core",
-        "io.rebelsouls.template"
-})
+@EnableJpaRepositories(basePackages = { "io.rebelsouls.repositories" })
+@EntityScan(basePackages = { "io.rebelsouls.entities" })
 public class JpaConfig {
 
 }
