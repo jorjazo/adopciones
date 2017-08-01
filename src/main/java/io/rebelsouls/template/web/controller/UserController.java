@@ -19,14 +19,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import io.rebelsouls.core.users.Role;
-import io.rebelsouls.core.users.User;
-import io.rebelsouls.core.users.UserAlreadyValidatedException;
-import io.rebelsouls.template.services.EmailService;
-import io.rebelsouls.template.services.UserService;
+import io.rebelsouls.entities.User;
+import io.rebelsouls.services.EmailService;
+import io.rebelsouls.services.UserService;
 import io.rebelsouls.template.web.exceptions.InvalidRequestException;
 import io.rebelsouls.template.web.exceptions.ResourceNotFoundException;
 import io.rebelsouls.template.web.forms.UserRegistrationForm;
+import io.rebelsouls.users.Role;
+import io.rebelsouls.users.UserAlreadyValidatedException;
 import io.rebelsouls.util.RecaptchaVerifier;
 
 @Controller
@@ -91,7 +91,7 @@ public class UserController {
         values.put("validationUrl",
                 appUrl + "/users/" + newUser.getId() + "/validate?token=" + newUser.getValidationToken());
 
-        emailService.emailUser(newUser, "¡Bienvenido a Template App!",
+        emailService.sendEmail(newUser.getEmail(), "¡Bienvenido a Template App!",
                 "users/registration-email", values);
 
         return "users/create-success";

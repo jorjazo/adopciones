@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import io.rebelsouls.core.users.User;
+import io.rebelsouls.entities.User;
 
 @ControllerAdvice
 public class ErrorHandlerAdvice {

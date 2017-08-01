@@ -7,44 +7,53 @@ apply plugin: 'application'
 
 repositories {
     jcenter()
+    maven {
+        url myrepoReadUrl
+        credentials {
+            username 'myMavenRepo'
+            password myrepoReadPassword
+        }
+    }
 }
 
 dependencies {
-	compile "org.springframework.boot:spring-boot-starter-web:1.5.4.RELEASE"
-	compile "org.springframework.boot:spring-boot-starter-data-jpa"
-	compile "org.springframework.boot:spring-boot-starter-mail"
-	compile "org.springframework.boot:spring-boot-starter-thymeleaf"
-	compile "org.springframework.boot:spring-boot-devtools"
+	compile 'org.springframework.boot:spring-boot-starter-web:1.5.4.RELEASE'
+	compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+	compile 'org.springframework.boot:spring-boot-starter-mail'
+	compile 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	compile 'org.springframework.boot:spring-boot-devtools'
 	
-	compile "org.springframework.security:spring-security-web"
-	compile "org.springframework.security:spring-security-config"
+	compile 'org.springframework.security:spring-security-web'
+	compile 'org.springframework.security:spring-security-config'
+
+    compile 'io.rebelsouls.lib:rebelsouls-users:1.0'
+	compile 'io.rebelsouls.lib:rebelsouls-mail:1.0'
+    
+	compile 'org.liquibase:liquibase-core:3.5.3'
+	compile 'com.h2database:h2'
+	compile 'org.postgresql:postgresql:42.1.1'
 	
-	compile "org.liquibase:liquibase-core:3.5.3"
+	compile 'com.mashape.unirest:unirest-java:1.4.9'
+	compile 'com.amazonaws:aws-java-sdk-s3:1.11.163'
 	
-	compile "com.h2database:h2"
-	compile "org.postgresql:postgresql:42.1.1"
+	compile 'ch.qos.logback:logback-core:1.2.3'
+	compile 'ch.qos.logback:logback-classic:1.2.3'
 	
-	compile "com.mashape.unirest:unirest-java:1.4.9"
-	compile "com.amazonaws:aws-java-sdk-s3:1.11.163"
+	compileOnly 'org.projectlombok:lombok:1.16.18'
 	
-	compile "ch.qos.logback:logback-core:1.2.3"
-	compile "ch.qos.logback:logback-classic:1.2.3"
-	
-	compileOnly "org.projectlombok:lombok:1.16.18"
-	
-	testCompile "org.springframework.boot:spring-boot-starter-test"
-  testCompile "junit:junit:4.12"
+	testCompile 'org.springframework.boot:spring-boot-starter-test'
+  testCompile 'junit:junit:4.12'
 }
 
 jar {
-	baseName = "templateApp"
-	version = "1.0-SNAPSHOT"
+	baseName = 'templateApp'
+	version = '1.0-SNAPSHOT'
 }
 
 test {
-    exclude "io/rebelsouls/integration/**"
+    exclude 'io/rebelsouls/integration/**'
 }
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-mainClassName = "io.rebelsouls.template.TemplateApp"
+mainClassName = 'io.rebelsouls.template.TemplateApp'
