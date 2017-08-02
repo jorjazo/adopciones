@@ -32,7 +32,9 @@ public class ErrorHandlerAdvice {
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         
         model.addAttribute("error", error);
-        model.addAttribute("stackTrace", buildStackTraceForThrowable(error));
+        String stackTrace = buildStackTraceForThrowable(error);
+        model.addAttribute("stackTrace", stackTrace);
+        
         return "base/generic-error";
     }
     

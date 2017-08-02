@@ -31,9 +31,9 @@ dependencies {
 	compile 'org.springframework.security:spring-security-web'
 	compile 'org.springframework.security:spring-security-config'
 
-    compile 'io.rebelsouls.lib:rebelsouls-users:1.0'
+    compile 'io.rebelsouls.lib:rebelsouls-users:1.1'
 	compile 'io.rebelsouls.lib:rebelsouls-mail:1.0'
-    compile 'io.rebelsouls.lib:rebelsouls-util:1.5'
+    compile 'io.rebelsouls.lib:rebelsouls-util:1.8'
     
 	compile 'org.liquibase:liquibase-core:3.5.3'
 	compile 'com.h2database:h2'

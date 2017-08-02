@@ -26,7 +26,7 @@ import io.rebelsouls.template.web.exceptions.InvalidRequestException;
 import io.rebelsouls.template.web.exceptions.ResourceNotFoundException;
 import io.rebelsouls.template.web.forms.UserRegistrationForm;
 import io.rebelsouls.users.Role;
-import io.rebelsouls.users.UserAlreadyValidatedException;
+import io.rebelsouls.users.UserValidationException;
 import io.rebelsouls.util.RecaptchaVerifier;
 
 @Controller
@@ -102,13 +102,13 @@ public class UserController {
             @RequestParam(name = "token", required = true) String validationToken) {
         try {
             userService.validateUser(userId, validationToken);
-        } catch (UserAlreadyValidatedException e) {
+        } catch (UserValidationException e) {
             return "redirect:/login";
         }
 
         // TODO: configure security to make it automatically redirect to login
         // page and come back to home
-        return "redirect:/users/" + userId;
+        return "redirect:/login";
     }
 
     @GetMapping("/{userId}")

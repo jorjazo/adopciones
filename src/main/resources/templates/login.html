@@ -1,22 +1,29 @@
-{% extends "/templates/base/base.twig" %}
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:th="http://www.thymeleaf.org">
+<head th:replace="base/layout :: head" />
+<body>
 
-{% block body %}
+  <div th:replace="base/layout :: header"></div>
 
-<h1>{{ "root.login.signin" | translate }}</h1>
+  <div class="container">
 
-<form method="POST">
+  <h1>Ingresar</h1>
 
-    <div class="form-group">
-      <label for="input1">{{ "root.login.username" | translate("es") }}:</label>
-      <input id="input1" class="form-control" type="text" name="username" placeholder="{{ "root.login.username" | translate }}"/>
-    </div>
-    <div class="form-group">
-      <label for="input2">{{ "root.login.password" | translate }}:</label>
-      <input id="input2" class="form-control" type="password" name="password" placeholder="{{ "root.login.password" | translate }}"/>
-    </div>
-    
-    {{ csrfField }}
-    <button type="submit" class="btn btn-default">{{ "root.login.signin" | translate }}</button>
-</form>
+	<form method="post" th:action="@{/login}">
+	
+	    <div class="form-group">
+	      <label for="input1">Usuario:</label>
+	      <input id="input1" class="form-control" type="text" name="username" placeholder="Usuario"/>
+	    </div>
+	    <div class="form-group">
+	      <label for="input2">Contraseña:</label>
+	      <input id="input2" class="form-control" type="password" name="password"/>
+	    </div>
+	    
+	    <button type="submit" class="btn btn-default">Entrar</button>
+	</form>
 
-{% endblock %}
+</div>
+</body>
+</html>
