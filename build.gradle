@@ -18,7 +18,7 @@ repositories {
 }
 
 jar {
-    baseName = 'templateApp'
+    baseName = 'adopcionesApp'
     version = '1.0-SNAPSHOT'
 }
 
@@ -54,4 +54,4 @@ test {
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
-mainClassName = 'io.rebelsouls.template.TemplateApp'
+mainClassName = 'cl.adopciones.AdopcionesApp'

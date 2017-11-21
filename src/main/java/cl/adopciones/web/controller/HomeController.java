@@ -1,4 +1,4 @@
-package io.rebelsouls.template.web.controller;
+package cl.adopciones.web.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

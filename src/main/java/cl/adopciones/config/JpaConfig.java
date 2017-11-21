@@ -1,4 +1,4 @@
-package io.rebelsouls.template.config;
+package cl.adopciones.config;
 
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Configuration;

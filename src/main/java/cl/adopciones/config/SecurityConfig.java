@@ -1,4 +1,4 @@
-package io.rebelsouls.template.config;
+package cl.adopciones.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;

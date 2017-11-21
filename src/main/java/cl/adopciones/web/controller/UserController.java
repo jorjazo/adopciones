@@ -1,4 +1,4 @@
-package io.rebelsouls.template.web.controller;
+package cl.adopciones.web.controller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,12 +19,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import cl.adopciones.web.exceptions.InvalidRequestException;
+import cl.adopciones.web.exceptions.ResourceNotFoundException;
+import cl.adopciones.web.forms.UserRegistrationForm;
 import io.rebelsouls.entities.User;
 import io.rebelsouls.services.EmailService;
 import io.rebelsouls.services.UserService;
-import io.rebelsouls.template.web.exceptions.InvalidRequestException;
-import io.rebelsouls.template.web.exceptions.ResourceNotFoundException;
-import io.rebelsouls.template.web.forms.UserRegistrationForm;
 import io.rebelsouls.users.Role;
 import io.rebelsouls.users.UserValidationException;
 import io.rebelsouls.util.RecaptchaVerifier;

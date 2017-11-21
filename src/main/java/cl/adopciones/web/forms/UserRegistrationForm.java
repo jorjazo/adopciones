@@ -1,4 +1,4 @@
-package io.rebelsouls.template.web.forms;
+package cl.adopciones.web.forms;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;

@@ -1,4 +1,4 @@
-package io.rebelsouls.template.web.advice;
+package cl.adopciones.web.advice;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.ControllerAdvice;
