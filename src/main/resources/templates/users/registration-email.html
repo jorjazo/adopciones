@@ -5,22 +5,18 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-<p th:text="#{registration.email.greeting(${newUser.displayName})}">
-¡Hola {{ newUser.displayName }}!
-</p>
-<p th:text="#{registration.email.welcome}">
-¡Bienvenido a TemplateApp!
+<h1>
+¡Hola [[${newUser.displayName}]]!
+</h1>
+
+<p>
+¡Bienvenido a Adopciones.cl!
 </p>
 <p>
-	<span th:text="#{registration.email.instructions}">Así se valida</span>
-	<a th:href="@{${validationUrl}}">
-	<span th:text="#{registration.email.link}"></span>
-	</a>
+¡Recuerda visitarnos cuando puedas!
+Recomiéndanos a tus amigos para poder encontrar hogar a miles de animalitos que están esperando
+poder entregar todo su cariño a alguna familia que los acoja.
 </p>
-
-<pre th:text="${validationUrl}">
-Aquí va la URL
-</pre>
 
 </body>
 </html>
