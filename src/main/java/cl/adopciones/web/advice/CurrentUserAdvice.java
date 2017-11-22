@@ -4,7 +4,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
-import io.rebelsouls.entities.User;
+import cl.adopciones.users.User;
 
 @ControllerAdvice
 public class CurrentUserAdvice {

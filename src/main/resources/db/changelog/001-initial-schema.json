@@ -39,12 +39,6 @@
                           },
                           {
                               "column": {
-                                  "name": "validation_token",
-                                  "type": "varchar(255)"
-                              }
-                          },
-                          {
-                              "column": {
                                   "name": "display_name",
                                   "type": "varchar(255)"
                               }

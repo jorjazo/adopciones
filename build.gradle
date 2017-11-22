@@ -1,5 +1,12 @@
 plugins {
     id 'org.springframework.boot' version '1.5.4.RELEASE'
+	id "io.spring.dependency-management" version "1.0.3.RELEASE"
+}
+
+dependencyManagement {
+	imports {
+		mavenBom 'io.rebelsouls.lib:rebelsouls-versions:1.9'
+	}
 }
 
 apply plugin: 'java'
@@ -22,6 +29,9 @@ jar {
     version = '1.0-SNAPSHOT'
 }
 
+ext["thymeleaf.version"] = "3.0.9.RELEASE"
+ext["thymeleaf-layout-dialect.version"] = "3.0.9.RELEASE"
+
 dependencies {
 	compile 'org.springframework.boot:spring-boot-starter-web'
 	compile 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -31,21 +41,20 @@ dependencies {
 	compile 'org.springframework.security:spring-security-web'
 	compile 'org.springframework.security:spring-security-config'
 
-    compile 'io.rebelsouls.lib:rebelsouls-users:1.2'
-	compile 'io.rebelsouls.lib:rebelsouls-mail:1.1'
-    compile 'io.rebelsouls.lib:rebelsouls-util:1.10'
+	compile 'io.rebelsouls.lib:rebelsouls-mail'
+    compile 'io.rebelsouls.lib:rebelsouls-util'
     
-	compile 'org.liquibase:liquibase-core:3.5.3'
+	compile 'org.liquibase:liquibase-core'
 	compile 'com.h2database:h2'
-	compile 'org.postgresql:postgresql:42.1.1'
+	compile 'org.postgresql:postgresql'
 	
-	compile 'ch.qos.logback:logback-core:1.2.3'
-	compile 'ch.qos.logback:logback-classic:1.2.3'
+	compile 'ch.qos.logback:logback-core'
+	compile 'ch.qos.logback:logback-classic'
 	
-	compileOnly 'org.projectlombok:lombok:1.16.18'
+	compileOnly 'org.projectlombok:lombok'
 	
 	testCompile 'org.springframework.boot:spring-boot-starter-test'
-    testCompile 'junit:junit:4.12'
+    testCompile 'junit:junit'
 }
 
 test {
