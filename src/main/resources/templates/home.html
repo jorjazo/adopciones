@@ -7,9 +7,9 @@
   <div class="container">
     <div class="row">
 	    <div class="jumbotron" th:unless="${currentUser}">
-	      <h1 th:text="#{home.join}">¡Únete!</h1>
-	      <p th:text="#{home.description}">Te va a encantar...</p>
-	      <p><a class="btn btn-primary btn-lg" th:href="@{/users}" role="button" th:text="#{home.signup}">Regístrate</a></p>
+	      <h1>¡Bienvenido!</h1>
+	      <p>Cientos de mascotas esperan encontrar un hogar...</p>
+	      <p><a class="btn btn-primary btn-lg" th:href="@{/users}" role="button">Regístrate</a></p>
 	    </div>
     </div>
   </div>
