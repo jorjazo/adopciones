@@ -29,12 +29,6 @@
 	      <input class="form-control" type="password" th:field="*{passwordRepeat}"/>
 	    </div>
 	
-		<div class="form-group"  th:classappend="${#fields.hasErrors('userType')} ? 'has-error':''">
-	      <label th:for="${#ids.next('userType')}" th:text="#{user.form.userType.label}">Tipo de registro:</label>
-	      <select th:field="*{userType}" class="form-control">
-	        <option th:each="type : ${allUserTypes}" th:value="${type}" th:text="#{${'user.type.'+type}}">bla</option>
-	      </select>
-	    </div>
 	    <script src="https://www.google.com/recaptcha/api.js" async="async" defer="defer"></script>
 	    <script>
 	    function submitForm() {

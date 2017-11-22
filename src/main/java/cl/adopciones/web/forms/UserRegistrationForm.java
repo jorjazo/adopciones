@@ -26,6 +26,4 @@ public class UserRegistrationForm {
 	@NotNull
 	private String passwordRepeat;
 	
-	@NotNull
-	private String userType;
 }

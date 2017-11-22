@@ -11,7 +11,7 @@
                    "insert": {
                       "tableName": "users",
                       "columns" : [
-                        { "column": { "name": "id", "value": "1" } },
+                        { "column": { "name": "id", "value": "2" } },
                         { "column": { "name": "username", "value": "user" } },
                         { "column": { "name": "password", "value": "userpass" } },
                         { "column": { "name": "display_name", "value": "Pedro Lira" } },
@@ -27,7 +27,7 @@
                    "insert": {
                       "tableName": "user_roles",
                       "columns" : [
-                        { "column": { "name": "user_id", "value": "1" } },
+                        { "column": { "name": "user_id", "value": "2" } },
                         { "column": { "name": "role", "value": "USER" } }
                       ]
                     }

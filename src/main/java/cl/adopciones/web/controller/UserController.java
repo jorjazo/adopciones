@@ -68,7 +68,6 @@ public class UserController {
     public String registerUser(@AuthenticationPrincipal User currentUser, @Valid UserRegistrationForm userRegistrationForm,
             BindingResult bindingResult, Model model, HttpServletRequest request) {
         model.addAttribute("recaptchaKey", recaptchaKey);
-        model.addAttribute("allUserTypes", userService.getSelectableRoles());
         
         if(!recaptchaVerifier.verify(request)) {
             model.addAttribute("recaptchaError", true);
@@ -84,13 +83,10 @@ public class UserController {
         }
 
         User newUser = userService.createUser(userRegistrationForm.getEmail(), userRegistrationForm.getPassword(), userRegistrationForm.getName(),
-                Role.valueOf(userRegistrationForm.getUserType()));
+                Role.USER);
 
         Map<String, Object> values = new HashMap<>();
         values.put("newUser", newUser);
-        values.put("validationUrl",
-                appUrl + "/users/" + newUser.getId() + "/validate?token=" + newUser.getValidationToken());
-
         emailService.sendEmail(newUser.getEmail(), "¡Bienvenido a Template App!",
                 "users/registration-email", values);
 
