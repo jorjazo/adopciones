@@ -1,0 +1,66 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:replace="base/layout :: head" />
+<body>
+	<nav th:replace="base/layout :: nav"></nav>
+
+	<div class="container">
+		<div class="row">
+			<h1>Publicar nuevo aviso</h1>
+
+		</div>
+
+		<form method="post" id="itemForm" th:fragment="itemForm"
+			th:object="${itemForm}" th:action="@{/items}">
+			<div class="col-sm-8 col-sm-offset-2">
+				<div class="form-group"
+					th:classappend="${#fields.hasErrors('petName')} ? 'has-error' : ''">
+					<label th:for="petName">Nombre:</label> <input class="form-control"
+						type="text" placeholder="Nombre de la mascota"
+						th:field="*{petName}" />
+				</div>
+
+				<div class="form-group"
+					th:classappend="${#fields.hasErrors('petType')} ? 'has-error':''">
+					<label th:for="petType">Tipo de mascota:</label>
+					<select class="form-control" th:field="*{petType}">
+						<option th:each="type : ${petTypes}"
+								th:value="${type}"
+								th:text="#{${'pet.types.' + type}}">Item</option>
+					</select>
+				</div>
+
+				<div class="form-group"
+					th:classappend="${#fields.hasErrors('petAgeCategory')} ? 'has-error':''">
+					<label th:for="petAgeCategory">Edad:</label>
+					<select class="form-control" th:field="*{petAgeCategory}">
+						<option th:each="type : ${petAgeCategories}"
+								th:value="${type}"
+								th:text="#{${'pet.ageCategories.' + type}}">Item</option>
+					</select>
+				</div>
+
+				<div th:unless="${currentUser}">
+					<script src="https://www.google.com/recaptcha/api.js" async="async"
+						defer="defer"></script>
+					<script>
+						function submitForm() {
+							$('#userForm').submit();
+						};
+					</script>
+					<button class="btn btn-default g-recaptcha"
+						th:attr="data-sitekey=${recaptchaKey}" data-callback="submitForm">Siguiente
+						paso</button>
+				</div>
+
+				<div th:if="${currentUser}">
+					<button class="btn btn-default" data-callback="submitForm">Siguiente
+						paso</button>
+				</div>
+			</div>
+		</form>
+
+	</div>
+</body>
+</html>
