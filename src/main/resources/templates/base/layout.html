@@ -35,7 +35,7 @@
         </div>
         
         <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav" th:if="${currentUser}">
+          <ul class="nav navbar-nav">
             <li><a th:href="@{/items/new}">Publicar un aviso</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right" th:if="${currentUser}">

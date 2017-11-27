@@ -3,25 +3,25 @@
         {
           "include": {
             "relativeToChangelogFile": true,
-            "file": "001-initial-schema.json"
+            "file": "001-users.json"
           }
         },
         {
           "include": {
             "relativeToChangelogFile": true,
-            "file": "002-create-sequences.json"
+            "file": "002-create-admin-user.json"
           }
         },
         {
           "include": {
             "relativeToChangelogFile": true,
-            "file": "003-create-admin-user.json"
+            "file": "003-create-test-user-in-dev.json"
           }
         },
         {
           "include": {
             "relativeToChangelogFile": true,
-            "file": "004-create-test-user-in-dev.json"
+            "file": "004-items.json"
           }
         }
         

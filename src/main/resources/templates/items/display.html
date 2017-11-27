@@ -1,0 +1,38 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:replace="base/layout :: head" />
+<body>
+	<nav th:replace="base/layout :: nav"></nav>
+
+	<div class="container">
+		<div class="row">
+			<h1>Publicar nuevo aviso</h1>
+
+		</div>
+
+		<form method="post" id="itemForm" th:fragment="itemForm"
+			th:object="${item}">
+			<div class="col-sm-8 col-sm-offset-2">
+				<div class="form-group">
+					<label th:for="petName">Nombre:</label> <input class="form-control"
+						type="text" th:field="*{petName}" disabled="disabled"/>
+				</div>
+
+				<div class="form-group">
+					<label th:for="petType">Tipo de mascota:</label>
+					<input class="form-control" th:field="*{petType}"
+								th:value="#{${'pet.types.' + petType}}" disabled="disabled"/>
+				</div>
+
+				<div class="form-group">
+					<label th:for="petAgeCategory">Edad:</label>
+					<input class="form-control" th:field="*{petAgeCategory}"
+								th:value="#{${'pet.ageCategories.' + type}}"/>
+				</div>
+			</div>
+		</form>
+
+	</div>
+</body>
+</html>

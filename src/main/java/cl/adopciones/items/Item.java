@@ -24,12 +24,12 @@ public class Item {
     private Long id;
 
     @NonNull
-    private PetType type;
+    private String petName;
+    
+    @NonNull
+    private PetType petType;
 
     @NonNull
-    private String name;
-
-    private String displayName;
-    private String email;
+    private PetAgeCategory petAgeCategory;
 
 }

@@ -1,0 +1,59 @@
+{
+  "databaseChangeLog": [
+    {
+      "changeSet": {
+          "id": "items",
+          "author": "jorge",
+          "runOnChange": false,
+          "changes": [
+              {
+                  "createTable": {
+                      "tableName": "items",
+                      "columns": [
+                          {
+                              "column": {
+                                  "name": "id",
+                                  "type": "bigint",
+                                  "autoIncrement": true,
+                                  "constraints": {
+                                      "primaryKey": true,
+                                      "nullable": false
+                                  }
+                              }
+                          },
+                          {
+                              "column": {
+                                  "name": "pet_name",
+                                  "type": "varchar(255)",
+                                  "constraints": {
+                                      "nullable": false
+                                  }
+                              }
+                          },
+                          {
+                              "column": {
+                                  "name": "pet_type",
+                                  "type": "varchar(255)"
+                              }
+                          },
+                          {
+                              "column": {
+                                  "name": "pet_age_category",
+                                  "type": "varchar(255)"
+                              }
+                          }
+                      ]
+                   }
+               },
+              {
+                    "createSequence": {
+                        "sequenceName": "itemid",
+                        "startValue": 100,
+                        "incrementBy": 1
+                    }
+                }
+          ]
+      }
+    }
+  ]
+}

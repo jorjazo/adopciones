@@ -2,7 +2,7 @@
     "databaseChangeLog": [
         {
             "changeSet": {
-                "id": "create-test-client-in-dev",
+                "id": "create-test-user-in-dev",
                 "author": "jorge",
                 "runOnChange": false,
                 "context": "dev",
