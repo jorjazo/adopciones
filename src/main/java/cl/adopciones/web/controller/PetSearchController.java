@@ -28,9 +28,13 @@ public class PetSearchController {
 			@RequestParam(name = "ageCategory", required = false) PetAgeCategory petAgeCategory,
 			@RequestParam(name = "sizeCategory", required = false) PetSizeCategory petSizeCategory, Model model, Pageable page) {
 		
+		
+		if("".equals(name))
+			name = null;
+		
 		model.addAttribute("searchResults",
 				petService.searchPets(name, petType, gender, petAgeCategory, petSizeCategory, page));
-		return "items/search-results";
+		return "pets/search-results";
 	}
 
 }

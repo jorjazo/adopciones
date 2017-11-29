@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import cl.adopciones.pets.Pet;
-import cl.adopciones.pets.PetAgeCategory;
 import cl.adopciones.pets.PetService;
-import cl.adopciones.pets.PetType;
 import cl.adopciones.web.forms.PetForm;
 
 @Controller
@@ -26,8 +24,6 @@ public class PetsController {
 
 	@GetMapping("new")
 	public String newItemForm(@ModelAttribute PetForm form, Model model) {
-		model.addAttribute("petTypes", PetType.values());
-		model.addAttribute("petAgeCategories", PetAgeCategory.values());
 		return "pets/new";
 	}
 
