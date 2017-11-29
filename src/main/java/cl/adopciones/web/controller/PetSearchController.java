@@ -23,10 +23,10 @@ public class PetSearchController {
 
 	@GetMapping("")
 	public String getAllItems(@RequestParam(name = "name", required = false) String name,
-			@RequestParam(name = "petType", required = false) PetType petType,
+			@RequestParam(name = "type", required = false) PetType petType,
 			@RequestParam(name = "gender", required = false) Gender gender,
-			@RequestParam(name = "petAgeCategory", required = false) PetAgeCategory petAgeCategory,
-			@RequestParam(name = "petSizeCategory", required = false) PetSizeCategory petSizeCategory, Model model, Pageable page) {
+			@RequestParam(name = "ageCategory", required = false) PetAgeCategory petAgeCategory,
+			@RequestParam(name = "sizeCategory", required = false) PetSizeCategory petSizeCategory, Model model, Pageable page) {
 		
 		model.addAttribute("searchResults",
 				petService.searchPets(name, petType, gender, petAgeCategory, petSizeCategory, page));
