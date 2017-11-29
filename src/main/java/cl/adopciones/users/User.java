@@ -14,6 +14,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Index;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -21,6 +23,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import cl.adopciones.organizations.Organization;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -53,6 +56,10 @@ public class User implements UserDetails {
     @Column(name = "role")
     private Set<Role> roles;
 
+    @ManyToOne(fetch=FetchType.EAGER)
+    @JoinColumn(name="organization")
+    private Organization organization;
+    
     private boolean expired = false;
     private boolean locked = false;
     private boolean credentialsExpired = false;

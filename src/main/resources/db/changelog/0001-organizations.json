@@ -2,13 +2,13 @@
   "databaseChangeLog": [
     {
       "changeSet": {
-          "id": "pets",
+          "id": "organizations",
           "author": "jorge",
           "runOnChange": false,
           "changes": [
               {
                   "createTable": {
-                      "tableName": "pets",
+                      "tableName": "organizations",
                       "columns": [
                           {
                               "column": {
@@ -33,43 +33,16 @@
                           {
                               "column": {
                                   "name": "type",
-                                  "type": "varchar(255)"
-                              }
-                          },
-                          {
-                              "column": {
-                                  "name": "age_category",
-                                  "type": "varchar(255)"
-                              }
-                          },
-                          {
-                              "column": {
-                                  "name": "size_category",
-                                  "type": "varchar(255)"
-                              }
-                          },
-                          {
-                              "column": {
-                                  "name": "gender",
-                                  "type": "varchar(255)"
-                              }
-                          }
-                          ,
-                          {
-                              "column": {
-                                  "name": "location",
-                                  "type": "bigint"
-                              }
-                          },
-                          {
-                              "column": {
-                                  "name": "owner",
-                                  "type": "bigint",
+                                  "type": "varchar(255)",
                                   "constraints": {
-                                      "nullable": false,
-                                      "foreignKeyName": "fk_pet_owner",
-                                      "references": "users"
+                                      "nullable": false
                                   }
+                              }
+                          },
+                          {
+                              "column": {
+                                  "name": "contact_email",
+                                  "type": "varchar(255)"
                               }
                           }
                       ]
@@ -77,7 +50,7 @@
                },
               {
                     "createSequence": {
-                        "sequenceName": "petid",
+                        "sequenceName": "organizationid",
                         "startValue": 100,
                         "incrementBy": 1
                     }

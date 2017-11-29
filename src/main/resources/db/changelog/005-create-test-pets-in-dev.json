@@ -16,7 +16,8 @@
                         { "column": { "name": "name", "value": "Panzer" } },
                         { "column": { "name": "size_category", "value": "XL" } },
                         { "column": { "name": "age_category", "value": "SIX_YEARS_OR_YOUGER" } },
-                        { "column": { "name": "gender", "value": "MALE" } }
+                        { "column": { "name": "gender", "value": "MALE" } },
+                        { "column": { "name": "owner", "value": "2" } }
                       ]
                     }
                   },
@@ -29,7 +30,8 @@
                         { "column": { "name": "name", "value": "Olivia" } },
                         { "column": { "name": "size_category", "value": "M" } },
                         { "column": { "name": "age_category", "value": "SIX_YEARS_OR_YOUGER" } },
-                        { "column": { "name": "gender", "value": "FEMALE" } }
+                        { "column": { "name": "gender", "value": "FEMALE" } },
+                        { "column": { "name": "owner", "value": "2" } }
                       ]
                     }
                   }

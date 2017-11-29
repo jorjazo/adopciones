@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import static cl.adopciones.pets.PetSpecifications.*;
 import static org.springframework.data.jpa.domain.Specifications.*;
 
+import javax.transaction.Transactional;
+
 @Service
 public class PetService {
 
@@ -17,8 +19,11 @@ public class PetService {
 		return petRepository.save(item);
 	}
 
-	public Pet getItem(Long itemId) {
-		return petRepository.findOne(itemId);
+	@Transactional
+	public Pet getPet(Long petId) {
+		Pet pet = petRepository.findOne(petId);
+		pet.getOwner().getOrganization().getContactEmail();  //preload
+		return pet;
 	}
 
 	public Page<Pet> searchPets(String name, PetType[] petType, Gender[] gender, PetAgeCategory[] petAgeCategory,

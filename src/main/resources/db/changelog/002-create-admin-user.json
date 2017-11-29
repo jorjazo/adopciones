@@ -15,6 +15,7 @@
                         { "column": { "name": "password", "value": "admin" } },
                         { "column": { "name": "display_name", "value": "Jorge Valencia" } },
                         { "column": { "name": "email", "value": "jorge@rebelsouls.io" } },
+                        { "column": { "name": "organization", "value": "1" } },
                         { "column": { "name": "enabled", "valueBoolean": true } },
                         { "column": { "name": "locked", "valueBoolean": false } },
                         { "column": { "name": "expired", "valueBoolean": false } },

@@ -3,6 +3,18 @@
         {
           "include": {
             "relativeToChangelogFile": true,
+            "file": "0001-organizations.json"
+          }
+        },
+        {
+          "include": {
+            "relativeToChangelogFile": true,
+            "file": "0002-create-edra-organization.json"
+          }
+        },
+        {
+          "include": {
+            "relativeToChangelogFile": true,
             "file": "001-users.json"
           }
         },

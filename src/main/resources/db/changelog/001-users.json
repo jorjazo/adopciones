@@ -45,6 +45,17 @@
                           },
                           {
                               "column": {
+                                  "name": "organization",
+                                  "type": "bigint",
+                                  "constraints": {
+                                      "nullable": false,
+                                      "foreignKeyName": "fk_user_organization",
+                                      "references": "organizations"
+                                  }
+                              }
+                          },
+                          {
+                              "column": {
                                   "name": "email",
                                   "type": "varchar(255)"
                               }
