@@ -8,7 +8,7 @@
 	<div class="container">
 		<ul>
 			<li th:each="pet: ${searchResults}">
-				[[${pet.name}]]
+				<a th:href="@{${'/mascotas/' + pet.id}}">[[${pet.name}]]</a>
 			</li>
 		</ul>
 

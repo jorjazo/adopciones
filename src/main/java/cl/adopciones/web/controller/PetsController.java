@@ -20,7 +20,7 @@ import cl.adopciones.web.forms.PetForm;
 public class PetsController {
 
 	@Autowired
-	private PetService itemService;
+	private PetService petService;
 
 	@GetMapping("new")
 	public String newItemForm(@ModelAttribute PetForm form, Model model) {
@@ -30,16 +30,14 @@ public class PetsController {
 	@PostMapping("")
 	public String createItem(@Valid PetForm form, Model model) {
 		Pet newItem = form.toItem();
-		newItem = itemService.save(newItem);
+		newItem = petService.save(newItem);
 
 		return "redirect:" + getItemUrl(newItem);
 	}
 
-	@GetMapping("/{itemId}")
-	public String displayItem(@PathVariable Long itemId, Model model) {
-		Pet item = itemService.getItem(itemId);
-		model.addAttribute("item", item);
-
+	@GetMapping("/{petId}")
+	public String displayItem(@PathVariable("petId") Pet pet, Model model) {
+		model.addAttribute("pet", pet);
 		return "pets/display";
 	}
 

@@ -7,30 +7,51 @@
 
 	<div class="container">
 		<div class="row">
-			<h1>Publicar nuevo aviso</h1>
+			<h1>Aviso de mascota</h1>
 
 		</div>
 
 		<form method="post" id="itemForm" th:fragment="itemForm"
-			th:object="${item}">
-			<div class="col-sm-8 col-sm-offset-2">
+			th:object="${pet}" class="form-horizontal">
 				<div class="form-group">
-					<label th:for="petName">Nombre:</label> <input class="form-control"
-						type="text" th:field="*{petName}" disabled="disabled"/>
+					<label th:for="name" class="col-sm-2 control-label">Nombre:</label>
+					<div class="col-sm-6">
+						<input class="form-control" id="name"
+							type="text" th:field="*{name}" disabled="disabled"/>
+					</div>
 				</div>
 
 				<div class="form-group">
-					<label th:for="petType">Tipo de mascota:</label>
-					<input class="form-control" th:field="*{petType}"
-								th:value="#{${'pet.types.' + petType}}" disabled="disabled"/>
+					<label th:for="type" class="col-sm-2 control-label">Tipo de mascota:</label>
+					<div class="col-sm-6">
+						<input class="form-control" id="type"
+									th:value="#{${'pet.types.' + pet.type}}" disabled="disabled"/>
+					</div>
 				</div>
 
 				<div class="form-group">
-					<label th:for="petAgeCategory">Edad:</label>
-					<input class="form-control" th:field="*{petAgeCategory}"
-								th:value="#{${'pet.ageCategories.' + type}}"/>
+					<label th:for="ageCategory" class="col-sm-2 control-label">Edad:</label>
+					<div class="col-sm-6">
+						<input class="form-control" id="ageCategory"
+									th:value="#{${'pet.ageCategories.' + pet.ageCategory}}" disabled="disabled"/>
+					</div>
 				</div>
-			</div>
+				
+				<div class="form-group">
+					<label th:for="gender" class="col-sm-2 control-label">Género:</label>
+					<div class="col-sm-6">
+						<input class="form-control" id="gender" 
+									th:value="#{${'genders.' + pet.gender}}" disabled="disabled"/>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label th:for="sizeCategory" class="col-sm-2 control-label">Tamaño:</label>
+					<div class="col-sm-6">
+						<input class="form-control" id="sizeCategory" 
+									th:value="#{${'pet.sizeCategories.' + pet.sizeCategory}}" disabled="disabled"/>
+					</div>
+				</div>
 		</form>
 
 	</div>
