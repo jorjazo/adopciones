@@ -18,4 +18,14 @@ public class HomeController {
         return "login";
     }
 
+    @GetMapping("/acerca")
+    public String about() {
+    	return "about";
+    }
+    
+    @GetMapping("/rescatistas")
+    public String organizations() {
+    	return "organizations";
+    }
+    
 }
