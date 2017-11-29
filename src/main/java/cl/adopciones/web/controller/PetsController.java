@@ -28,7 +28,7 @@ public class PetsController {
 	public String newItemForm(@ModelAttribute PetForm form, Model model) {
 		model.addAttribute("petTypes", PetType.values());
 		model.addAttribute("petAgeCategories", PetAgeCategory.values());
-		return "items/new";
+		return "pets/new";
 	}
 
 	@PostMapping("")
@@ -44,10 +44,10 @@ public class PetsController {
 		Pet item = itemService.getItem(itemId);
 		model.addAttribute("item", item);
 
-		return "items/display";
+		return "pets/display";
 	}
 
 	private String getItemUrl(Pet newItem) {
-		return "/items/" + newItem.getId();
+		return "/pets/" + newItem.getId();
 	}
 }
