@@ -16,45 +16,41 @@
 
 		<form method="get" id="petSearchForm" th:action="@{/busqueda}">
 			<div class="col-sm-8 col-sm-offset-2">
-				<div class="form-group">
+				<!-- div class="form-group">
 					<label th:for="name">Nombre:</label> <input class="form-control"
 						type="text" id="name" name="name" placeholder="Nombre de la mascota" />
+				</div -->
+
+				<div class="form-group">
+					<label>Tipo de mascota:</label>
+					<label class="checkbox-inline" th:each="type : ${petTypes}">
+						<input type="checkbox" name="type" th:value="${type}" checked="checked">
+						[[ #{${'pet.types.' + type}} ]]
+					</label> 
 				</div>
 
 				<div class="form-group">
-					<label th:for="type">Tipo de mascota:</label> <select
-						class="form-control" id="type" name="type">
-						<option value="">Cualquier tipo</option>
-						<option th:each="type : ${petTypes}" th:value="${type}"
-							th:text="#{${'pet.types.' + type}}">Tipo</option>
-					</select>
+					<label>Edad:</label> 
+					<label class="checkbox-inline" th:each="age : ${petAgeCategories}">
+						<input type="checkbox" name="ageCategory" th:value="${age}" checked="checked">
+						[[ #{${'pet.ageCategories.' + age}} ]]
+					</label>
 				</div>
 
 				<div class="form-group">
-					<label th:for="ageCategory">Edad:</label> <select
-						class="form-control" id="ageCategory" name="ageCategory">
-						<option value="">Cualquier edad</option>
-						<option th:each="age : ${petAgeCategories}" th:value="${age}"
-							th:text="#{${'pet.ageCategories.' + age}}">Edad</option>
-					</select>
-				</div>
-
-				<div class="form-group">
-					<label th:for="sizeCategory">Tamaño:</label> <select
-						class="form-control" id="sizeCategory" name="sizeCategory">
-						<option value="">Cualquier tamaño</option>
-						<option th:each="size : ${petSizeCategories}" th:value="${size}"
-							th:text="#{${'pet.sizeCategories.' + size}}">Tamaño</option>
-					</select>
+					<label>Tamaño:</label> 
+					<label class="checkbox-inline" th:each="size : ${petSizeCategories}">
+						<input type="checkbox" name="sizeCategory" th:value="${size}" checked="checked">
+						[[ #{${'pet.sizeCategories.' + size}} ]]
+					</label>
 				</div>
 				
 				<div class="form-group">
-					<label th:for="gender">Género:</label> <select
-						class="form-control" id="gender" name="gender">
-						<option value="">Cualquier género</option>
-						<option th:each="gender : ${genders}" th:value="${gender}"
-							th:text="#{${'genders.' + gender}}">Género</option>
-					</select>
+					<label>Género:</label>
+					<label class="checkbox-inline" th:each="gender : ${genders}">
+						<input type="checkbox" name="gender" th:value="${gender}" checked="checked">
+						[[ #{${'genders.' + gender}} ]]
+					</label>
 				</div>
 				
 
