@@ -1,6 +1,8 @@
-package cl.adopciones.items;
+package cl.adopciones.pets;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -9,27 +11,30 @@ import javax.persistence.Table;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "items")
-public class Item {
+@Table(name = "pets")
+public class Pet {
 
-    @NonNull
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "itemid")
     @SequenceGenerator(name = "itemid", sequenceName = "itemid")
     private Long id;
 
-    @NonNull
-    private String petName;
+    private String name;
     
-    @NonNull
-    private PetType petType;
+    @Enumerated(EnumType.STRING)
+    private PetType type;
 
-    @NonNull
-    private PetAgeCategory petAgeCategory;
+    @Enumerated(EnumType.STRING)
+    private PetAgeCategory ageCategory;
 
+    @Enumerated(EnumType.STRING)
+    private PetSizeCategory sizeCategory;
+
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+    
 }

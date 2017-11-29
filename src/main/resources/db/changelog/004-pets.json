@@ -2,13 +2,13 @@
   "databaseChangeLog": [
     {
       "changeSet": {
-          "id": "items",
+          "id": "pets",
           "author": "jorge",
           "runOnChange": false,
           "changes": [
               {
                   "createTable": {
-                      "tableName": "items",
+                      "tableName": "pets",
                       "columns": [
                           {
                               "column": {
@@ -23,7 +23,7 @@
                           },
                           {
                               "column": {
-                                  "name": "pet_name",
+                                  "name": "name",
                                   "type": "varchar(255)",
                                   "constraints": {
                                       "nullable": false
@@ -32,13 +32,25 @@
                           },
                           {
                               "column": {
-                                  "name": "pet_type",
+                                  "name": "type",
                                   "type": "varchar(255)"
                               }
                           },
                           {
                               "column": {
-                                  "name": "pet_age_category",
+                                  "name": "age_category",
+                                  "type": "varchar(255)"
+                              }
+                          },
+                          {
+                              "column": {
+                                  "name": "size_category",
+                                  "type": "varchar(255)"
+                              }
+                          },
+                          {
+                              "column": {
+                                  "name": "gender",
                                   "type": "varchar(255)"
                               }
                           }

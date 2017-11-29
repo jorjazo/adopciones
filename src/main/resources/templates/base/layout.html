@@ -36,8 +36,10 @@
         
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li><a th:href="@{/items/new}">Publicar un aviso</a></li>
+            <li><a th:href="@{/acerca/quienes}">¿Quiénes somos?</a></li>
+            <li><a th:href="@{/acerca/rescatistas}">Rescatistas</a></li>
           </ul>
+          
           <ul class="nav navbar-nav navbar-right" th:if="${currentUser}">
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" th:text="#{layout.welcome(${currentUser.displayName})}">
@@ -49,15 +51,7 @@
               </ul>
             </li>
           </ul>
-          <form class="navbar-form navbar-right" method="post" th:action="@{/login}" th:unless="${currentUser}">
-            <div class="form-group">
-              <input type="text" placeholder="Email" th:placeholder="#{layout.username}" class="form-control" name="username"/>
-            </div>
-            <div class="form-group">
-              <input type="password" placeholder="Contraseña" th:placeholder="#{layout.password}" class="form-control" name="password"/>
-            </div>
-            <button type="submit" class="btn btn-success" th:text="#{layout.signin}">Ingresar</button>
-          </form>
+          
         </div><!--/.navbar-collapse -->
       </div>
     </nav>

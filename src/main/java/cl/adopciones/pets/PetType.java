@@ -1,4 +1,4 @@
-package cl.adopciones.items;
+package cl.adopciones.pets;
 
 public enum PetType {
 	CAT,

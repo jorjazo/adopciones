@@ -3,13 +3,13 @@ package cl.adopciones.web.forms;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import cl.adopciones.items.Item;
-import cl.adopciones.items.PetAgeCategory;
-import cl.adopciones.items.PetType;
+import cl.adopciones.pets.Pet;
+import cl.adopciones.pets.PetAgeCategory;
+import cl.adopciones.pets.PetType;
 import lombok.Data;
 
 @Data
-public class ItemForm {
+public class PetForm {
 	@Size(min=2,max=100)
 	@NotNull
 	private String petName;
@@ -21,11 +21,11 @@ public class ItemForm {
 	private PetAgeCategory petAgeCategory;
 	
 	
-	public Item toItem() {
-		Item item = new Item();
-		item.setPetName(petName);
-		item.setPetType(getPetType());
-		item.setPetAgeCategory(getPetAgeCategory());
+	public Pet toItem() {
+		Pet item = new Pet();
+		item.setName(petName);
+		item.setType(getPetType());
+		item.setAgeCategory(getPetAgeCategory());
 		return item;
 	}
 }

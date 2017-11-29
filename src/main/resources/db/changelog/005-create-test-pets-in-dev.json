@@ -1,0 +1,40 @@
+{
+    "databaseChangeLog": [
+        {
+            "changeSet": {
+                "id": "create-test-pets-in-dev",
+                "author": "jorge",
+                "runOnChange": false,
+                "context": "dev",
+                "changes": [
+                  {
+                   "insert": {
+                      "tableName": "pets",
+                      "columns" : [
+                        { "column": { "name": "id", "value": "1" } },
+                        { "column": { "name": "type", "value": "DOG" } },
+                        { "column": { "name": "name", "value": "Panzer" } },
+                        { "column": { "name": "size_category", "value": "XL" } },
+                        { "column": { "name": "age_category", "value": "SIX_YEARS_OR_YOUGER" } },
+                        { "column": { "name": "gender", "value": "MALE" } }
+                      ]
+                    }
+                  },
+                  {
+                   "insert": {
+                      "tableName": "pets",
+                      "columns" : [
+                        { "column": { "name": "id", "value": "2" } },
+                        { "column": { "name": "type", "value": "DOG" } },
+                        { "column": { "name": "name", "value": "Olivia" } },
+                        { "column": { "name": "size_category", "value": "M" } },
+                        { "column": { "name": "age_category", "value": "SIX_YEARS_OR_YOUGER" } },
+                        { "column": { "name": "gender", "value": "FEMALE" } }
+                      ]
+                    }
+                  }
+                ]
+            }
+        }
+    ]
+}

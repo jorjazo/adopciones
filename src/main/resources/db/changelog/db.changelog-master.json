@@ -21,7 +21,13 @@
         {
           "include": {
             "relativeToChangelogFile": true,
-            "file": "004-items.json"
+            "file": "004-pets.json"
+          }
+        },
+        {
+          "include": {
+            "relativeToChangelogFile": true,
+            "file": "005-create-test-pets-in-dev.json"
           }
         }
         
