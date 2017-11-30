@@ -7,6 +7,10 @@ import javax.persistence.criteria.Root;
 
 import org.springframework.data.jpa.domain.Specification;
 
+import io.rebelsouls.chile.Comuna;
+import io.rebelsouls.chile.Provincia;
+import io.rebelsouls.chile.Region;
+
 public class PetSpecifications {
 
 	public static Specification<Pet> hasName(String name) {
@@ -68,6 +72,25 @@ public class PetSpecifications {
 					return cb.or();
 				
 				return root.get("ageCategory").in((Object[]) ages);
+			}
+			
+		};
+	}
+	
+	public static Specification<Pet> inLocation(Region region, Provincia provincia, Comuna comuna) {
+		return new Specification<Pet>() {
+			@Override
+			public Predicate toPredicate(Root<Pet> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+				if(comuna != null)
+					return cb.equal(root.get("location"), comuna);
+				
+				if(provincia != null)
+					return root.get("location").in(provincia.getComunas().toArray());
+				
+				if(region != null)
+					return root.get("location").in(region.getComunas().toArray());
+				
+				return cb.and();
 			}
 			
 		};

@@ -332,7 +332,7 @@ public enum Comuna {
 	Cisnes(326, "Cisnes",46),
 	Guaitecas(327, "Guaitecas",46),
 	Cochrane(328, "Cochrane",47),
-	Ohiggins(329, "O\"higgins",47),
+	Ohiggins(329, "O'higgins",47),
 	Tortel(330, "Tortel",47),
 	Coihaique(331, "Coihaique",48),
 	Lago_Verde(332, "Lago Verde",48),

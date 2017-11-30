@@ -4,6 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import io.rebelsouls.chile.Comuna;
+import io.rebelsouls.chile.Provincia;
+import io.rebelsouls.chile.Region;
+
 import static cl.adopciones.pets.PetSpecifications.*;
 import static org.springframework.data.jpa.domain.Specifications.*;
 
@@ -27,9 +32,15 @@ public class PetService {
 	}
 
 	public Page<Pet> searchPets(String name, PetType[] petType, Gender[] gender, PetAgeCategory[] petAgeCategory,
-			PetSizeCategory[] petSizeCategory, Pageable page) {
+			PetSizeCategory[] petSizeCategory, Region region, Provincia provincia, Comuna comuna, Pageable page) {
 
-		return petRepository.findAll(where(hasName(name)).and(typeIn(petType)).and(genderIn(gender))
-				.and(sizeIn(petSizeCategory)).and(ageIn(petAgeCategory)), page);
+		return petRepository.findAll(
+				where(hasName(name))
+				.and(typeIn(petType))
+				.and(genderIn(gender))
+				.and(sizeIn(petSizeCategory))
+				.and(ageIn(petAgeCategory))
+				.and(inLocation(region, provincia, comuna))
+				, page);
 	}
 }

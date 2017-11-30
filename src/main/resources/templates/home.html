@@ -53,6 +53,29 @@
 					</label>
 				</div>
 				
+				<div class="form-group">
+					<label for="region">Región:</label>
+					<select name="region" id="region">
+						<option value="">Cualquier región</option>
+						<option th:each="region: ${regiones}" th:value="${region.name()}">
+							[[ ${region.nombre} ]]
+						</option>
+					</select>
+				</div>
+				
+				<div class="form-group">
+					<label for="provincia">Provincia:</label>
+					<select name="provincia" id="provincia">
+						<option value="">Cualquier provincia</option>
+					</select>
+				</div>
+	
+				<div class="form-group">
+					<label for="comuna">Comuna:</label>
+					<select name="comuna" id="comuna">
+						<option value="">Cualquier comuna</option>
+					</select>
+				</div>
 
 				<button class="btn btn-default" type="submit">Buscar</button>
 			</div>
