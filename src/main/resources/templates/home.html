@@ -66,14 +66,14 @@
 				<div class="form-group">
 					<label for="provincia">Provincia:</label>
 					<select name="provincia" id="provincia">
-						<option value="">Cualquier provincia</option>
+						<option value="">Seleccione región</option>
 					</select>
 				</div>
 	
 				<div class="form-group">
 					<label for="comuna">Comuna:</label>
 					<select name="comuna" id="comuna">
-						<option value="">Cualquier comuna</option>
+						<option value="">Seleccione comuna</option>
 					</select>
 				</div>
 
@@ -81,7 +81,61 @@
 			</div>
 		</form>
 
+		<script type="text/javascript">
+		var resetProvincias = function() {
+			$("#provincia option").remove();
+		    $("#provincia").append(
+		            $("<option></option>")
+		                .text('Cualquier provincia')
+		                .val('')
+		        );
+		};
+		
+		var resetComunas = function() {
+			$("#comuna option").remove();
+		    $("#comuna").append(
+		            $("<option></option>")
+		                .text('Cualquier comuna')
+		                .val('')
+		        );
+		};
+		
+		$('#region').change(function() {
+			var region = $('#region option:selected').val();
+		    resetProvincias();
+		    resetComunas();
 
+		    if(region == '') return;
+			
+			$.getJSON("/geo/" + region, null, function(data) {
+			    $.each(data, function(key, val) {
+			        $("#provincia").append(
+			            $("<option></option>")
+			                .text(val)
+			                .val(key)
+			        );
+			    });
+			});
+		});
+		
+		$('#provincia').change(function() {
+			var region = $('#region option:selected').val();
+			var provincia = $('#provincia option:selected').val();
+		    resetComunas();
+
+		    if(region == '' || provincia == '') return;
+			
+			$.getJSON("/geo/" + region + '/' + provincia, null, function(data) {
+			    $.each(data, function(key, val) {
+			        $("#comuna").append(
+			            $("<option></option>")
+			                .text(val)
+			                .val(key)
+			        );
+			    });
+			});
+		});
+		</script>
 	</div>
 </body>
 </html>
