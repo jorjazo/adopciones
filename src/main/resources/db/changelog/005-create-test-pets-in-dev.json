@@ -5,7 +5,7 @@
                 "id": "create-test-pets-in-dev",
                 "author": "jorge",
                 "runOnChange": false,
-                "context": "dev",
+                "_context": "dev",
                 "changes": [
                   {
                    "insert": {
@@ -17,7 +17,8 @@
                         { "column": { "name": "size_category", "value": "XL" } },
                         { "column": { "name": "age_category", "value": "SIX_YEARS_OR_YOUGER" } },
                         { "column": { "name": "gender", "value": "MALE" } },
-                        { "column": { "name": "owner", "value": "2" } }
+                        { "column": { "name": "owner", "value": "2" } },
+                        { "column": { "name": "location", "value": "11" } }
                       ]
                     }
                   },
@@ -31,7 +32,8 @@
                         { "column": { "name": "size_category", "value": "M" } },
                         { "column": { "name": "age_category", "value": "SIX_YEARS_OR_YOUGER" } },
                         { "column": { "name": "gender", "value": "FEMALE" } },
-                        { "column": { "name": "owner", "value": "2" } }
+                        { "column": { "name": "owner", "value": "2" } },
+                        { "column": { "name": "location", "value": "116" } }
                       ]
                     }
                   }

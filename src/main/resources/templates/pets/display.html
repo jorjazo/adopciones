@@ -6,62 +6,33 @@
 	<nav th:replace="base/layout :: nav"></nav>
 
 	<div class="container">
-		<div class="row">
-			<h1>Aviso de mascota</h1>
+		<h1>Aviso de mascota</h1>
 
+		<div class="col-sm-6">
+		<table class="table table-hover">
+			<tr>
+				<td>Nombre</td><td>[[ ${pet.name} ]]</td>
+			</tr>
+			<tr>
+				<td>Tipo</td><td>[[ #{${'pet.types.' + pet.type}} ]]</td>
+			</tr>
+			<tr>
+				<td>Edad</td><td>[[ #{${'pet.ageCategories.' + pet.ageCategory}} ]]</td>
+			</tr>
+			<tr>
+				<td>Género</td><td>[[ #{${'genders.' + pet.gender}} ]]</td>
+			</tr>
+			<tr>
+				<td>Tamaño</td><td>[[ #{${'pet.sizeCategories.' + pet.sizeCategory}} ]]</td>
+			</tr>
+			<tr>
+				<td>Comuna</td><td>[[ ${pet.location.nombre} ]]</td>
+			</tr>
+			<tr>
+				<td>Publicado por</td><td>[[ ${pet.owner.organization.name} ]]</td>
+			</tr>
+		</table>
 		</div>
-
-		<form method="post" id="itemForm" th:fragment="itemForm"
-			th:object="${pet}" class="form-horizontal">
-				<div class="form-group">
-					<label th:for="name" class="col-sm-2 control-label">Nombre:</label>
-					<div class="col-sm-6">
-						<input class="form-control" id="name"
-							type="text" th:field="*{name}" disabled="disabled"/>
-					</div>
-				</div>
-
-				<div class="form-group">
-					<label th:for="type" class="col-sm-2 control-label">Tipo de mascota:</label>
-					<div class="col-sm-6">
-						<input class="form-control" id="type"
-									th:value="#{${'pet.types.' + pet.type}}" disabled="disabled"/>
-					</div>
-				</div>
-
-				<div class="form-group">
-					<label th:for="ageCategory" class="col-sm-2 control-label">Edad:</label>
-					<div class="col-sm-6">
-						<input class="form-control" id="ageCategory"
-									th:value="#{${'pet.ageCategories.' + pet.ageCategory}}" disabled="disabled"/>
-					</div>
-				</div>
-				
-				<div class="form-group">
-					<label th:for="gender" class="col-sm-2 control-label">Género:</label>
-					<div class="col-sm-6">
-						<input class="form-control" id="gender" 
-									th:value="#{${'genders.' + pet.gender}}" disabled="disabled"/>
-					</div>
-				</div>
-				
-				<div class="form-group">
-					<label th:for="sizeCategory" class="col-sm-2 control-label">Tamaño:</label>
-					<div class="col-sm-6">
-						<input class="form-control" id="sizeCategory" 
-									th:value="#{${'pet.sizeCategories.' + pet.sizeCategory}}" disabled="disabled"/>
-					</div>
-				</div>
-				
-				<div class="form-group">
-					<label th:for="sizeCategory" class="col-sm-2 control-label">Publicado por:</label>
-					<div class="col-sm-6">
-						<input class="form-control" id="organization" 
-									th:value="${pet.owner.organization.name}" disabled="disabled"/>
-					</div>
-				</div>
-		</form>
-
 	</div>
 </body>
 </html>

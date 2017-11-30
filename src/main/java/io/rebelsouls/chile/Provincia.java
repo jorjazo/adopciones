@@ -1,5 +1,9 @@
 package io.rebelsouls.chile;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import lombok.Getter;
 
 public enum Provincia {
@@ -71,5 +75,13 @@ public enum Provincia {
 		this.id = id;
 		this.nombre = nombre;
 		this.idRegion = idRegion;
+	}
+	
+	public Set<Comuna> getComunas() {
+		return Stream.of(Comuna.values()).filter(c -> c.getIdProvincia() == id).collect(Collectors.toSet());
+	}
+	
+	public Region getRegion() {
+		return Stream.of(Region.values()).filter(r -> r.getId() == idRegion).findFirst().orElse(null);
 	}
 }

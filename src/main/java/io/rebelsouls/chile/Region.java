@@ -1,7 +1,8 @@
 package io.rebelsouls.chile;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import lombok.Getter;
 
@@ -38,9 +39,12 @@ public enum Region {
 		this.ordinal = ordinal;
 	}
 	
-	public Provincia[] getProvincias() {
-		List<Provincia> all = Arrays.asList(Provincia.values());
-		all.removeIf(p -> p.getIdRegion() != id);
-		return (Provincia[]) all.toArray();
+	public Set<Provincia> getProvincias() {
+		return Stream.of(Provincia.values()).filter(p -> p.getIdRegion() == id).collect(Collectors.toSet());
 	}
+	
+	public Set<Comuna> getComunas() {
+		return getProvincias().stream().flatMap(p -> p.getComunas().stream()).collect(Collectors.toSet());
+	}
+	
 }
