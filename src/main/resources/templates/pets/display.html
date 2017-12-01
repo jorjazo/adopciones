@@ -49,7 +49,7 @@
 		
 		<div class="row">
 			
-			<div class="col-sm-2 col-md-2" th:each="num : ${#numbers.sequence(0, photos-1)}">
+			<div class="col-sm-2 col-md-2" th:each="num : ${#numbers.sequence(0, photos-1)}" th:if="${photos > 0}">
 				<div class="thumbnail">
 					<img class="img-responsive" th:src="@{${'/mascotas/' + pet.id + '/fotos/' + num + '/thumb'}}" th:alt="${'Foto de ' + pet.name}"/>
 				</div>
