@@ -31,14 +31,6 @@
 		</div>
 
 		<div class="row">
-			<div class="col-sm-3 col-sm-offset-3">
-				<form method="post" enctype="multipart/form-data" th:action="@{${'/mascotas/' + pet.id + '/fotos'}}">
-					<input type="file" accept="image/*" name="file" id="photo" class="file" data-language="es"/>
-				</form>
-			</div>
-		</div>
-		
-		<div class="row">
 			<div class="col-sm-6">
 			<table class="table table-hover">
 				<tr>
@@ -63,6 +55,14 @@
 					<td>Publicado por</td><td>[[ ${pet.owner.organization.name} ]]</td>
 				</tr>
 			</table>
+			</div>
+			<div class="col-sm-3">
+				<div class="center-block">
+					<h3>Subir una foto de [[ ${pet.name} ]]</h3>
+					<form method="post" enctype="multipart/form-data" th:action="@{${'/mascotas/' + pet.id + '/fotos'}}">
+						<input type="file" accept="image/*" name="file" id="photo" class="file" data-language="es"/>
+					</form>
+				</div>
 			</div>
 		</div>
 		
