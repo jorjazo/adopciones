@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +61,7 @@ public class PetsController {
 	public String displayItem(@PathVariable("petId") Pet pet, Model model) {
 		model.addAttribute("pet", pet);
 		model.addAttribute("photos", petService.listPetPhotos(pet).size());
+		model.addAttribute("petPhotoHome", "/mascotas/" + pet.getId() + "/fotos/");
 		return "pets/display";
 	}
 
@@ -98,11 +100,13 @@ public class PetsController {
 	
 	@GetMapping("/{petId}/fotos/{photoNumber}/{photoSize}")
 	@ResponseBody
-	public ResponseEntity<InputStreamResource> showPhoto(@PathVariable("petId") Pet pet, @PathVariable("photoNumber") int photoNumber, @PathVariable("photoSize") PhotoSize photoSize) {
+	public ResponseEntity<InputStreamResource> showPhoto(@PathVariable("petId") Pet pet, @PathVariable("photoNumber") int photoNumber, @PathVariable("photoSize") PhotoSize photoSize, HttpServletResponse response) throws IOException {
 
 		StorageResource resource = petService.getPetPhoto(pet, photoNumber, photoSize);
-		if(resource == null)
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		if(resource == null) {
+			response.sendRedirect("/static/img/sin-foto-" + photoSize.name() + ".jpg");
+			return new ResponseEntity<>(HttpStatus.FOUND);
+		}
 
 		return ResponseEntity
 				.ok()

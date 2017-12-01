@@ -29,6 +29,11 @@ import net.coobird.thumbnailator.Thumbnails;
 @Service
 public class PetService {
 
+	private static final int PET_MAX_PHOTOS = 6;
+	private static final String TEMP_FILE_PATH_PREFIX = "/tmp/";
+	private static final String THUMB_TEMP_FILE_SUFFIX = "-thumb.png";
+	private static final int THUMB_HEIGHT = 200;
+
 	@Autowired
 	private PetRepository petRepository;
 
@@ -60,20 +65,20 @@ public class PetService {
 	}
 	
 	public List<String> listPetPhotos(Pet pet) {
-		return storageService.list("/" + pet.getId() + "/photos/");
+		return storageService.list(getPhotoStorageFolder(pet));
 	}
 	
 	public void addPetPhoto(Pet pet, File photo) throws PetPhotoException {
 		List<String> files = listPetPhotos(pet);
 		
 		int newPhotoNumber = files.size();
-		if(newPhotoNumber >= 10) {
+		if(newPhotoNumber >= PET_MAX_PHOTOS) {
 			throw new PetPhotoLimitException();
 		}
 		
-		File thumbFile = new File("/tmp/" + pet.getId() + "-" + newPhotoNumber + "-thumb.png");
+		File thumbFile = new File(getThumbTempFilePath(pet, newPhotoNumber));
 		try {
-			Thumbnails.of(photo).width(150).toFile(thumbFile);;
+			Thumbnails.of(photo).height(THUMB_HEIGHT).toFile(thumbFile);;
 		} catch (IOException e) {
 			throw new PetPhotoException(e);
 		}
@@ -86,8 +91,16 @@ public class PetService {
 		StorageResource resource = storageService.load(getPhotoStoragePath(pet, photoNumber, size));
 		return resource;
 	}
+
+	private String getThumbTempFilePath(Pet pet, int photoNumber) {
+		return TEMP_FILE_PATH_PREFIX + pet.getId() + "-" + photoNumber + THUMB_TEMP_FILE_SUFFIX;
+	}
 	
 	private String getPhotoStoragePath(Pet pet, int photoNumber, PhotoSize size) {
-		return "/" + pet.getId() + "/photos/" + photoNumber + "/" + size.name();
+		return getPhotoStorageFolder(pet) + photoNumber + "/" + size.name();
+	}
+	
+	private String getPhotoStorageFolder(Pet pet) {
+		return "/" + pet.getId() + "/photos/";
 	}
 }

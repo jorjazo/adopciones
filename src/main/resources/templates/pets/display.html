@@ -1,12 +1,43 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org">
-<head th:replace="base/layout :: head" />
+<head>
+	<base th:replace="~{base/layout :: head/content()}">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.5/dist/css/lightgallery.min.css">
+
+	<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.5/dist/js/lightgallery.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.5/modules/lg-fullscreen.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.5/modules/lg-thumbnail.min.js"></script>
+</head>
 <body>
+
+
 	<nav th:replace="base/layout :: nav"></nav>
 
 	<div class="container">
-		<h1>Aviso de mascota</h1>
+		<div class="row">
+			<div id="gallery">
+				<a th:each="num : ${#numbers.sequence(0, photos-1)}" 
+					th:if="${photos > 0}"
+					th:href="@{${petPhotoHome + num + '/original'}}">
+					<img th:alt="${'Foto de ' + pet.name}" th:src="@{${petPhotoHome + num + '/thumb'}}">
+				</a>
+			</div>
+			<!-- div class="col-sm-2 col-md-2" th:each="num : ${#numbers.sequence(0, photos-1)}" th:if="${photos > 0}">
+				<div class="thumbnail">
+					<img class="img-responsive" th:src="@{${'/mascotas/' + pet.id + '/fotos/' + num + '/thumb'}}" th:alt="${'Foto de ' + pet.name}"/>
+				</div>
+			</div -->
+		</div>
+		<div class="row">
+			<div class="col-sm-3 col-sm-offset-3">
+				<form method="post" enctype="multipart/form-data" th:action="@{${'/mascotas/' + pet.id + '/fotos'}}">
+					<input type="file" accept="image/*" name="file" id="photo" class="inputfile"/>
+					<label for="photo">Subir una foto</label>
+					<input type="submit" value="Subir"/>
+				</form>
+			</div>
+		</div>
 		
 		<div class="row">
 			<div class="col-sm-6">
@@ -36,25 +67,15 @@
 			</div>
 		</div>
 		
-		<div class="row">
-			<div class="col-sm-3">
-				<h3>Fotos de [[ ${pet.name} ]]</h3>
-				<form method="post" enctype="multipart/form-data" th:action="@{${'/mascotas/' + pet.id + '/fotos'}}">
-					<input type="file" accept="image/*" name="file" id="photo" class="inputfile"/>
-					<label for="photo">Subir una foto</label>
-					<input type="submit" value="Subir"/>
-				</form>
-			</div>
-		</div>
 		
-		<div class="row">
-			
-			<div class="col-sm-2 col-md-2" th:each="num : ${#numbers.sequence(0, photos-1)}" th:if="${photos > 0}">
-				<div class="thumbnail">
-					<img class="img-responsive" th:src="@{${'/mascotas/' + pet.id + '/fotos/' + num + '/thumb'}}" th:alt="${'Foto de ' + pet.name}"/>
-				</div>
-			</div>
-		</div>
+
+		<script type="text/javascript">
+		    $(document).ready(function() {
+		        $("#gallery").lightGallery(); 
+		    });
+		</script>
+
+		
 		
 		
 	</div>
