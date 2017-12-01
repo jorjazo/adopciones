@@ -7,32 +7,56 @@
 
 	<div class="container">
 		<h1>Aviso de mascota</h1>
-
-		<div class="col-sm-6">
-		<table class="table table-hover">
-			<tr>
-				<td>Nombre</td><td>[[ ${pet.name} ]]</td>
-			</tr>
-			<tr>
-				<td>Tipo</td><td>[[ #{${'pet.types.' + pet.type}} ]]</td>
-			</tr>
-			<tr>
-				<td>Edad</td><td>[[ #{${'pet.ageCategories.' + pet.ageCategory}} ]]</td>
-			</tr>
-			<tr>
-				<td>Género</td><td>[[ #{${'genders.' + pet.gender}} ]]</td>
-			</tr>
-			<tr>
-				<td>Tamaño</td><td>[[ #{${'pet.sizeCategories.' + pet.sizeCategory}} ]]</td>
-			</tr>
-			<tr>
-				<td>Comuna</td><td>[[ ${pet.location.nombre} ]]</td>
-			</tr>
-			<tr>
-				<td>Publicado por</td><td>[[ ${pet.owner.organization.name} ]]</td>
-			</tr>
-		</table>
+		
+		<div class="row">
+			<div class="col-sm-6">
+			<table class="table table-hover">
+				<tr>
+					<td>Nombre</td><td>[[ ${pet.name} ]]</td>
+				</tr>
+				<tr>
+					<td>Tipo</td><td>[[ #{${'pet.types.' + pet.type}} ]]</td>
+				</tr>
+				<tr>
+					<td>Edad</td><td>[[ #{${'pet.ageCategories.' + pet.ageCategory}} ]]</td>
+				</tr>
+				<tr>
+					<td>Género</td><td>[[ #{${'genders.' + pet.gender}} ]]</td>
+				</tr>
+				<tr>
+					<td>Tamaño</td><td>[[ #{${'pet.sizeCategories.' + pet.sizeCategory}} ]]</td>
+				</tr>
+				<tr>
+					<td>Comuna</td><td>[[ ${pet.location.nombre} ]]</td>
+				</tr>
+				<tr>
+					<td>Publicado por</td><td>[[ ${pet.owner.organization.name} ]]</td>
+				</tr>
+			</table>
+			</div>
 		</div>
+		
+		<div class="row">
+			<div class="col-sm-3">
+				<h3>Fotos de [[ ${pet.name} ]]</h3>
+				<form method="post" enctype="multipart/form-data" th:action="@{${'/mascotas/' + pet.id + '/fotos'}}">
+					<input type="file" accept="image/*" name="file" id="photo" class="inputfile"/>
+					<label for="photo">Subir una foto</label>
+					<input type="submit" value="Subir"/>
+				</form>
+			</div>
+		</div>
+		
+		<div class="row">
+			
+			<div class="col-sm-2 col-md-2" th:each="num : ${#numbers.sequence(0, photos-1)}">
+				<div class="thumbnail">
+					<img class="img-responsive" th:src="@{${'/mascotas/' + pet.id + '/fotos/' + num + '/thumb'}}" th:alt="${'Foto de ' + pet.name}"/>
+				</div>
+			</div>
+		</div>
+		
+		
 	</div>
 </body>
 </html>

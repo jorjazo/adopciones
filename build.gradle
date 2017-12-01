@@ -43,10 +43,12 @@ dependencies {
 
 	compile 'io.rebelsouls.lib:rebelsouls-mail'
     compile 'io.rebelsouls.lib:rebelsouls-util'
+//	compile 'io.rebelsouls.lib:rebelsouls-storage'
     
 	compile 'org.liquibase:liquibase-core'
 	compile 'com.h2database:h2'
 	compile 'org.postgresql:postgresql'
+	compile 'net.coobird:thumbnailator:0.4.8'
 	
 	compile 'ch.qos.logback:logback-core'
 	compile 'ch.qos.logback:logback-classic'
