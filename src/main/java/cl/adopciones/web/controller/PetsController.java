@@ -106,7 +106,8 @@ public class PetsController {
 
 		return ResponseEntity
 				.ok()
-				.cacheControl(CacheControl.maxAge(1, TimeUnit.DAYS).cachePublic())
+				.cacheControl(CacheControl.maxAge(1, TimeUnit.DAYS))
+				.lastModified(resource.getLastModified().getTime())
 				.contentLength(resource.getContentLength())
 				.contentType(MediaType.parseMediaType(resource.getContentType()))
 				.body(new InputStreamResource(resource.getContentStream()));

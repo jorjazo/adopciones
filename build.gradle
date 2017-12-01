@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '1.5.4.RELEASE'
+    id 'org.springframework.boot' version '1.5.9.RELEASE'
 	id "io.spring.dependency-management" version "1.0.3.RELEASE"
 }
 
@@ -43,7 +43,7 @@ dependencies {
 
 	compile 'io.rebelsouls.lib:rebelsouls-mail'
     compile 'io.rebelsouls.lib:rebelsouls-util'
-	compile 'io.rebelsouls.lib:rebelsouls-storage:1.5'
+	compile 'io.rebelsouls.lib:rebelsouls-storage:1.6'
     
 	compile 'org.liquibase:liquibase-core'
 	compile 'com.h2database:h2'
