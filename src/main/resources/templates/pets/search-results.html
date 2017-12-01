@@ -6,13 +6,37 @@
 	<nav th:replace="base/layout :: nav"></nav>
 
 	<div class="container">
-		<ul>
-			<li th:each="pet: ${searchResults}">
-				<a th:href="@{${'/mascotas/' + pet.id}}">[[${pet.name}]]</a>
-			</li>
-		</ul>
-
-
+		<div class="row">
+			<h2>Resultados de la búsqueda</h2>
+		</div>
+		
+		<div class="row">
+			<div class="col-sm-8 col-sm-offset-2">
+				<div class="thumbnail" style="display: inline-block;" th:each="pet : ${searchResults}">
+					<a th:href="@{${'/mascotas/' + pet.id}}">
+					<img  class="img-responsive img-rounded" th:src="@{${'/mascotas/' + pet.id + '/fotos/0/thumb'}}" th:alt="${pet.name}">
+					</a>
+			        	<h3><a th:href="@{${'/mascotas/' + pet.id}}">[[ ${pet.name} ]]</a></h3>
+						<table class="table table-striped">
+							<tr>
+								<td>Tipo</td><td>[[ #{${'pet.types.' + pet.type}} ]]</td>
+							</tr>
+							<tr>
+								<td>Género</td><td>[[ #{${'genders.' + pet.gender}} ]]</td>
+							</tr>
+							<tr>
+								<td>Tamaño</td><td>[[ #{${'pet.sizeCategories.' + pet.sizeCategory}} ]]</td>
+							</tr>
+							<tr>
+								<td>Edad</td><td>[[ #{${'pet.ageCategories.' + pet.ageCategory}} ]]</td>
+							</tr>
+							<tr>
+								<td>Comuna</td><td>[[ ${pet.location.nombre} ]]</td>
+							</tr>
+						</table>
+			    </div>
+			</div>
+		</div>
 	</div>
 </body>
 </html>
