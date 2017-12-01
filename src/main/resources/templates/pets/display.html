@@ -3,11 +3,16 @@
 	xmlns:th="http://www.thymeleaf.org">
 <head>
 	<base th:replace="~{base/layout :: head/content()}">
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.5/dist/css/lightgallery.min.css">
 
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.5/dist/css/lightgallery.min.css">
 	<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.5/dist/js/lightgallery.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.5/modules/lg-fullscreen.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.5/modules/lg-thumbnail.min.js"></script>
+	
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.4.5/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.4.5/js/fileinput.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.4.5/js/locales/es.js"></script>
+	
 </head>
 <body>
 
@@ -20,7 +25,7 @@
 				<a th:each="num : ${#numbers.sequence(0, photos-1)}" 
 					th:if="${photos > 0}"
 					th:href="@{${petPhotoHome + num + '/original'}}">
-					<img th:alt="${'Foto de ' + pet.name}" th:src="@{${petPhotoHome + num + '/thumb'}}">
+					<img class="img-rounded img-thumbnail" th:alt="${'Foto de ' + pet.name}" th:src="@{${petPhotoHome + num + '/thumb'}}">
 				</a>
 			</div>
 		</div>
@@ -28,9 +33,7 @@
 		<div class="row">
 			<div class="col-sm-3 col-sm-offset-3">
 				<form method="post" enctype="multipart/form-data" th:action="@{${'/mascotas/' + pet.id + '/fotos'}}">
-					<input type="file" accept="image/*" name="file" id="photo" class="inputfile"/>
-					<label for="photo">Subir una foto</label>
-					<input type="submit" value="Subir"/>
+					<input type="file" accept="image/*" name="file" id="photo" class="file" data-language="es"/>
 				</form>
 			</div>
 		</div>
