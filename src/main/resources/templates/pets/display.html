@@ -25,7 +25,7 @@
 				<a th:each="num : ${#numbers.sequence(0, photos-1)}" 
 					th:if="${photos > 0}"
 					th:href="@{${petPhotoHome + num + '/original'}}">
-					<img class="img-rounded img-thumbnail" th:alt="${'Foto de ' + pet.name}" th:src="@{${petPhotoHome + num + '/thumb'}}">
+					<img class="img-rounded img-thumbnail" th:alt="${'Foto de ' + pet.name}" th:src="@{${petPhotoHome + num + '/fixed_height'}}">
 				</a>
 			</div>
 		</div>

@@ -7,16 +7,21 @@
 
 	<div class="container">
 		<div class="row">
+			<div class="col">
 			<h2>Resultados de la búsqueda</h2>
+			</div>
 		</div>
 		
 		<div class="row">
-			<div class="col-sm-8 col-sm-offset-2">
-				<div class="thumbnail" style="display: inline-block;" th:each="pet : ${searchResults}">
+			<div class="col" th:each="pet : ${searchResults}">
+				<div class="card" style="width: 20rem;">
 					<a th:href="@{${'/mascotas/' + pet.id}}">
-					<img  class="img-responsive img-rounded" th:src="@{${'/mascotas/' + pet.id + '/fotos/0/thumb'}}" th:alt="${pet.name}">
+						<img class="card-img-top" th:src="@{${'/mascotas/' + pet.id + '/fotos/0/fixed_height'}}" th:alt="${pet.name}" height="200px">
 					</a>
-			        	<h3><a th:href="@{${'/mascotas/' + pet.id}}">[[ ${pet.name} ]]</a></h3>
+					<div class="card-body">
+						<h4 class="card-title">
+							<a th:href="@{${'/mascotas/' + pet.id}}" class="card-link">[[ ${pet.name} ]]</a>
+						</h4>
 						<table class="table table-striped">
 							<tr>
 								<td>Tipo</td><td>[[ #{${'pet.types.' + pet.type}} ]]</td>
@@ -34,7 +39,8 @@
 								<td>Comuna</td><td>[[ ${pet.location.nombre} ]]</td>
 							</tr>
 						</table>
-			    </div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

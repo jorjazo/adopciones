@@ -31,8 +31,8 @@ public class PetService {
 
 	private static final int PET_MAX_PHOTOS = 6;
 	private static final String TEMP_FILE_PATH_PREFIX = "/tmp/";
-	private static final String THUMB_TEMP_FILE_SUFFIX = "-thumb.png";
-	private static final int THUMB_HEIGHT = 200;
+	private static final String THUMB_TEMP_FILE_SUFFIX = ".png";
+	private static final int FIXED_PHOTO_SIZE = 200;
 
 	@Autowired
 	private PetRepository petRepository;
@@ -76,15 +76,18 @@ public class PetService {
 			throw new PetPhotoLimitException();
 		}
 		
-		File thumbFile = new File(getThumbTempFilePath(pet, newPhotoNumber));
+		File fixedHeightFile = new File(getThumbTempFilePath(pet, newPhotoNumber, PhotoSize.fixed_height));
+		File fixedWidthFile = new File(getThumbTempFilePath(pet, newPhotoNumber, PhotoSize.fixed_width));
 		try {
-			Thumbnails.of(photo).height(THUMB_HEIGHT).toFile(thumbFile);;
+			Thumbnails.of(photo).height(FIXED_PHOTO_SIZE).toFile(fixedHeightFile);
+			Thumbnails.of(photo).width(FIXED_PHOTO_SIZE).toFile(fixedWidthFile);
 		} catch (IOException e) {
 			throw new PetPhotoException(e);
 		}
 		
         storageService.store(getPhotoStoragePath(pet, newPhotoNumber, PhotoSize.original), photo);
-        storageService.store(getPhotoStoragePath(pet, newPhotoNumber, PhotoSize.thumb), thumbFile);
+        storageService.store(getPhotoStoragePath(pet, newPhotoNumber, PhotoSize.fixed_height), fixedHeightFile);
+        storageService.store(getPhotoStoragePath(pet, newPhotoNumber, PhotoSize.fixed_width), fixedWidthFile);
 	}
 	
 	public StorageResource getPetPhoto(Pet pet, int photoNumber, PhotoSize size) {
@@ -92,8 +95,8 @@ public class PetService {
 		return resource;
 	}
 
-	private String getThumbTempFilePath(Pet pet, int photoNumber) {
-		return TEMP_FILE_PATH_PREFIX + pet.getId() + "-" + photoNumber + THUMB_TEMP_FILE_SUFFIX;
+	private String getThumbTempFilePath(Pet pet, int photoNumber, PhotoSize size) {
+		return TEMP_FILE_PATH_PREFIX + pet.getId() + "-" + photoNumber + "-" + size.name() + THUMB_TEMP_FILE_SUFFIX;
 	}
 	
 	private String getPhotoStoragePath(Pet pet, int photoNumber, PhotoSize size) {

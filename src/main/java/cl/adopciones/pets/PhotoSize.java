@@ -2,5 +2,6 @@ package cl.adopciones.pets;
 
 public enum PhotoSize {
 	original,
-	thumb
+	fixed_height,
+	fixed_width
 }
