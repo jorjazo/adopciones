@@ -6,37 +6,46 @@
 	<nav th:replace="base/layout :: nav"></nav>
 
 	<div class="container">
+		<div th:replace="base/layout :: #alertMessages"></div>
 		<div class="row">
 			<div class="col">
-			<h2>Resultados de la búsqueda</h2>
+				<h2>Resultados de la búsqueda</h2>
 			</div>
 		</div>
-		
+
 		<div class="row">
 			<div class="col" th:each="pet : ${searchResults}">
 				<div class="card" style="width: 20rem;">
-					<a th:href="@{${'/mascotas/' + pet.id}}">
-						<img class="card-img-top" th:src="@{${'/mascotas/' + pet.id + '/fotos/0/fixed_height'}}" th:alt="${pet.name}" height="200px">
+					<a th:href="@{${'/mascotas/' + pet.id}}"> <img
+						class="card-img-top"
+						th:src="@{${'/mascotas/' + pet.id + '/fotos/0/fixed_height'}}"
+						th:alt="${pet.name}" height="200px">
 					</a>
 					<div class="card-body">
 						<h4 class="card-title">
-							<a th:href="@{${'/mascotas/' + pet.id}}" class="card-link">[[ ${pet.name} ]]</a>
+							<a th:href="@{${'/mascotas/' + pet.id}}" class="card-link">[[
+								${pet.name} ]]</a>
 						</h4>
 						<table class="table table-striped">
 							<tr>
-								<td>Tipo</td><td>[[ #{${'pet.types.' + pet.type}} ]]</td>
+								<td>Tipo</td>
+								<td>[[ #{${'pet.types.' + pet.type}} ]]</td>
 							</tr>
 							<tr>
-								<td>Género</td><td>[[ #{${'genders.' + pet.gender}} ]]</td>
+								<td>Género</td>
+								<td>[[ #{${'genders.' + pet.gender}} ]]</td>
 							</tr>
 							<tr>
-								<td>Tamaño</td><td>[[ #{${'pet.sizeCategories.' + pet.sizeCategory}} ]]</td>
+								<td>Tamaño</td>
+								<td>[[ #{${'pet.sizeCategories.' + pet.sizeCategory}} ]]</td>
 							</tr>
 							<tr>
-								<td>Edad</td><td>[[ #{${'pet.ageCategories.' + pet.ageCategory}} ]]</td>
+								<td>Edad</td>
+								<td>[[ #{${'pet.ageCategories.' + pet.ageCategory}} ]]</td>
 							</tr>
 							<tr>
-								<td>Comuna</td><td>[[ ${pet.location.nombre} ]]</td>
+								<td>Comuna</td>
+								<td>[[ ${pet.location.nombre} ]]</td>
 							</tr>
 						</table>
 					</div>
@@ -44,8 +53,8 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<footer th:replace="~{ base/layout :: footer}"></footer>
-	
+
 </body>
 </html>

@@ -1,63 +1,60 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="base/layout :: head"/>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:replace="base/layout :: head" />
 <body>
-  <nav th:replace="base/layout :: nav"></nav>
-  
-  <div class="container">
-      <h1>Somos Fundación Edra</h1>
-      
-	<p>
-	Fundación EDRA, Equipo de Defensa y Rescate Animal nace en enero del 2009.
-	Nuestro objetivo es la defensa, protección y rescate de la fauna, sea urbana
-	o rural, endémica o exótica, doméstica o salvaje, nacional o extranjera; y
-	por extensión la defensa , protección y rescate del medio ambiente que la sustenta.
-	</p> 
+	<nav th:replace="base/layout :: nav"></nav>
 
-	<p>
-	Nuestra estrategia para lograrlo aborda medidas de corto, mediano y largo plazo,
-	integrando a distintas ONG defensoras de los animales, personas naturales, empresas
-	privadas, Instituciones del Estado, Municipalidades y todo aquel que quiera sumarse
-	a nuestro trabajo.
-	</p>
+	<div class="container">
+		<div th:replace="base/layout :: #alertMessages"></div>
 
-	<p>
-	Lo que hemos logrado en estos 5 años nos ha demostrado que todas las entidades antes
-	descritas tienen ganas de participar si se les plantea propuestas ordenadas, claras
-	y realizables.
-	</p>
+		<h1>Somos Fundación Edra</h1>
 
-	<img alt="Logo Edra" th:src="@{/static/img/logo-edra.jpg}"
-		class="img-responsive rounded mx-auto d-block"/>
-		
-	<p>
-	Nuestro equipo está formado por personas que trabajan de forma voluntaria y gratuita,
-	siendo actualmente unas 15 personas las que trabajan de forma permanente y unas 15
-	adicionales que nos apoyan indirectamente. Además en nuestras actividades participan
-	docenas de personas de muchas otras organizaciones y personas naturales, que desean
-	ayudar a los animales.
-	</p>
+		<p>Fundación EDRA, Equipo de Defensa y Rescate Animal nace en
+			enero del 2009. Nuestro objetivo es la defensa, protección y rescate
+			de la fauna, sea urbana o rural, endémica o exótica, doméstica o
+			salvaje, nacional o extranjera; y por extensión la defensa ,
+			protección y rescate del medio ambiente que la sustenta.</p>
 
-	<p>
-	Fundación EDRA apoya a todo aquel que quiera ayudar un animal, sea una persona natural,
-	una empresa, una organización o cualquier entidad pública o privada, pues nuestras
-	actividades son inclusivas e integradoras sin discriminar a nadie. Fundación EDRA no
-	trabaja asociada con otras organizaciones defensoras de los animales ni pertenece a
-	coalición alguna.
-	</p>
+		<p>Nuestra estrategia para lograrlo aborda medidas de corto,
+			mediano y largo plazo, integrando a distintas ONG defensoras de los
+			animales, personas naturales, empresas privadas, Instituciones del
+			Estado, Municipalidades y todo aquel que quiera sumarse a nuestro
+			trabajo.</p>
 
-	<p>
-	Nos hemos especializado en 3 áreas: Jornadas de Adopción, con la cual entregamos más de
-	1500 animales abandonados en adopción y educamos a miles de personas, y Denuncias por
-	Maltrato Animal creando material simple y entretenido para enseñar a denunciar, y
-	dictando charlas en Universidades, Municipalidades y otros lugares, junto a Abogados
-	del Ministerio Público y detectives de la Policía de Investigaciones de Chile. Luego
-	nos especializamos en el Subsidio Habitacional Canino, entregando el año 2012 más de
-	120 casas para perros abandonados que viven en las calles, y 80 casas el 2013.
-	</p>
-  </div>
-  
-  <footer th:replace="~{ base/layout :: footer}"></footer>
-  
+		<p>Lo que hemos logrado en estos 5 años nos ha demostrado que
+			todas las entidades antes descritas tienen ganas de participar si se
+			les plantea propuestas ordenadas, claras y realizables.</p>
+
+		<img alt="Logo Edra" th:src="@{/static/img/logo-edra.jpg}"
+			class="img-responsive rounded mx-auto d-block" />
+
+		<p>Nuestro equipo está formado por personas que trabajan de forma
+			voluntaria y gratuita, siendo actualmente unas 15 personas las que
+			trabajan de forma permanente y unas 15 adicionales que nos apoyan
+			indirectamente. Además en nuestras actividades participan docenas de
+			personas de muchas otras organizaciones y personas naturales, que
+			desean ayudar a los animales.</p>
+
+		<p>Fundación EDRA apoya a todo aquel que quiera ayudar un animal,
+			sea una persona natural, una empresa, una organización o cualquier
+			entidad pública o privada, pues nuestras actividades son inclusivas e
+			integradoras sin discriminar a nadie. Fundación EDRA no trabaja
+			asociada con otras organizaciones defensoras de los animales ni
+			pertenece a coalición alguna.</p>
+
+		<p>Nos hemos especializado en 3 áreas: Jornadas de Adopción, con
+			la cual entregamos más de 1500 animales abandonados en adopción y
+			educamos a miles de personas, y Denuncias por Maltrato Animal creando
+			material simple y entretenido para enseñar a denunciar, y dictando
+			charlas en Universidades, Municipalidades y otros lugares, junto a
+			Abogados del Ministerio Público y detectives de la Policía de
+			Investigaciones de Chile. Luego nos especializamos en el Subsidio
+			Habitacional Canino, entregando el año 2012 más de 120 casas para
+			perros abandonados que viven en las calles, y 80 casas el 2013.</p>
+	</div>
+
+	<footer th:replace="~{ base/layout :: footer}"></footer>
+
 </body>
 </html>

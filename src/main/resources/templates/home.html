@@ -6,12 +6,13 @@
 	<nav th:replace="base/layout :: nav"></nav>
 
 	<div class="container">
+		<div th:replace="base/layout :: #alertMessages"></div>
 		<div class="row">
 			<div class="col">
 				<div class="jumbotron">
 					<h1>¡Bienvenido!</h1>
 					<p>Cientos de mascotas esperan encontrar un hogar...</p>
-	
+
 				</div>
 			</div>
 		</div>
@@ -19,60 +20,68 @@
 		<div class="row">
 			<div class="col">
 				<form method="get" id="petSearchForm" th:action="@{/busqueda}">
-					
+
 					<div class="row">
 						<div class="col">
 							<h5>Tipo de mascota:</h5>
 							<div th:each="type : ${petTypes}">
-								<label class="custom-control custom-checkbox">
-									<input type="checkbox" class="custom-control-input" name="type" th:value="${type}" checked="checked">
-									<span class="custom-control-indicator"></span>
-									<span class="custom-control-description">[[ #{${'pet.types.' + type}} ]]</span>
+								<label class="custom-control custom-checkbox"> <input
+									type="checkbox" class="custom-control-input" name="type"
+									th:value="${type}" checked="checked"> <span
+									class="custom-control-indicator"></span> <span
+									class="custom-control-description">[[ #{${'pet.types.' +
+										type}} ]]</span>
 								</label>
 							</div>
 						</div>
 						<div class="col">
 							<h5>Edad:</h5>
 							<div th:each="age : ${petAgeCategories}">
-								<label class="custom-control custom-checkbox">
-									<input type="checkbox" class="custom-control-input" name="ageCategory" th:value="${age}" checked="checked">
-									<span class="custom-control-indicator"></span>
-									<span class="custom-control-description">[[ #{${'pet.ageCategories.' + age}} ]]</span>
+								<label class="custom-control custom-checkbox"> <input
+									type="checkbox" class="custom-control-input" name="ageCategory"
+									th:value="${age}" checked="checked"> <span
+									class="custom-control-indicator"></span> <span
+									class="custom-control-description">[[
+										#{${'pet.ageCategories.' + age}} ]]</span>
 								</label>
 							</div>
 						</div>
 						<div class="col">
 							<h5>Tamaño:</h5>
 							<div th:each="size : ${petSizeCategories}">
-								<label class="custom-control custom-checkbox">
-									<input type="checkbox" class="custom-control-input" name="sizeCategory" th:value="${size}" checked="checked">
-									<span class="custom-control-indicator"></span>
-									<span class="custom-control-description">[[ #{${'pet.sizeCategories.' + size}} ]]</span>
+								<label class="custom-control custom-checkbox"> <input
+									type="checkbox" class="custom-control-input"
+									name="sizeCategory" th:value="${size}" checked="checked">
+									<span class="custom-control-indicator"></span> <span
+									class="custom-control-description">[[
+										#{${'pet.sizeCategories.' + size}} ]]</span>
 								</label>
 							</div>
 						</div>
 						<div class="col">
 							<h5>Género:</h5>
 							<div th:each="gender : ${genders}">
-								<label class="custom-control custom-checkbox">
-									<input type="checkbox" class="custom-control-input" name="gender" th:value="${gender}" checked="checked">
-									<span class="custom-control-indicator"></span>
-									<span class="custom-control-description">[[ #{${'genders.' + gender}} ]]</span>
+								<label class="custom-control custom-checkbox"> <input
+									type="checkbox" class="custom-control-input" name="gender"
+									th:value="${gender}" checked="checked"> <span
+									class="custom-control-indicator"></span> <span
+									class="custom-control-description">[[ #{${'genders.' +
+										gender}} ]]</span>
 								</label>
 							</div>
 						</div>
 						<div class="col">
 							<h5>Lugar:</h5>
-							<select name="region" id="region" class="custom-select" style="width: 100%;">
+							<select name="region" id="region" class="custom-select"
+								style="width: 100%;">
 								<option value="">Cualquier región</option>
-								<option th:each="region: ${regiones}" th:value="${region.name()}">
-									[[ ${region.nombre} ]]
-								</option>
-							</select>
-							<select name="provincia" id="provincia" class="custom-select" style="width: 100%;">
+								<option th:each="region: ${regiones}"
+									th:value="${region.name()}">[[ ${region.nombre} ]]</option>
+							</select> <select name="provincia" id="provincia" class="custom-select"
+								style="width: 100%;">
 								<option value="">Seleccione región</option>
-							</select>
-							<select name="comuna" id="comuna" class="custom-select" style="width: 100%;">
+							</select> <select name="comuna" id="comuna" class="custom-select"
+								style="width: 100%;">
 								<option value="">Seleccione comuna</option>
 							</select>
 						</div>
@@ -80,68 +89,66 @@
 							<button class="btn btn-block btn-outline-success" type="submit">Buscar</button>
 						</div>
 					</div>
-					
+
 				</form>
 			</div>
 		</div>
 
 		<script type="text/javascript">
-		var resetProvincias = function() {
-			$("#provincia option").remove();
-		    $("#provincia").append(
-		            $("<option></option>")
-		                .text('Cualquier provincia')
-		                .val('')
-		        );
-		};
-		
-		var resetComunas = function() {
-			$("#comuna option").remove();
-		    $("#comuna").append(
-		            $("<option></option>")
-		                .text('Cualquier comuna')
-		                .val('')
-		        );
-		};
-		
-		$('#region').change(function() {
-			var region = $('#region option:selected').val();
-		    resetProvincias();
-		    resetComunas();
-	
-		    if(region == '') return;
-			
-			$.getJSON("/geo/" + region, null, function(data) {
-			    $.each(data, function(key, val) {
-			        $("#provincia").append(
-			            $("<option></option>")
-			                .text(val)
-			                .val(key)
-			        );
-			    });
-			});
-		});
-		
-		$('#provincia').change(function() {
-			var region = $('#region option:selected').val();
-			var provincia = $('#provincia option:selected').val();
-		    resetComunas();
-	
-		    if(region == '' || provincia == '') return;
-			
-			$.getJSON("/geo/" + region + '/' + provincia, null, function(data) {
-			    $.each(data, function(key, val) {
-			        $("#comuna").append(
-			            $("<option></option>")
-			                .text(val)
-			                .val(key)
-			        );
-			    });
-			});
-		});
+			var resetProvincias = function() {
+				$("#provincia option").remove();
+				$("#provincia").append(
+						$("<option></option>").text('Cualquier provincia').val(
+								''));
+			};
+
+			var resetComunas = function() {
+				$("#comuna option").remove();
+				$("#comuna")
+						.append(
+								$("<option></option>").text('Cualquier comuna')
+										.val(''));
+			};
+
+			$('#region').change(
+					function() {
+						var region = $('#region option:selected').val();
+						resetProvincias();
+						resetComunas();
+
+						if (region == '')
+							return;
+
+						$.getJSON("/geo/" + region, null, function(data) {
+							$.each(data, function(key, val) {
+								$("#provincia").append(
+										$("<option></option>").text(val).val(
+												key));
+							});
+						});
+					});
+
+			$('#provincia').change(
+					function() {
+						var region = $('#region option:selected').val();
+						var provincia = $('#provincia option:selected').val();
+						resetComunas();
+
+						if (region == '' || provincia == '')
+							return;
+
+						$.getJSON("/geo/" + region + '/' + provincia, null,
+								function(data) {
+									$.each(data, function(key, val) {
+										$("#comuna").append(
+												$("<option></option>")
+														.text(val).val(key));
+									});
+								});
+					});
 		</script>
 	</div>
-	
+
 	<footer th:replace="~{ base/layout :: footer}"></footer>
 </body>
 </html>

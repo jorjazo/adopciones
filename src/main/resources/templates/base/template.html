@@ -1,13 +1,13 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="base/layout :: head"/>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:replace="base/layout :: head" />
 <body>
-  <nav th:replace="base/layout :: nav"></nav>
-  
-  <div class="container">
-    <div class="row">
-      Content
-    </div>
-  </div>
+	<nav th:replace="base/layout :: nav"></nav>
+
+	<div class="container">
+		<div th:replace="base/layout :: #alertMessages"></div>
+		<div class="row">Content</div>
+	</div>
 </body>
 </html>

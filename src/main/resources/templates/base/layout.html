@@ -52,13 +52,17 @@
       </div>
     </nav>
 
-  <div class="container">
-  <div class="row">
-  </div>
-  </div>
+	<div class="container">
+		<div id="alertMessages" class="alert alert-danger" role="alert" th:if="${param.error}">
+			[[ #{${'site.errors.' + param.error[0] }} ]]
+		</div>
+		<div class="row">
+		</div>
+	</div>
+		
   
-  <footer>
-  	<p>Fundación Edra</p>
-  </footer>
+	<footer>
+		<p>Fundación Edra</p>
+	</footer>
 </body>
 </html>
