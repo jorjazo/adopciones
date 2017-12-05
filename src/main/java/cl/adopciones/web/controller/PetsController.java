@@ -2,14 +2,18 @@ package cl.adopciones.web.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.CacheControl;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +38,7 @@ import io.rebelsouls.events.Event;
 import io.rebelsouls.events.EventLogger;
 import io.rebelsouls.events.EventResult;
 import io.rebelsouls.storage.StorageResource;
+import io.rebelsouls.storage.StorageResourceDescription;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
@@ -60,8 +65,27 @@ public class PetsController {
 	@GetMapping("/{petId}")
 	public String displayItem(@PathVariable("petId") Pet pet, Model model) {
 		model.addAttribute("pet", pet);
-		model.addAttribute("photos", petService.listPetPhotos(pet).size());
-		model.addAttribute("petPhotoHome", "/mascotas/" + pet.getId() + "/fotos/");
+		
+		String photoUrlPrefix = "/mascotas/" + pet.getId() + "/fotos/";
+		final String originalSuffix = "/original";
+		final String fixedHeightSuffix = "/fixed_height";
+		final String fixedWidthSuffix = "/fixed_width";
+		
+		int petPhotos = petService.listPetPhotos(pet).size();
+		List<String> originalPhotos = new ArrayList<>(petPhotos);
+		List<String> fixedHeightPhotos = new ArrayList<>(petPhotos);
+		List<String> fixedWidthPhotos = new ArrayList<>(petPhotos);
+		
+		for (int i = 0; i < petPhotos; i++) {
+			originalPhotos.add(photoUrlPrefix + i + originalSuffix);
+			fixedHeightPhotos.add(photoUrlPrefix + i + fixedHeightSuffix);
+			fixedWidthPhotos.add(photoUrlPrefix + i + fixedWidthSuffix);
+		}
+		
+		model.addAttribute("originalPhotos", originalPhotos);
+		model.addAttribute("fixedHeightPhotos", originalPhotos);
+		model.addAttribute("fixedWidthPhotos", originalPhotos);
+		
 		return "pets/display";
 	}
 
@@ -100,7 +124,17 @@ public class PetsController {
 	
 	@GetMapping("/{petId}/fotos/{photoNumber}/{photoSize}")
 	@ResponseBody
-	public ResponseEntity<InputStreamResource> showPhoto(@PathVariable("petId") Pet pet, @PathVariable("photoNumber") int photoNumber, @PathVariable("photoSize") PhotoSize photoSize, HttpServletResponse response) throws IOException {
+	public ResponseEntity<InputStreamResource> showPhoto(@PathVariable("petId") Pet pet, @PathVariable("photoNumber") int photoNumber, @PathVariable("photoSize") PhotoSize photoSize, HttpServletResponse response, HttpServletRequest request) throws IOException {
+		
+		long ifModifiedSinceHeader = request.getDateHeader(HttpHeaders.IF_MODIFIED_SINCE);
+		
+		StorageResourceDescription metadata = petService.getPhotoCache(pet, photoNumber, photoSize);
+		long lastModified = metadata != null ? metadata.getLastModified().getTime() : -1;
+		
+
+		if(ifModifiedSinceHeader > 0 && ifModifiedSinceHeader <= lastModified) {
+			return ResponseEntity.status(HttpStatus.NOT_MODIFIED).build();
+		}
 
 		StorageResource resource = petService.getPetPhoto(pet, photoNumber, photoSize);
 		if(resource == null) {
@@ -115,7 +149,6 @@ public class PetsController {
 				.contentLength(resource.getContentLength())
 				.contentType(MediaType.parseMediaType(resource.getContentType()))
 				.body(new InputStreamResource(resource.getContentStream()));
-				
 	}
 	
 }

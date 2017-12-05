@@ -4,11 +4,6 @@
 <head>
 	<base th:replace="~{base/layout :: head/content()}">
 
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.5/dist/css/lightgallery.min.css">
-	<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.5/dist/js/lightgallery.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.5/modules/lg-fullscreen.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.5/modules/lg-thumbnail.min.js"></script>
-	
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.4.5/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.4.5/js/fileinput.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.4.5/js/locales/es.js"></script>
@@ -21,58 +16,55 @@
 
 	<div class="container">
 		<div class="row">
-			<div id="gallery">
-				<a th:each="num : ${#numbers.sequence(0, photos-1)}" 
-					th:if="${photos > 0}"
-					th:href="@{${petPhotoHome + num + '/original'}}">
-					<img class="img-rounded img-thumbnail" th:alt="${'Foto de ' + pet.name}" th:src="@{${petPhotoHome + num + '/fixed_height'}}">
-				</a>
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-sm-6">
-			<table class="table table-hover">
-				<tr>
-					<td>Nombre</td><td>[[ ${pet.name} ]]</td>
-				</tr>
-				<tr>
-					<td>Tipo</td><td>[[ #{${'pet.types.' + pet.type}} ]]</td>
-				</tr>
-				<tr>
-					<td>Edad</td><td>[[ #{${'pet.ageCategories.' + pet.ageCategory}} ]]</td>
-				</tr>
-				<tr>
-					<td>Género</td><td>[[ #{${'genders.' + pet.gender}} ]]</td>
-				</tr>
-				<tr>
-					<td>Tamaño</td><td>[[ #{${'pet.sizeCategories.' + pet.sizeCategory}} ]]</td>
-				</tr>
-				<tr>
-					<td>Comuna</td><td>[[ ${pet.location.nombre} ]]</td>
-				</tr>
-				<tr>
-					<td>Publicado por</td><td>[[ ${pet.owner.organization.name} ]]</td>
-				</tr>
-			</table>
-			</div>
-			<div class="col-sm-3">
+			<div class="col-12 col-lg-6">
+				<table class="table table-hover">
+					<tr>
+						<td>Nombre</td><td>[[ ${pet.name} ]]</td>
+					</tr>
+					<tr>
+						<td>Tipo</td><td>[[ #{${'pet.types.' + pet.type}} ]]</td>
+					</tr>
+					<tr>
+						<td>Edad</td><td>[[ #{${'pet.ageCategories.' + pet.ageCategory}} ]]</td>
+					</tr>
+					<tr>
+						<td>Género</td><td>[[ #{${'genders.' + pet.gender}} ]]</td>
+					</tr>
+					<tr>
+						<td>Tamaño</td><td>[[ #{${'pet.sizeCategories.' + pet.sizeCategory}} ]]</td>
+					</tr>
+					<tr>
+						<td>Comuna</td><td>[[ ${pet.location.nombre} ]]</td>
+					</tr>
+					<tr>
+						<td>Publicado por</td><td>[[ ${pet.owner.organization.name} ]]</td>
+					</tr>
+				</table>
 				<div class="center-block">
-					<h3>Subir una foto de [[ ${pet.name} ]]</h3>
+					<h5>Subir una foto de [[ ${pet.name} ]]</h5>
 					<form method="post" enctype="multipart/form-data" th:action="@{${'/mascotas/' + pet.id + '/fotos'}}">
 						<input type="file" accept="image/*" name="file" id="photo" class="file" data-language="es"/>
 					</form>
 				</div>
 			</div>
+			<div class="col-12 col-lg-3 offset-lg-1 col-xl-4 align-self-center">
+				<div id="carousel" class="carousel slide" data-ride="carousel" th:if="${originalPhotos.size() > 0}">
+					<div class="carousel-inner">
+						<div class="carousel-item" th:classappend="${iter.first}? 'active'" th:each="url, iter : ${originalPhotos}">
+							<img class="d-blockw w-100" th:src="@{${url}}" th:alt="${'Foto de ' + pet.name}">
+						</div>
+					</div>
+					<a class="carousel-control-prev" href="#carousel" role="button" data-slide="prev">
+						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+						<span class="sr-only">Anterior</span>
+					</a>
+					<a class="carousel-control-next" href="#carousel" role="button" data-slide="next">
+						<span class="carousel-control-next-icon" aria-hidden="true"></span>
+						<span class="sr-only">Siguiente</span>
+					</a>
+				</div>
+			</div>
 		</div>
-		
-		
-
-		<script type="text/javascript">
-		    $(document).ready(function() {
-		        $("#gallery").lightGallery(); 
-		    });
-		</script>
 		
 	</div>
 	

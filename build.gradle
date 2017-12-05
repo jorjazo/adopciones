@@ -43,7 +43,7 @@ dependencies {
 
 	compile 'io.rebelsouls.lib:rebelsouls-mail'
     compile 'io.rebelsouls.lib:rebelsouls-util'
-	compile 'io.rebelsouls.lib:rebelsouls-storage:1.7'
+	compile 'io.rebelsouls.lib:rebelsouls-storage:1.11'
     
 	compile 'org.liquibase:liquibase-core'
 	compile 'com.h2database:h2'

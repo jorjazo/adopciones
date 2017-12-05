@@ -10,7 +10,9 @@ import static org.springframework.data.jpa.domain.Specifications.where;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.transaction.Transactional;
 
@@ -24,6 +26,7 @@ import io.rebelsouls.chile.Provincia;
 import io.rebelsouls.chile.Region;
 import io.rebelsouls.services.StorageService;
 import io.rebelsouls.storage.StorageResource;
+import io.rebelsouls.storage.StorageResourceDescription;
 import net.coobird.thumbnailator.Thumbnails;
 
 @Service
@@ -39,6 +42,8 @@ public class PetService {
 
 	@Autowired
 	private StorageService storageService;
+
+	private Map<String, StorageResourceDescription> cache = new HashMap<>();
 	
 	public Pet save(Pet item) {
 		return petRepository.save(item);
@@ -64,12 +69,14 @@ public class PetService {
 				, page);
 	}
 	
-	public List<String> listPetPhotos(Pet pet) {
-		return storageService.list(getPhotoStorageFolder(pet));
+	public List<StorageResourceDescription> listPetPhotos(Pet pet) {
+		List<StorageResourceDescription> files = storageService.list(getPhotoStorageFolder(pet));
+		files.forEach(srd -> cache.put(srd.getPath(), srd));
+		return files;
 	}
 	
 	public void addPetPhoto(Pet pet, File photo) throws PetPhotoException {
-		List<String> files = listPetPhotos(pet);
+		List<StorageResourceDescription> files = listPetPhotos(pet);
 		
 		int newPhotoNumber = files.size();
 		if(newPhotoNumber >= PET_MAX_PHOTOS) {
@@ -92,7 +99,12 @@ public class PetService {
 	
 	public StorageResource getPetPhoto(Pet pet, int photoNumber, PhotoSize size) {
 		StorageResource resource = storageService.load(getPhotoStoragePath(pet, photoNumber, size));
+		cache.put(resource.getPath(), resource);
 		return resource;
+	}
+	
+	public StorageResourceDescription getPhotoCache(Pet pet, int photoNumber, PhotoSize size) {
+		return cache.get(getPhotoStoragePath(pet, photoNumber, size));
 	}
 
 	private String getThumbTempFilePath(Pet pet, int photoNumber, PhotoSize size) {
@@ -104,6 +116,6 @@ public class PetService {
 	}
 	
 	private String getPhotoStorageFolder(Pet pet) {
-		return "/" + pet.getId() + "/photos/";
+		return pet.getId() + "/photos/";
 	}
 }
