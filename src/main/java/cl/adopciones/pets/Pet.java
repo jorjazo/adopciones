@@ -12,6 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import cl.adopciones.organizations.Organization;
+import cl.adopciones.users.Role;
 import cl.adopciones.users.User;
 import io.rebelsouls.chile.Comuna;
 import lombok.Data;
@@ -45,8 +47,23 @@ public class Pet {
     @Enumerated(EnumType.ORDINAL)
     private Comuna location;
     
+    private String description;
+    
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="owner")
     private User owner;
     
+    public boolean isOwner(User user) {
+    	return user != null && user.getId() == owner.getId();
+    }
+    
+    public boolean isInOrganization(Organization other) {
+    	return other != null && getOwner().getOrganization().getId() == other.getId();
+    }
+    
+    public boolean canUploadPhotos(User user) {
+    	return user != null 
+    			&& (user.getRoles().contains(Role.ADMIN)
+    					|| isInOrganization(user.getOrganization()));
+    }
 }
