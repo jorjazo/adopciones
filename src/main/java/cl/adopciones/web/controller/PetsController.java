@@ -17,6 +17,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,9 +32,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import cl.adopciones.pets.Pet;
-import cl.adopciones.pets.PetPhotoException;
 import cl.adopciones.pets.PetService;
 import cl.adopciones.pets.PhotoSize;
+import cl.adopciones.users.User;
 import cl.adopciones.web.forms.PetForm;
 import io.rebelsouls.events.Event;
 import io.rebelsouls.events.EventLogger;
@@ -63,7 +65,7 @@ public class PetsController {
 	}
 
 	@GetMapping("/{petId}")
-	public String displayItem(@PathVariable("petId") Pet pet, Model model) {
+	public String displayItem(@PathVariable("petId") Pet pet, Model model, @AuthenticationPrincipal User user) {
 		model.addAttribute("pet", pet);
 		
 		String photoUrlPrefix = "/mascotas/" + pet.getId() + "/fotos/";
@@ -86,6 +88,8 @@ public class PetsController {
 		model.addAttribute("fixedHeightPhotos", originalPhotos);
 		model.addAttribute("fixedWidthPhotos", originalPhotos);
 		
+		model.addAttribute("canUploadPhotos", pet.canUploadPhotos(user));
+		
 		return "pets/display";
 	}
 
@@ -98,28 +102,32 @@ public class PetsController {
             RedirectAttributes redirectAttributes, @PathVariable("petId") Pet pet) {
 
 		Event e = new Event("petPhotoUpload", EventResult.NOOK);
+		if(pet == null) {
+			e.extraField("reason", "Pet does not exists");
+			return "redirect:" + getItemUrl(pet);
+		}
+		
+		String petUrl = getItemUrl(pet);
 		try {
-			if(pet == null) {
-				e.extraField("reason", "User does not exists");
-				return "redirect:" + getItemUrl(pet);
-			}
 			
 			String tempFileName = "/tmp/" + pet.getId() + "-" + file.getOriginalFilename();
 			File tmpFile = new File(tempFileName);
 			file.transferTo(tmpFile);
 			petService.addPetPhoto(pet, tmpFile);
 	        e.setResult(EventResult.OK);
-		} catch (IllegalStateException e1) {
+		}
+		catch (AccessDeniedException e1) {
 			e.setError(e1);
-		} catch (IOException e1) {
-			e.setError(e1);
-		} catch (PetPhotoException e1) {
-			e.setError(e1);
+			return "redirect:" + petUrl + "?error=access";
+		}
+		catch (Throwable t) {
+			e.setError(t);
+			return "redirect:" + petUrl + "?error=error";
 		}
 		finally {
 			EventLogger.logEvent(log, e);
 		}
-		return "redirect:" + getItemUrl(pet);
+		return "redirect:" + petUrl;
     }
 	
 	@GetMapping("/{petId}/fotos/{photoNumber}/{photoSize}")

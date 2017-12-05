@@ -19,6 +19,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import io.rebelsouls.chile.Comuna;
@@ -75,6 +76,7 @@ public class PetService {
 		return files;
 	}
 	
+	@PreAuthorize("hasRole('USER') and #pet.canUploadPhotos(principal)")
 	public void addPetPhoto(Pet pet, File photo) throws PetPhotoException {
 		List<StorageResourceDescription> files = listPetPhotos(pet);
 		
