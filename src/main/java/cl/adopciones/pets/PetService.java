@@ -98,8 +98,12 @@ public class PetService {
 	}
 	
 	public StorageResource getPetPhoto(Pet pet, int photoNumber, PhotoSize size) {
-		StorageResource resource = storageService.load(getPhotoStoragePath(pet, photoNumber, size));
-		cache.put(resource.getPath(), resource);
+		String path = getPhotoStoragePath(pet, photoNumber, size);
+		StorageResource resource = storageService.load(path);
+		if(resource == null)
+			cache.remove(path);
+		else
+			cache.put(path, resource);
 		return resource;
 	}
 	
