@@ -21,6 +21,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,18 +52,24 @@ public class PetsController {
 	@Autowired
 	private PetService petService;
 
-	@GetMapping("new")
+	@GetMapping("nuevo")
 	public String newItemForm(@ModelAttribute PetForm form, Model model) {
 		return "pets/new";
 	}
 
 	@PostMapping("")
-	public String createItem(@Valid PetForm form, Model model, @AuthenticationPrincipal User user) {
+	public String createItem(@Valid PetForm form, BindingResult result, Model model, @AuthenticationPrincipal User user) {
+		
+		if(result.hasErrors()) {
+			model.addAttribute("petForm", form);
+			return "pets/new";
+		}
+		
 		Pet newItem = form.toItem();
 		newItem.setOwner(user);
 		newItem = petService.save(newItem);
 
-		return "redirect:" + getItemUrl(newItem);
+		return "redirect:" + getPetUrl(newItem);
 	}
 
 	@GetMapping("/{petId}")
@@ -94,7 +101,7 @@ public class PetsController {
 		return "pets/display";
 	}
 
-	private String getItemUrl(Pet newItem) {
+	private String getPetUrl(Pet newItem) {
 		return "/mascotas/" + newItem.getId();
 	}
 	
@@ -105,10 +112,10 @@ public class PetsController {
 		Event e = new Event("petPhotoUpload", EventResult.NOOK);
 		if(pet == null) {
 			e.extraField("reason", "Pet does not exists");
-			return "redirect:" + getItemUrl(pet);
+			return "redirect:" + getPetUrl(pet);
 		}
 		
-		String petUrl = getItemUrl(pet);
+		String petUrl = getPetUrl(pet);
 		try {
 			
 			String tempFileName = "/tmp/" + pet.getId() + "-" + file.getOriginalFilename();

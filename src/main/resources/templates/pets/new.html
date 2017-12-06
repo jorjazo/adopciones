@@ -8,54 +8,91 @@
 	<div class="container">
 		<div th:replace="base/layout :: #alertMessages"></div>
 		<div class="row">
-			<h1>Publicar nuevo aviso</h1>
+			<h1>Publicar nuevo aviso de mascota</h1>
 
 		</div>
 
-		<form method="post" id="itemForm" th:fragment="itemForm"
-			th:object="${itemForm}" th:action="@{/items}">
-			<div class="col-sm-8 col-sm-offset-2">
-				<div class="form-group"
-					th:classappend="${#fields.hasErrors('petName')} ? 'has-error' : ''">
-					<label th:for="petName">Nombre:</label> <input class="form-control"
-						type="text" placeholder="Nombre de la mascota"
-						th:field="*{petName}" />
+			<form method="post" id="petForm" th:fragment="petForm"
+				th:object="${petForm}" th:action="@{/mascotas}">
+			
+			<div class="row">
+				<div class="col-lg-6 col-xs-12">
+					<div class="form-group">
+						<label th:for="name">Nombre:</label>
+						<input class="form-control" type="text" placeholder="Nombre de la mascota"
+							th:field="*{name}" th:errorclass="is-invalid"/>
+						<div class="invalid-feedback">
+	        				Debe ingresar un nombre de entre 2 y 100 caracteres.
+	      				</div>
+					</div>
+					<div class="form-group">
+						<label th:for="type">Tipo de mascota:</label>
+						<select class="form-control custom-select" th:field="*{type}" th:errorclass="is-invalid">
+							<option th:each="type : ${petTypes}" th:value="${type}"
+								th:text="#{${'pet.types.' + type}}">Item</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label th:for="location">Descripción:</label>
+						<small class="form-text text-muted">
+							Una pequeña descripción para los potenciales adoptadores :)
+						</small>
+						<textarea rows="6" th:field="*{description}" class="form-control"></textarea>
+					</div>
+					
 				</div>
-
-				<div class="form-group"
-					th:classappend="${#fields.hasErrors('petType')} ? 'has-error':''">
-					<label th:for="petType">Tipo de mascota:</label> <select
-						class="form-control" th:field="*{petType}">
-						<option th:each="type : ${petTypes}" th:value="${type}"
-							th:text="#{${'pet.types.' + type}}">Item</option>
-					</select>
-				</div>
-
-				<div class="form-group"
-					th:classappend="${#fields.hasErrors('petAgeCategory')} ? 'has-error':''">
-					<label th:for="petAgeCategory">Edad:</label> <select
-						class="form-control" th:field="*{petAgeCategory}">
-						<option th:each="type : ${petAgeCategories}" th:value="${type}"
-							th:text="#{${'pet.ageCategories.' + type}}">Item</option>
-					</select>
-				</div>
-
-				<div th:unless="${currentUser}">
-					<script src="https://www.google.com/recaptcha/api.js" async="async"
-						defer="defer"></script>
-					<script>
-						function submitForm() {
-							$('#userForm').submit();
-						};
-					</script>
-					<button class="btn btn-default g-recaptcha"
-						th:attr="data-sitekey=${recaptchaKey}" data-callback="submitForm">Siguiente
-						paso</button>
-				</div>
-
-				<div th:if="${currentUser}">
-					<button class="btn btn-default" data-callback="submitForm">Siguiente
-						paso</button>
+				
+				<div class="col-lg-6 col-xs-12">
+					<div class="form-group">
+						<label th:for="gender">Género:</label>
+						<select class="form-control custom-select" th:field="*{gender}"
+							th:errorclass="is-invalid">
+							<option th:each="gender : ${genders}" th:value="${gender}"
+								th:text="#{${'genders.' + gender}}">Item</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label th:for="ageCategory">Edad:</label>
+						<select class="form-control custom-select" th:field="*{ageCategory}"
+							th:errorclass="is-invalid">
+							<option th:each="type : ${petAgeCategories}" th:value="${type}"
+								th:text="#{${'pet.ageCategories.' + type}}">Item</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label th:for="sizeCategory">Tamaño:</label>
+						<select class="form-control custom-select" th:field="*{sizeCategory}"
+							th:errorclass="is-invalid">
+							<option th:each="size : ${petSizeCategories}" th:value="${size}"
+								th:text="#{${'pet.sizeCategories.' + size}}">Item</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label th:for="location">Comuna:</label>
+						<select id="region" th:field="*{region}" class="form-control custom-select"
+							style="width: 100%;">
+							<option value="">Seleccione región</option>
+							<option th:each="region: ${regiones}"
+								th:value="${region.name()}">[[ ${region.nombre} ]]</option>
+						</select>
+						<select id="provincia" th:field="*{provincia}" class="form-control custom-select"
+							style="width: 100%;">
+							<option value="">Seleccione provincia</option>
+						</select>
+						<select id="comuna" th:field="*{comuna}" class="form-control custom-select"
+							style="width: 100%;" th:errorclass="is-invalid">
+							<option value="">Seleccione comuna</option>
+						</select>
+						<div class="invalid-feedback">
+	        				Debe ingresar la comuna donde se encuentra actualmente la mascota.
+	      				</div>
+					</div>
+					<div class="text-right">
+						<button class="btn btn-default" type="submit">Crear aviso</button>
+						<small class="form-text text-muted">
+							En el próximo paso podrá subir fotos del animalito.
+						</small>
+					</div>
 				</div>
 			</div>
 		</form>
@@ -63,6 +100,84 @@
 	</div>
 
 	<footer th:replace="~{ base/layout :: footer}"></footer>
+
+	<script type="text/javascript" th:inline="javascript">
+			var resetProvincias = function() {
+				$("#provincia option").remove();
+				$("#provincia").append(
+						$("<option></option>").text('Seleccione provincia').val(
+								''));
+			};
+
+			var resetComunas = function() {
+				$("#comuna option").remove();
+				$("#comuna")
+						.append(
+								$("<option></option>").text('Seleccione comuna')
+										.val(''));
+			};
+
+			$('#region').change(
+					function() {
+						var region = $('#region option:selected').val();
+						resetProvincias();
+						resetComunas();
+						
+						if (region == '')
+							return;
+
+						$.getJSON("/geo/" + region, null, function(data) {
+							$.each(data, function(key, val) {
+								$("#provincia").append(
+										$("<option></option>").text(val).val(
+												key));
+							});
+						});
+					});
+
+			$('#provincia').change(
+					function() {
+						var region = $('#region option:selected').val();
+						var provincia = $('#provincia option:selected').val();
+						resetComunas();
+
+						if (region == '' || provincia == '')
+							return;
+
+						$.getJSON("/geo/" + region + '/' + provincia, null,
+								function(data) {
+									$.each(data, function(key, val) {
+										$("#comuna").append(
+												$("<option></option>")
+														.text(val).val(key));
+									});
+								});
+					});
+			
+			$(function() {
+				var selectedRegion = /*[[${petForm.region}]]*/ "Region";
+				if(selectedRegion != null) {
+					$('#region').change();
+					$(document).one("ajaxSuccess", function() {
+						var selectedProvincia = /*[[${petForm.provincia}]]*/ "Provincia";
+						if(selectedProvincia != null) {
+							$('#provincia').val(selectedProvincia);
+							$('#provincia').change();
+							$(document).one("ajaxSuccess", function() {
+								var selectedComuna = /*[[${petForm.comuna}]]*/ "Comuna";
+								if(selectedComuna != null) {
+									$('#comuna').val(selectedComuna);
+								}								
+							});
+							
+						}
+					});
+				}
+			});
+			
+			
+			
+		</script>
 
 </body>
 </html>

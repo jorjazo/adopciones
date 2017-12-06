@@ -46,7 +46,7 @@ public class PetService {
 
 	private Map<String, StorageResourceDescription> cache = new HashMap<>();
 	
-	@PreAuthorize("isAuthenticated && #item.isInOrganization(principal.organization)")
+	@PreAuthorize("isAuthenticated() && #item.isInOrganization(principal.organization)")
 	public Pet save(Pet item) {
 		return petRepository.save(item);
 	}
