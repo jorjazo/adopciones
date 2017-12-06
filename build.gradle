@@ -5,7 +5,7 @@ plugins {
 
 dependencyManagement {
 	imports {
-		mavenBom 'io.rebelsouls.lib:rebelsouls-versions:1.9'
+		mavenBom 'io.rebelsouls.lib:rebelsouls-versions:1.10'
 	}
 }
 
@@ -43,7 +43,7 @@ dependencies {
 
 	compile 'io.rebelsouls.lib:rebelsouls-mail'
     compile 'io.rebelsouls.lib:rebelsouls-util'
-	compile 'io.rebelsouls.lib:rebelsouls-storage:1.11'
+	compile 'io.rebelsouls.lib:rebelsouls-storage'
     
 	compile 'org.liquibase:liquibase-core'
 	compile 'com.h2database:h2'
