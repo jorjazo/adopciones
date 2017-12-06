@@ -28,7 +28,7 @@ public class UserService implements UserDetailsService {
 	
 	@Override
 	@Transactional
-	@PreAuthorize("hasRole('ADMIN') or #username == authentication.name")
+//	@PreAuthorize("!isAuthenticated() or hasRole('ADMIN') or #username == authentication.name")
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userRepository.findFirstByUsername(username);
 		if(user == null)
