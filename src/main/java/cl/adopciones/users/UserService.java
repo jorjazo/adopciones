@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,6 +28,7 @@ public class UserService implements UserDetailsService {
 	
 	@Override
 	@Transactional
+	@PreAuthorize("hasRole('ADMIN') or #username == authentication.name")
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userRepository.findFirstByUsername(username);
 		if(user == null)
@@ -35,10 +37,12 @@ public class UserService implements UserDetailsService {
 		return user;
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	public Page<User> getPageOfUsers(int page, int pagesize) {
 		return userRepository.findAll(new PageRequest(page, pagesize));
 	}
 
+	@PreAuthorize("hasRole('ADMIN')")
 	public User createUser(String email, String password, String displayName, Role initialRole) {
 	    Event event = new Event("createUser");
 	    event.extraField("username", email);
@@ -70,6 +74,7 @@ public class UserService implements UserDetailsService {
 		return newUser;
 	}
 
+	@PreAuthorize("hasRole('ADMIN') or (isAuthenticated() and principal.id == #userId)")
 	public User loadUserById(Long userId) {
 		return userRepository.findOne(userId);
 	}

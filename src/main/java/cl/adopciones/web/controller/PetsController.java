@@ -57,8 +57,9 @@ public class PetsController {
 	}
 
 	@PostMapping("")
-	public String createItem(@Valid PetForm form, Model model) {
+	public String createItem(@Valid PetForm form, Model model, @AuthenticationPrincipal User user) {
 		Pet newItem = form.toItem();
+		newItem.setOwner(user);
 		newItem = petService.save(newItem);
 
 		return "redirect:" + getItemUrl(newItem);
