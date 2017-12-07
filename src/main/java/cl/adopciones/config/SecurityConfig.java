@@ -33,6 +33,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.formLogin()
 			  .loginPage("/login")
 				.and()
+			.rememberMe()
+				.and()
 			.logout()
 				.logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
 				.logoutSuccessUrl("/")

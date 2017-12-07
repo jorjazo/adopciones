@@ -13,15 +13,21 @@
 		<form method="post" th:action="@{/login}">
 
 			<div class="form-group">
-				<label for="input1">Usuario:</label> <input id="input1"
-					class="form-control" type="text" name="username"
-					placeholder="Usuario" />
+				<label for="input1">Usuario:</label>
+				<input id="input1" class="form-control" type="text" name="username" placeholder="Usuario" />
 			</div>
 			<div class="form-group">
-				<label for="input2">Contraseña:</label> <input id="input2"
-					class="form-control" type="password" name="password" />
+				<label for="input2">Contraseña:</label>
+				<input id="input2" class="form-control" type="password" name="password" />
 			</div>
-
+			<div class="form-group">
+				<label class="custom-control custom-checkbox"> 
+					<input type="checkbox" class="custom-control-input" name="remember-me" checked="checked">
+					<span class="custom-control-indicator"></span>
+					<span class="custom-control-description">Recordarme en este computador</span>
+				</label>
+			</div>
+			
 			<button type="submit" class="btn btn-default">Entrar</button>
 		</form>
 
