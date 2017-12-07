@@ -25,7 +25,6 @@ import cl.adopciones.web.exceptions.InvalidRequestException;
 import cl.adopciones.web.exceptions.ResourceNotFoundException;
 import cl.adopciones.web.forms.UserRegistrationForm;
 import io.rebelsouls.email.EmailService;
-import io.rebelsouls.util.RecaptchaVerifier;
 
 @Controller
 @RequestMapping("/users")
@@ -38,20 +37,12 @@ public class UserController {
 	@Autowired
 	private EmailService emailService;
 
-	@Autowired
-	private RecaptchaVerifier recaptchaVerifier;
-
 	@Value("${app.url}")
 	private String appUrl;
-
-	@Value("${app.recaptcha.key}")
-	private String recaptchaKey;
 
 	@GetMapping("")
 	public String displayUserListAndForm(@AuthenticationPrincipal User currentUser, Model model,
 			UserRegistrationForm userRegistrationForm) {
-		model.addAttribute("recaptchaKey", recaptchaKey);
-
 		if (currentUser == null)
 			return "users/form";
 
@@ -67,13 +58,6 @@ public class UserController {
 	public String registerUser(@AuthenticationPrincipal User currentUser,
 			@Valid UserRegistrationForm userRegistrationForm, BindingResult bindingResult, Model model,
 			HttpServletRequest request) {
-		model.addAttribute("recaptchaKey", recaptchaKey);
-
-		if (!recaptchaVerifier.verify(request)) {
-			model.addAttribute("recaptchaError", true);
-			return "users/form";
-		}
-
 		if (!userRegistrationForm.getPassword().equals(userRegistrationForm.getPasswordRepeat())) {
 			bindingResult.rejectValue("passwordRepeat", "Debe coincidir con la contraseña ingresada");
 		}
