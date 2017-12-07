@@ -30,7 +30,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import cl.adopciones.pets.Pet;
 import cl.adopciones.pets.PetService;
@@ -58,18 +60,19 @@ public class PetsController {
 	}
 
 	@PostMapping("")
-	public String createItem(@Valid PetForm form, BindingResult result, Model model, @AuthenticationPrincipal User user) {
+	public ModelAndView createItem(@Valid PetForm form, BindingResult result, Model model, @AuthenticationPrincipal User user) {
 		
 		if(result.hasErrors()) {
-			model.addAttribute("petForm", form);
-			return "pets/new";
+			ModelAndView mav = new ModelAndView("pets/new");
+			mav.addObject("petForm", form);
+			return mav;
 		}
 		
 		Pet newItem = form.toItem();
 		newItem.setOwner(user);
 		newItem = petService.save(newItem);
 
-		return "redirect:" + getPetUrl(newItem);
+		return new ModelAndView(new RedirectView(getPetUrl(newItem), true, true, false));
 	}
 
 	@GetMapping("/{petId}")
@@ -112,7 +115,7 @@ public class PetsController {
 		Event e = new Event("petPhotoUpload", EventResult.NOOK);
 		if(pet == null) {
 			e.extraField("reason", "Pet does not exists");
-			return "redirect:" + getPetUrl(pet);
+			return "redirect:" + getPetUrl(pet) + "?";
 		}
 		
 		String petUrl = getPetUrl(pet);
