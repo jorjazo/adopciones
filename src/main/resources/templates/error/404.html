@@ -1,0 +1,19 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head th:replace="base/layout :: head" />
+<body>
+	<nav th:replace="base/layout :: nav"></nav>
+
+	<div class="container">
+		<div class="jumbotron">
+			<h1 class="text-center">Ooops, no hemos encontrado lo que buscabas...</h1>
+			
+			<img alt="Ooops" src="/static/img/cat-searching.jpg" class="rounded mx-auto d-block">
+		</div>
+	</div>
+	
+	<footer th:replace="base/layout :: footer">
+	</footer>
+</body>
+</html>
