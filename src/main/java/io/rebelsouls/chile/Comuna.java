@@ -1,5 +1,7 @@
 package io.rebelsouls.chile;
 
+import java.util.stream.Stream;
+
 import lombok.Getter;
 
 public enum Comuna {
@@ -363,6 +365,11 @@ public enum Comuna {
 		this.id = id;
 		this.nombre = nombre;
 		this.idProvincia = idProvincia;
+	}
+	
+	public Provincia getProvincia() {
+		return 
+			Stream.of(Provincia.values()).filter(p -> p.getId() == getIdProvincia()).findFirst().orElse(null);
 	}
 	
 }
