@@ -25,7 +25,7 @@ public class PetServiceTest {
 	@Test
 	public void shouldHaveTwoPets() {
 		assertNotNull(petService);
-		Page<Pet> searchResult = petService.searchPets(null, null, null, null, null, null, null, null, new PageRequest(0, 20));
+		Page<Pet> searchResult = petService.searchPets(null, PetType.values(), Gender.values(), PetAgeCategory.values(), PetSizeCategory.values(), null, null, null, new PageRequest(0, 20));
 		assertNotNull(searchResult);
 		assertEquals(2, searchResult.getNumberOfElements());
 		assertEquals("Panzer", searchResult.getContent().get(0).getName());
