@@ -31,14 +31,31 @@ jobs:
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
-      - run: gradle dependencies
+      - run: ./gradlew dependencies
 
       - save_cache:
           paths:
             - ~/.m2
           key: v1-dependencies-{{ checksum "build.gradle" }}
         
-      # run tests!
-      - run: gradle test integrationTest
-
+      - run:
+          name: Unit tests
+          command: ./gradlew test
+      
+      - run:
+          name: Integration tests
+          command: ./gradlew integrationTest
+      
+      - run:
+          name: Save test results 
+          command: |
+            mkdir -p ~/junit/
+            find . -type f -regex ".*/build/test-results/.*xml" -exec cp {} ~/junit/ \;
+          when: always
+      
+      - store_test_results:
+          path: ~/junit
+      
+      - store_artifacts:
+          path: ~/junit 
 
