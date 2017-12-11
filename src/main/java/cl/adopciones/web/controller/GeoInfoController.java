@@ -26,9 +26,17 @@ public class GeoInfoController {
 	}
 	
 	@GetMapping("/{region}")
-	public ResponseEntity<Map<String, String>> getProvincias(@PathVariable("region") Region region) {
-		if(region == null)
+	public ResponseEntity<Map<String, String>> getProvincias(@PathVariable("region") String regionName) {
+		if(regionName == null)
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		
+		Region region = null;
+		try {
+			region = Region.valueOf(regionName);
+		}
+		catch(IllegalArgumentException e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
 		
 		Map<String, String> values = new HashMap<>();
 		region.getProvincias().forEach(p -> values.put(p.name(), p.getNombre()));
@@ -36,8 +44,22 @@ public class GeoInfoController {
 	}
 	
 	@GetMapping("/{region}/{provincia}") 
-	public ResponseEntity<Map<String, String>> getComunas(@PathVariable("region") Region region, @PathVariable("provincia") Provincia provincia) {
-		if(provincia == null)
+	public ResponseEntity<Map<String, String>> getComunas(@PathVariable("region") String regionName, @PathVariable("provincia") String provinciaName) {
+		if(regionName == null || provinciaName == null)
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+		Region region = null;
+		Provincia provincia = null;
+		
+		try {
+			region = Region.valueOf(regionName);
+			provincia = Provincia.valueOf(provinciaName);
+		}
+		catch (IllegalArgumentException e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+		
+		if(!provincia.getRegion().equals(region))
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		
 		Map<String, String> values = new HashMap<>();
