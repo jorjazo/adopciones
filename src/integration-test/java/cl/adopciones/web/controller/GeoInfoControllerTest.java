@@ -47,7 +47,7 @@ public class GeoInfoControllerTest {
 		mockMvc.perform(get("/geo/"))
 			.andExpect(status().isOk())
 			.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-			.andExpect(jsonPath("$", hasSize(Region.values().length)))
+			.andExpect(jsonPath("$.*", hasSize(Region.values().length)))
 		;
 		
 	}
