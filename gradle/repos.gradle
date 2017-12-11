@@ -1,0 +1,10 @@
+repositories {
+	jcenter()
+	maven {
+		url myrepoReadUrl
+		credentials {
+			username 'myMavenRepo'
+			password myrepoReadPassword
+		}
+	}
+}

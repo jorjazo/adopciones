@@ -9,20 +9,12 @@ dependencyManagement {
 	}
 }
 
+apply from: 'gradle/repos.gradle'
+apply from: 'gradle/integrationTests.gradle'
+
 apply plugin: 'java'
 apply plugin: 'application'
 apply plugin: 'eclipse'
-
-repositories {
-    jcenter()
-    maven {
-        url myrepoReadUrl
-        credentials {
-            username 'myMavenRepo'
-            password myrepoReadPassword
-        }
-    }
-}
 
 jar {
     baseName = 'adopcionesApp'
