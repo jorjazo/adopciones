@@ -1,6 +1,7 @@
 plugins {
     id 'org.springframework.boot' version '1.5.9.RELEASE'
 	id "io.spring.dependency-management" version "1.0.3.RELEASE"
+	id 'nebula.integtest' version '3.4.0'
 }
 
 dependencyManagement {
@@ -10,7 +11,6 @@ dependencyManagement {
 }
 
 apply from: 'gradle/repos.gradle'
-apply from: 'gradle/integrationTests.gradle'
 
 apply plugin: 'java'
 apply plugin: 'application'
@@ -52,10 +52,11 @@ dependencies {
     testCompile 'junit:junit'
 }
 
-test {
-    exclude 'io/rebelsouls/integration/**'
-}
-
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 mainClassName = 'cl.adopciones.AdopcionesApp'
+
+task testCoverage(type:JacocoReport){
+	executionData test, integrationTest
+	sourceSets sourceSets.main
+}
