@@ -15,6 +15,7 @@ apply from: 'gradle/integrationTests.gradle'
 apply plugin: 'java'
 apply plugin: 'application'
 apply plugin: 'eclipse'
+apply plugin: "jacoco"
 
 jar {
     baseName = 'adopcionesApp'
