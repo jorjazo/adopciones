@@ -1,4 +1,4 @@
-package cl.adopciones.config;
+package cl.adopciones;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,8 +8,8 @@ import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.thymeleaf.TemplateEngine;
 
 @Configuration
-@Profile("dev")
-public class DevConfig {
+@Profile("test")
+public class TestConfig {
 
 
 	@Bean

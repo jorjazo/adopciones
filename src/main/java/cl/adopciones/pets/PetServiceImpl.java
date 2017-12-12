@@ -32,6 +32,7 @@ import net.coobird.thumbnailator.Thumbnails;
 @Service
 public class PetServiceImpl implements PetService {
 
+	//debería mejorar la configuración del número máximo de fotos
 	private static final int PET_MAX_PHOTOS = 6;
 	private static final String TEMP_FILE_PATH_PREFIX = "/tmp/";
 	private static final String THUMB_TEMP_FILE_SUFFIX = ".png";
