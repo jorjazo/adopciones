@@ -25,9 +25,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -50,7 +52,7 @@ public class PetServiceTest {
 	@Autowired
 	UserService userService;
 	
-	@Autowired
+	@MockBean
 	StorageService storageService;
 	
 	@Test
@@ -74,6 +76,7 @@ public class PetServiceTest {
 	
 	@Test
 	@DirtiesContext
+	@WithUserDetails("user")
 	public void shouldSaveNewPet() {
 		Pet pet = new Pet();
 		pet.setAgeCategory(PetAgeCategory.OLDER_THAN_SIX_YEARS);
@@ -111,6 +114,7 @@ public class PetServiceTest {
 	@Value("classpath:/static/img/logo-edra.jpg") Resource testPhoto;
 	
 	@Test
+	@WithUserDetails("user")
 	public void shouldUploadPhotoAndTwoThumbs() throws IOException {
 		
 		when(storageService.list(anyString())).thenReturn(new LinkedList<>());
@@ -182,6 +186,7 @@ public class PetServiceTest {
 	}
 	
 	@Test
+	@WithUserDetails("user")
 	public void shouldLimitNumberOfPhotosPerPet() throws IOException {
 		
 		//debería mejorar la configuración del número máximo de fotos

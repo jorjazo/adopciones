@@ -50,6 +50,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/mascotas")
 @Slf4j
 public class PetsController {
+	public static final String urlPrefix = "/mascotas";
 
 	@Autowired
 	private PetService petService;

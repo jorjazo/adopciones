@@ -19,6 +19,7 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import io.rebelsouls.chile.Comuna;
@@ -47,7 +48,7 @@ public class PetServiceImpl implements PetService {
 	private Map<String, StorageResourceDescription> cache = new HashMap<>();
 	
 	@Override
-//	@PreAuthorize("isAuthenticated() && #item.isInOrganization(principal.organization)")
+	@PreAuthorize("isAuthenticated() && #item.isInOrganization(principal.organization)")
 	public Pet save(Pet item) {
 		return petRepository.save(item);
 	}
@@ -82,7 +83,7 @@ public class PetServiceImpl implements PetService {
 	}
 	
 	@Override
-//	@PreAuthorize("isAuthenticated() and #pet.canUploadPhotos(principal)")
+	@PreAuthorize("isAuthenticated() and #pet.canUploadPhotos(principal)")
 	public void addPetPhoto(Pet pet, File photo) throws PetPhotoException {
 		List<StorageResourceDescription> files = listPetPhotos(pet);
 		
