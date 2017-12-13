@@ -185,9 +185,9 @@ public class PetServiceTest {
 		assertThat(gotCache).isNull();
 	}
 	
-	@Test
+	@Test(expected = PetPhotoException.class)
 	@WithUserDetails("user")
-	public void shouldLimitNumberOfPhotosPerPet() throws IOException {
+	public void shouldLimitNumberOfPhotosPerPet() throws IOException, PetPhotoException {
 		
 		//debería mejorar la configuración del número máximo de fotos
 		when(storageService.list(anyString())).thenReturn(
@@ -199,14 +199,7 @@ public class PetServiceTest {
 		
 		Pet pet = petService.getPet(1L);
 		
-		Exception e = null;
-		try {
-			petService.addPetPhoto(pet, testPhoto.getFile());
-		} catch (PetPhotoException ppe) {
-			e = ppe;
-		}
-		
-		assertThat(e).isNotNull();
+		petService.addPetPhoto(pet, testPhoto.getFile());
 		verify(storageService, never()).store(anyString(), any());
 	}
 }

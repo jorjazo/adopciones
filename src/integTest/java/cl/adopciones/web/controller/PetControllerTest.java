@@ -2,11 +2,16 @@ package cl.adopciones.web.controller;
 
 import static io.rebelsouls.test.CompositeResultMatcher.createdAndRedirectResponse;
 import static io.rebelsouls.test.CompositeResultMatcher.htmlOkResponse;
+import static io.rebelsouls.test.CompositeResultMatcher.redirectResponseWithUrl;
 import static org.hamcrest.Matchers.containsString;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -25,6 +30,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -153,5 +159,18 @@ public class PetControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(content().contentTypeCompatibleWith(MediaType.IMAGE_JPEG))
 		;
+	}
+	
+	@Test
+	public void shouldAcceptPetPhoto() throws Exception {
+		User user = userService.loadUserById(2L);
+		MockMultipartFile testFile = new MockMultipartFile("file", "file.jpg", "image/jpeg", testPhoto.getInputStream());
+		mockMvc.perform(fileUpload(PetsController.URL_PREFIX + "/1/fotos")
+				.file(testFile)
+				.with(user(user))
+				.with(csrf())
+				)
+			.andExpect(redirectResponseWithUrl(PetsController.URL_PREFIX + "/1"));
+		verify(storageService, times(3)).store(anyString(), any());
 	}
 }

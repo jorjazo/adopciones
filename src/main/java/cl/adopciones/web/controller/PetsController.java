@@ -17,7 +17,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,6 +33,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import cl.adopciones.pets.Pet;
+import cl.adopciones.pets.PetPhotoException;
 import cl.adopciones.pets.PetService;
 import cl.adopciones.pets.PhotoSize;
 import cl.adopciones.users.User;
@@ -113,13 +113,15 @@ public class PetsController {
 	}
 	
 	@PostMapping("/{petId}/fotos")
-    public String handleFileUpload(@RequestParam("file") MultipartFile file,
-            RedirectAttributes redirectAttributes, @PathVariable("petId") Pet pet) {
+    public void handleFileUpload(@RequestParam("file") MultipartFile file,
+            RedirectAttributes redirectAttributes, @PathVariable("petId") Pet pet, HttpServletResponse response) {
 
 		Event e = new Event("petPhotoUpload", EventResult.NOOK);
 		if(pet == null) {
 			e.extraField("reason", "Pet does not exists");
-			return "redirect:" + getPetUrl(pet) + "?";
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			response.setHeader(HttpHeaders.LOCATION, "/");
+			return;
 		}
 		
 		String petUrl = getPetUrl(pet);
@@ -131,18 +133,22 @@ public class PetsController {
 			petService.addPetPhoto(pet, tmpFile);
 	        e.setResult(EventResult.OK);
 		}
-		catch (AccessDeniedException e1) {
+		catch (IOException ex) {
+			e.setResult(EventResult.ERROR);
+			e.setError(ex);
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			petUrl += "?error=error";
+		} catch (PetPhotoException e1) {
+			e.setResult(EventResult.ERROR);
 			e.setError(e1);
-			return "redirect:" + petUrl + "?error=access";
-		}
-		catch (Throwable t) {
-			e.setError(t);
-			return "redirect:" + petUrl + "?error=error";
+			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+			petUrl += "?error=photolimit";
 		}
 		finally {
 			EventLogger.logEvent(log, e);
 		}
-		return "redirect:" + petUrl;
+		response.setStatus(HttpServletResponse.SC_SEE_OTHER);
+		response.setHeader(HttpHeaders.LOCATION, petUrl);
     }
 	
 	@GetMapping("/{petId}/fotos/{photoNumber}/{photoSize}")

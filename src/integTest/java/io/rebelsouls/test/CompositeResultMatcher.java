@@ -1,6 +1,7 @@
 package io.rebelsouls.test;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -38,6 +39,20 @@ public class CompositeResultMatcher implements ResultMatcher {
 		return CompositeResultMatcher.builder()
 				.matcher(status().isCreated())
 				.matcher(redirectedUrlPattern(urlAntPattern))
+				.build();
+	}
+	
+	public static CompositeResultMatcher redirectResponseWithUrlPattern(final String urlAntPattern) {
+		return CompositeResultMatcher.builder()
+				.matcher(status().is3xxRedirection())
+				.matcher(redirectedUrlPattern(urlAntPattern))
+				.build();
+	}
+	
+	public static CompositeResultMatcher redirectResponseWithUrl(final String url) {
+		return CompositeResultMatcher.builder()
+				.matcher(status().is3xxRedirection())
+				.matcher(redirectedUrl(url))
 				.build();
 	}
 }
