@@ -93,5 +93,13 @@ public class PetControllerTest {
 		;
 	}
 	
-	
+	@Test
+	public void shouldDisplayAFormToCreateANewPet() throws Exception {
+		mockMvc.perform(get(PetsController.URL_PREFIX + "/nuevo"))
+		.andExpect(status().isOk())
+		.andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+		.andExpect(content().encoding("UTF-8"))
+		.andExpect(content().string(containsString("MALE")))
+		;
+	}
 }
