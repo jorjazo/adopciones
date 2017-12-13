@@ -58,6 +58,8 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 mainClassName = 'cl.adopciones.AdopcionesApp'
 
+check.dependsOn -= integrationTest
+
 task testCoverage(type:JacocoReport){
 	executionData test, integrationTest
 	sourceSets sourceSets.main
