@@ -47,7 +47,7 @@ dependencies {
 	compile 'ch.qos.logback:logback-core'
 	compile 'ch.qos.logback:logback-classic'
 	
-	compileOnly 'org.projectlombok:lombok'
+	compile 'org.projectlombok:lombok'
 	
 	testCompile 'org.springframework.boot:spring-boot-starter-test'
 	testCompile 'org.mockito:mockito-core:2.13.0'
