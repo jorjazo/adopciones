@@ -88,13 +88,23 @@ public class PetControllerTest {
 	@Test
 	public void shouldNotCreateAPetIfMissingData() throws Exception {
 		User user = userService.loadUserById(2L);
-		
 		mockMvc.perform(post(PetsController.URL_PREFIX)
 				.with(csrf())
 				.with(user(user))
 				.with(newTestPetParams())
 				)
 			.andExpect(status().isBadRequest()) //missing name
+		;
+	}
+	
+	@Test
+	public void shouldNotCreateAPetIfNotAUser() throws Exception {
+		mockMvc.perform(post(PetsController.URL_PREFIX)
+				.with(csrf())
+				.with(newTestPetParams())
+				.param("name", "Paparaipicoipi")
+				)
+			.andExpect(status().isUnauthorized())
 		;
 	}
 	

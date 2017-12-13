@@ -6,6 +6,7 @@ import java.io.StringWriter;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -28,6 +29,8 @@ public class ErrorHandlerAdvice {
             HttpStatus status = annotatedStatus.code();
             response.setStatus(status.value());
         }
+        else if (error instanceof AccessDeniedException)
+        	response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         else
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         
