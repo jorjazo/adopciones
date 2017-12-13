@@ -2,9 +2,11 @@ package cl.adopciones.web.controller;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrlPattern;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.Test;
@@ -23,10 +25,9 @@ import cl.adopciones.pets.Gender;
 import cl.adopciones.pets.PetAgeCategory;
 import cl.adopciones.pets.PetSizeCategory;
 import cl.adopciones.pets.PetType;
-import cl.adopciones.web.forms.PetForm;
+import cl.adopciones.users.User;
+import cl.adopciones.users.UserService;
 import io.rebelsouls.chile.Comuna;
-import io.rebelsouls.chile.Provincia;
-import io.rebelsouls.chile.Region;
 import io.rebelsouls.services.StorageService;
 
 @RunWith(SpringRunner.class)
@@ -41,9 +42,12 @@ public class PetControllerTest {
 	@MockBean
 	private StorageService storageService;
 
+	@Autowired
+	private UserService userService;
+	
 	@Test
 	public void shouldDisplayExistingPet() throws Exception {
-		mockMvc.perform(get("/mascotas/1"))
+		mockMvc.perform(get(PetsController.URL_PREFIX + "/1"))
 			.andExpect(status().isOk())
 			.andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
 			.andExpect(content().encoding("UTF-8"))
@@ -54,20 +58,40 @@ public class PetControllerTest {
 	@Test
 	@DirtiesContext
 	public void shouldCreateANewPet() throws Exception {
-		PetForm form = new PetForm();
-		form.setAgeCategory(PetAgeCategory.OLDER_THAN_SIX_YEARS);
-		form.setComuna(Comuna.Algarrobo);
-		form.setDescription("Un lindo gatito");
-		form.setGender(Gender.FEMALE);
-		form.setName("Misifús");
-		form.setProvincia(Provincia.San_Antonio);
-		form.setRegion(Region.Valparaiso);
-		form.setSizeCategory(PetSizeCategory.L);
-		form.setType(PetType.CAT);
+		String petName = "Misifús";
+		User user = userService.loadUserById(2L);
 		
-		mockMvc.perform(post("/mascotas", form).with(csrf()))
-			.andExpect(status().isOk())
+		mockMvc.perform(post(PetsController.URL_PREFIX).with(csrf()).with(user(user))
+				.param("name", petName)
+				.param("ageCategory", PetAgeCategory.OLDER_THAN_SIX_YEARS.name())
+				.param("comuna", Comuna.Algarrobo.name())
+				.param("description", "Un lindo gatito")
+				.param("gender", Gender.FEMALE.name())
+				.param("sizeCategory", PetSizeCategory.L.name())
+				.param("type", PetType.CAT.name())
+				)
+			.andExpect(status().isCreated())
+			.andExpect(redirectedUrlPattern("/mascotas/??"))
 		;
-		
 	}
+	
+	@Test
+	public void shouldNotCreateAPetIfMissingData() throws Exception {
+		String petName = "Misifús";
+		User user = userService.loadUserById(2L);
+		
+		mockMvc.perform(post(PetsController.URL_PREFIX).with(csrf()).with(user(user))
+				.param("name", petName)
+//				.param("ageCategory", PetAgeCategory.OLDER_THAN_SIX_YEARS.name())
+				.param("comuna", Comuna.Algarrobo.name())
+				.param("description", "Un lindo gatito")
+				.param("gender", Gender.FEMALE.name())
+				.param("sizeCategory", PetSizeCategory.L.name())
+				.param("type", PetType.CAT.name())
+				)
+			.andExpect(status().isBadRequest())
+		;
+	}
+	
+	
 }

@@ -32,7 +32,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
 
 import cl.adopciones.pets.Pet;
 import cl.adopciones.pets.PetService;
@@ -50,7 +49,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/mascotas")
 @Slf4j
 public class PetsController {
-	public static final String urlPrefix = "/mascotas";
+	public static final String URL_PREFIX = "/mascotas";
 
 	@Autowired
 	private PetService petService;
@@ -61,11 +60,12 @@ public class PetsController {
 	}
 
 	@PostMapping("")
-	public ModelAndView createItem(@Valid PetForm form, BindingResult result, Model model, @AuthenticationPrincipal User user) {
+	public ModelAndView createItem(@Valid PetForm form, BindingResult result, Model model, @AuthenticationPrincipal User user, HttpServletResponse response) {
 		
 		if(result.hasErrors()) {
 			ModelAndView mav = new ModelAndView("pets/new");
 			mav.addObject("petForm", form);
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			return mav;
 		}
 		
@@ -73,7 +73,10 @@ public class PetsController {
 		newItem.setOwner(user);
 		newItem = petService.save(newItem);
 
-		return new ModelAndView(new RedirectView(getPetUrl(newItem), true, true, false));
+		response.setStatus(HttpServletResponse.SC_CREATED);
+		response.setHeader(HttpHeaders.LOCATION, getPetUrl(newItem));
+		return null;
+//		return new ModelAndView(new RedirectView(getPetUrl(newItem), true, true, false));
 	}
 
 	@GetMapping("/{petId}")

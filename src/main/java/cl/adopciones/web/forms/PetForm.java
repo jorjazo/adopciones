@@ -34,8 +34,8 @@ public class PetForm {
 	@Size(min=0,max=1024)
 	private String description;
 	
-	@NotNull private Region region;
-	@NotNull private Provincia provincia;
+	private Region region;
+	private Provincia provincia;
 	@NotNull private Comuna comuna;
 	
 	public Pet toItem() {
