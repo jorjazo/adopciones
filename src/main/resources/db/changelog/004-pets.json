@@ -86,11 +86,152 @@
                                       "references": "users"
                                   }
                               }
+                          },
+                          {
+                              "column": {
+                                  "name": "organization",
+                                  "type": "bigint",
+                                  "constraints": {
+                                      "nullable": false,
+                                      "foreignKeyName": "fk_pet_organization",
+                                      "references": "organizations"
+                                  }
+                              }
                           }
                       ]
                    }
                },
-              {
+               {
+                    "createIndex" : {
+                        "indexName": "idx_pets_name",
+                        "tableName": "pets",
+                        "columns": [
+                            {
+                                "column": {
+                                    "name": "name"
+                                }
+                            }
+                        ]
+                    }
+               },
+               {
+                    "createIndex" : {
+                        "indexName": "idx_pets_creation_date_time",
+                        "tableName": "pets",
+                        "columns": [
+                            {
+                                "column": {
+                                    "name": "creation_date_time"
+                                }
+                            }
+                        ]
+                    }
+               },
+               {
+                    "createIndex" : {
+                        "indexName": "idx_pets_description",
+                        "tableName": "pets",
+                        "columns": [
+                            {
+                                "column": {
+                                    "name": "description"
+                                }
+                            }
+                        ]
+                    }
+               },
+               {
+                    "createIndex" : {
+                        "indexName": "idx_pets_type",
+                        "tableName": "pets",
+                        "columns": [
+                            {
+                                "column": {
+                                    "name": "type"
+                                }
+                            }
+                        ]
+                    }
+               },
+               {
+                    "createIndex" : {
+                        "indexName": "idx_pets_age",
+                        "tableName": "pets",
+                        "columns": [
+                            {
+                                "column": {
+                                    "name": "age_category"
+                                }
+                            }
+                        ]
+                    }
+               },
+               {
+                    "createIndex" : {
+                        "indexName": "idx_pets_size",
+                        "tableName": "pets",
+                        "columns": [
+                            {
+                                "column": {
+                                    "name": "size_category"
+                                }
+                            }
+                        ]
+                    }
+               },
+               {
+                    "createIndex" : {
+                        "indexName": "idx_pets_gender",
+                        "tableName": "pets",
+                        "columns": [
+                            {
+                                "column": {
+                                    "name": "gender"
+                                }
+                            }
+                        ]
+                    }
+               },
+               {
+                    "createIndex" : {
+                        "indexName": "idx_pets_location",
+                        "tableName": "pets",
+                        "columns": [
+                            {
+                                "column": {
+                                    "name": "location"
+                                }
+                            }
+                        ]
+                    }
+               },
+               {
+                    "createIndex" : {
+                        "indexName": "idx_pets_owner",
+                        "tableName": "pets",
+                        "columns": [
+                            {
+                                "column": {
+                                    "name": "owner"
+                                }
+                            }
+                        ]
+                    }
+               },
+               {
+                    "createIndex" : {
+                        "indexName": "idx_pets_organization",
+                        "tableName": "pets",
+                        "columns": [
+                            {
+                                "column": {
+                                    "name": "organization"
+                                }
+                            }
+                        ]
+                    }
+               },
+               {
                     "createSequence": {
                         "sequenceName": "petid",
                         "startValue": 100,

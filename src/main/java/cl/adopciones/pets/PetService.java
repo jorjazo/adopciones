@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import cl.adopciones.users.User;
 import io.rebelsouls.chile.Comuna;
 import io.rebelsouls.chile.Provincia;
 import io.rebelsouls.chile.Region;
@@ -14,6 +15,7 @@ import io.rebelsouls.storage.StorageResourceDescription;
 
 public interface PetService {
 
+	public Pet create(Pet item, User owner);
 	public Pet save(Pet item);
 	public Pet getPet(Long petId);
 

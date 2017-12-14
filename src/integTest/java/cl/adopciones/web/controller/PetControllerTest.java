@@ -67,7 +67,7 @@ public class PetControllerTest {
 	public void shouldDisplayExistingPet() throws Exception {
 		mockMvc.perform(get(PetsController.URL_PREFIX + "/1"))
 			.andExpect(htmlOkResponse())
-			.andExpect(content().string(containsString("Panzer")))
+			.andExpect(content().string(containsString("Olivia")))
 			.andExpect(content().string(containsString("2017")))
 			;
 	}

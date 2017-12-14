@@ -29,6 +29,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
@@ -56,7 +57,7 @@ public class PetServiceTest {
 	StorageService storageService;
 	
 	@Test
-	public void shouldHaveTwoPets() {
+	public void shouldHaveTwoPetsSortedByCreationDate() {
 		assertNotNull(petService);
 		Page<Pet> searchResult = petService.searchPets(
 				null,
@@ -67,7 +68,7 @@ public class PetServiceTest {
 				null,
 				null,
 				null,
-				new PageRequest(0, 20));
+				new PageRequest(0, 20, new Sort("creationDateTime")));
 		
 		assertNotNull(searchResult);
 		assertEquals(2, searchResult.getNumberOfElements());
@@ -77,18 +78,17 @@ public class PetServiceTest {
 	@Test
 	@DirtiesContext
 	@WithUserDetails("user")
-	public void shouldSaveNewPet() {
+	public void shouldCreateNewPet() {
 		Pet pet = new Pet();
 		pet.setAgeCategory(PetAgeCategory.OLDER_THAN_SIX_YEARS);
 		pet.setDescription("Un lindo gatito");
 		pet.setGender(Gender.FEMALE);
 		pet.setLocation(Comuna.Puchuncaví);
 		pet.setName("Misifús");
-		pet.setOwner(userService.loadUserById(1L));
 		pet.setSizeCategory(PetSizeCategory.S);
 		pet.setType(PetType.CAT);
 		
-		petService.save(pet);
+		petService.create(pet, userService.loadUserById(1L));
 		
 		Page<Pet> searchResult = petService.searchPets(
 				null,
@@ -112,6 +112,34 @@ public class PetServiceTest {
 		assertThat(pet).isEqualTo(found);
 	}
 
+	@Test(expected=IllegalArgumentException.class)
+	@WithUserDetails("user")
+	public void shouldNotAllowToCreateExistingPet() {
+		Pet pet = new Pet();
+		pet.setId(1L);
+		petService.create(pet, null);
+	}
+	
+	@Test(expected=IllegalArgumentException.class)
+	@WithUserDetails("user")
+	public void shouldNotAllowToSaveNewPet() {
+		Pet pet = new Pet();
+		petService.save(pet);
+	}
+	
+	@Test(expected=RuntimeException.class)
+	public void anonymousUserShouldNotBeAbleToCreatePet() {
+		Pet pet = new Pet();
+		petService.create(pet, null);
+	}
+	
+	@Test(expected=RuntimeException.class)
+	public void anonymousUserShouldNotBeAbleToSavePet() {
+		Pet pet = petService.getPet(1L);
+		petService.save(pet);
+	}
+	
+	
 	@Value("classpath:/static/img/logo-edra.jpg") Resource testPhoto;
 	
 	@Test

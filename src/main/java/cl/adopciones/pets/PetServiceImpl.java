@@ -15,14 +15,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import cl.adopciones.users.User;
 import io.rebelsouls.chile.Comuna;
 import io.rebelsouls.chile.Provincia;
 import io.rebelsouls.chile.Region;
@@ -50,11 +50,27 @@ public class PetServiceImpl implements PetService {
 	
 	@Override
 	@PreAuthorize("isAuthenticated() && #item.isInOrganization(principal.organization)")
-	public Pet save(Pet item) {
-		item.setCreationDateTime(LocalDateTime.now());
-		return petRepository.save(item);
+	@Transactional
+	public Pet save(Pet pet) {
+		if(pet.getId() == null)
+			throw new IllegalArgumentException("Cannot save a pet without an Id");
+		return petRepository.save(pet);
 	}
 
+	@Override
+	@PreAuthorize("isAuthenticated() && hasRole('USER')")
+	@Transactional
+	public Pet create(Pet pet, User owner) {
+		if(pet.getId() != null)
+			throw new IllegalArgumentException("Id must not be set to create a pet");
+		
+		pet.setCreationDateTime(LocalDateTime.now());
+		pet.setOwner(owner);
+		pet.setOrganization(owner.getOrganization());
+		
+		return petRepository.save(pet);
+	}
+	
 	@Override
 	@Transactional
 	public Pet getPet(Long petId) {

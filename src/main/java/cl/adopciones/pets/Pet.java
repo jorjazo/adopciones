@@ -57,12 +57,16 @@ public class Pet {
     @JoinColumn(name="owner")
     private User owner;
     
+    @ManyToOne(fetch=FetchType.LAZY)
+    @JoinColumn(name="organization")
+    private Organization organization;
+    
     public boolean isOwner(User user) {
     	return user != null && user.getId() == owner.getId();
     }
     
     public boolean isInOrganization(Organization other) {
-    	return other != null && getOwner().getOrganization().getId() == other.getId();
+    	return other != null && getOrganization().getId() == other.getId();
     }
     
     public boolean canUploadPhotos(User user) {

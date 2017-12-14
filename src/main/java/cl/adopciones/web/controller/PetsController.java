@@ -71,13 +71,11 @@ public class PetsController {
 		}
 		
 		Pet newItem = form.toItem();
-		newItem.setOwner(user);
-		newItem = petService.save(newItem);
+		newItem = petService.create(newItem, user);
 
 		response.setStatus(HttpServletResponse.SC_CREATED);
 		response.setHeader(HttpHeaders.LOCATION, getPetUrl(newItem));
 		return null;
-//		return new ModelAndView(new RedirectView(getPetUrl(newItem), true, true, false));
 	}
 
 	@GetMapping("/{petId}")

@@ -19,6 +19,7 @@ public class PetTest {
 		
 		Pet pet = new Pet();
 		pet.setOwner(user);
+		pet.setOrganization(o);
 		assertTrue(pet.isInOrganization(o));
 		
 		o = new Organization();
