@@ -48,7 +48,20 @@
                       ]
                    }
                },
-              {
+               {
+                    "createIndex" : {
+                        "indexName": "idx_organization_name",
+                        "tableName": "organizations",
+                        "columns": [
+                            {
+                                "column": {
+                                    "name": "name"
+                                }
+                            }
+                        ]
+                    }
+               },
+               {
                     "createSequence": {
                         "sequenceName": "organizationid",
                         "startValue": 100,
