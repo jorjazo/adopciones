@@ -68,6 +68,7 @@ public class PetControllerTest {
 		mockMvc.perform(get(PetsController.URL_PREFIX + "/1"))
 			.andExpect(htmlOkResponse())
 			.andExpect(content().string(containsString("Panzer")))
+			.andExpect(content().string(containsString("2017")))
 			;
 	}
 	

@@ -43,7 +43,7 @@ dependencies {
 	compile 'com.h2database:h2'
 	compile 'org.postgresql:postgresql'
 	compile 'net.coobird:thumbnailator:0.4.8'
-	
+	compile 'org.thymeleaf.extras:thymeleaf-extras-java8time'
 	compile 'ch.qos.logback:logback-core'
 	compile 'ch.qos.logback:logback-classic'
 	

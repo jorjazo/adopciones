@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
@@ -80,7 +81,7 @@ public class PetsController {
 	}
 
 	@GetMapping("/{petId}")
-	public String displayItem(@PathVariable("petId") Pet pet, Model model, @AuthenticationPrincipal User user) {
+	public String displayItem(@PathVariable("petId") Pet pet, Model model, @AuthenticationPrincipal User user, Locale locale) {
 		model.addAttribute("pet", pet);
 		
 		String photoUrlPrefix = "/mascotas/" + pet.getId() + "/fotos/";
@@ -104,6 +105,8 @@ public class PetsController {
 		model.addAttribute("fixedWidthPhotos", originalPhotos);
 		
 		model.addAttribute("canUploadPhotos", pet.canUploadPhotos(user));
+		
+		model.addAttribute("locale", locale);
 		
 		return "pets/display";
 	}

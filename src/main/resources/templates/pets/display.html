@@ -55,6 +55,10 @@
 						<td>Descripción</td>
 						<td>[[ ${pet.description} ]]</td>
 					</tr>
+					<tr>
+						<td>Publicado</td>
+						<td>[[ ${#temporals.format(pet.creationDateTime, locale)} ]]</td>
+					</tr>
 				</table>
 				<div class="center-block" th:if="${canUploadPhotos}">
 					<h5>Subir una foto de [[ ${pet.name} ]]</h5>
