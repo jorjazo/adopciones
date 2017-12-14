@@ -1,5 +1,7 @@
 package cl.adopciones.pets;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -31,6 +33,8 @@ public class Pet {
     private Long id;
 
     private String name;
+    
+    private LocalDateTime creationDateTime;
     
     @Enumerated(EnumType.STRING)
     private PetType type;

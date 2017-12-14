@@ -10,6 +10,7 @@ import static org.springframework.data.jpa.domain.Specifications.where;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +51,7 @@ public class PetServiceImpl implements PetService {
 	@Override
 	@PreAuthorize("isAuthenticated() && #item.isInOrganization(principal.organization)")
 	public Pet save(Pet item) {
+		item.setCreationDateTime(LocalDateTime.now());
 		return petRepository.save(item);
 	}
 

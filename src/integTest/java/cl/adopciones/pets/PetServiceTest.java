@@ -105,6 +105,7 @@ public class PetServiceTest {
 		
 		Pet found = searchResult.getContent().get(0);
 		pet.setId(found.getId());
+		pet.setCreationDateTime(found.getCreationDateTime());
 		assertThat(pet).isEqualTo(found);
 		
 		pet = petService.getPet(pet.getId());
