@@ -75,7 +75,7 @@ public class PetServiceImpl implements PetService {
 	@Transactional
 	public Pet getPet(Long petId) {
 		Pet pet = petRepository.findOne(petId);
-		pet.getOwner().getOrganization().getContactEmail();  //preload
+		pet.getOwner().getOrganization().getContactEmail().length();  //preload
 		return pet;
 	}
 
