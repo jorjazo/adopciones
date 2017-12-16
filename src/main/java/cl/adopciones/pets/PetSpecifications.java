@@ -8,6 +8,13 @@ import io.rebelsouls.chile.Region;
 
 public class PetSpecifications {
 
+	private static final String PET_NAME_PROPERTY = "name";
+	private static final String PET_GENDER_PROPERTY = "gender";
+	private static final String PET_TYPE_PROPERTY = "type";
+	private static final String PET_SIZE_CATEGORY_PROPERTY = "sizeCategory";
+	private static final String PET_AGE_CATEGORY_PROPERTY = "ageCategory";
+	private static final String PET_LOCATION_PROPERTY = "location";
+
 	private PetSpecifications() {
 		
 	}
@@ -16,7 +23,7 @@ public class PetSpecifications {
 		return (root, query, cb) -> {
 			if(name == null)
 				return cb.and();
-			return cb.equal(root.get("name"), name);
+			return cb.equal(root.get(PET_NAME_PROPERTY), name);
 		};
 	}
 	
@@ -25,7 +32,7 @@ public class PetSpecifications {
 			if(genders == null)
 				return cb.or();
 			
-			return root.get("gender").in((Object[]) genders);
+			return root.get(PET_GENDER_PROPERTY).in((Object[]) genders);
 		};
 	}
 	
@@ -34,7 +41,7 @@ public class PetSpecifications {
 			if(types == null)
 				return cb.or();
 			
-			return root.get("type").in((Object[]) types);
+			return root.get(PET_TYPE_PROPERTY).in((Object[]) types);
 		};
 	}
 	
@@ -43,7 +50,7 @@ public class PetSpecifications {
 			if(sizes == null)
 				return cb.or();
 			
-			return root.get("sizeCategory").in((Object[]) sizes);
+			return root.get(PET_SIZE_CATEGORY_PROPERTY).in((Object[]) sizes);
 		};
 	}
 	
@@ -52,20 +59,20 @@ public class PetSpecifications {
 			if(ages == null)
 				return cb.or();
 			
-			return root.get("ageCategory").in((Object[]) ages);
+			return root.get(PET_AGE_CATEGORY_PROPERTY).in((Object[]) ages);
 		};
 	}
 	
 	public static Specification<Pet> inLocation(Region region, Provincia provincia, Comuna comuna) {
 		return (root, query, cb) -> {
 			if(comuna != null)
-				return cb.equal(root.get("location"), comuna);
+				return cb.equal(root.get(PET_LOCATION_PROPERTY), comuna);
 			
 			if(provincia != null)
-				return root.get("location").in(provincia.getComunas().toArray());
+				return root.get(PET_LOCATION_PROPERTY).in(provincia.getComunas().toArray());
 			
 			if(region != null)
-				return root.get("location").in(region.getComunas().toArray());
+				return root.get(PET_LOCATION_PROPERTY).in(region.getComunas().toArray());
 			
 			return cb.and();
 		};
