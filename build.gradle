@@ -16,6 +16,7 @@ apply plugin: 'java'
 apply plugin: 'application'
 apply plugin: 'eclipse'
 apply plugin: "jacoco"
+apply plugin: 'findbugs'
 
 jar {
     baseName = 'adopcionesApp'
@@ -63,4 +64,11 @@ check.dependsOn -= integrationTest
 task testCoverage(type:JacocoReport){
 	executionData test, integrationTest
 	sourceSets sourceSets.main
+}
+
+tasks.withType(FindBugs) {
+	reports {
+		xml.enabled false
+		html.enabled true
+	}
 }
