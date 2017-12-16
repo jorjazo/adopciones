@@ -22,12 +22,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class UserService implements UserDetailsService {
 
+	private static final String ID_EVENT_FIELD = "id";
+	private static final String ROLE_EVENT_FIELD = "role";
+	private static final String USERNAME_EVENT_FIELD = "username";
 	@Autowired
 	private UserRepository userRepository;
 	
 	@Override
 	@Transactional
-//	@PreAuthorize("!isAuthenticated() or hasRole('ADMIN') or #username == authentication.name")
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userRepository.findFirstByUsername(username);
 		if(user == null)
@@ -36,16 +38,14 @@ public class UserService implements UserDetailsService {
 		return user;
 	}
 
-//	@PreAuthorize("hasRole('ADMIN')")
 	public Page<User> getPageOfUsers(int page, int pagesize) {
 		return userRepository.findAll(new PageRequest(page, pagesize));
 	}
 
-//	@PreAuthorize("hasRole('ADMIN')")
 	public User createUser(String email, String password, String displayName, Role initialRole) {
 	    Event event = new Event("createUser");
-	    event.extraField("username", email);
-	    event.extraField("role", initialRole.name());
+	    event.extraField(USERNAME_EVENT_FIELD, email);
+	    event.extraField(ROLE_EVENT_FIELD, initialRole.name());
 	    User newUser = new User();
 
 	    try {
@@ -59,7 +59,7 @@ public class UserService implements UserDetailsService {
     		newUser.setLocked(false);
     		newUser.setRoles(new HashSet<>(Arrays.asList(initialRole)));
     		newUser = userRepository.save(newUser);
-    		event.extraField("id", String.valueOf(newUser.getId()));
+    		event.extraField(ID_EVENT_FIELD, String.valueOf(newUser.getId()));
     		event.setResult(EventResult.OK);
 	    }
 	    catch(Exception e) {
@@ -73,7 +73,6 @@ public class UserService implements UserDetailsService {
 		return newUser;
 	}
 
-//	@PreAuthorize("hasRole('ADMIN') or (isAuthenticated() and principal.id == #userId)")
 	public User loadUserById(Long userId) {
 		return userRepository.findOne(userId);
 	}
