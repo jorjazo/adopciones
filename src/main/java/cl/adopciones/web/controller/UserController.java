@@ -31,6 +31,8 @@ import io.rebelsouls.email.EmailService;
 //@Slf4j
 public class UserController {
 
+	private static final String USER_FORM_VIEW_NAME = "users/form";
+
 	@Autowired
 	private UserService userService;
 
@@ -44,14 +46,14 @@ public class UserController {
 	public String displayUserListAndForm(@AuthenticationPrincipal User currentUser, Model model,
 			UserRegistrationForm userRegistrationForm) {
 		if (currentUser == null)
-			return "users/form";
+			return USER_FORM_VIEW_NAME;
 
 		if (currentUser.hasRole("ADMIN")) {
 			model.addAttribute("userPage", userService.getPageOfUsers(0, 3));
 			return "users/list";
 		}
 
-		return "users/form";
+		return USER_FORM_VIEW_NAME;
 	}
 
 	@PostMapping("")
@@ -63,7 +65,7 @@ public class UserController {
 		}
 
 		if (bindingResult.hasErrors()) {
-			return "users/form";
+			return USER_FORM_VIEW_NAME;
 		}
 
 		User newUser = userService.createUser(userRegistrationForm.getEmail(), userRegistrationForm.getPassword(),
