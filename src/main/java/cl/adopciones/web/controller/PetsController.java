@@ -99,8 +99,8 @@ public class PetsController {
 		}
 		
 		model.addAttribute("originalPhotos", originalPhotos);
-		model.addAttribute("fixedHeightPhotos", originalPhotos);
-		model.addAttribute("fixedWidthPhotos", originalPhotos);
+		model.addAttribute("fixedHeightPhotos", fixedHeightPhotos);
+		model.addAttribute("fixedWidthPhotos", fixedWidthPhotos);
 		
 		model.addAttribute("canUploadPhotos", pet.canUploadPhotos(user));
 		

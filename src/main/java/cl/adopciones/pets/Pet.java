@@ -62,11 +62,11 @@ public class Pet {
     private Organization organization;
     
     public boolean isOwner(User user) {
-    	return user != null && user.getId() == owner.getId();
+    	return user != null && user.getId().equals(owner.getId());
     }
     
     public boolean isInOrganization(Organization other) {
-    	return other != null && getOrganization().getId() == other.getId();
+    	return other != null && getOrganization().getId().equals(other.getId());
     }
     
     public boolean canUploadPhotos(User user) {

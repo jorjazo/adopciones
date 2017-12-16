@@ -17,6 +17,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -62,7 +63,10 @@ public class PetControllerTest {
 
 	@Autowired
 	private UserService userService;
-	
+
+	@Value("classpath:/static/img/logo-edra.jpg")
+	private Resource testPhoto;
+
 	@Test
 	public void shouldDisplayExistingPet() throws Exception {
 		mockMvc.perform(get(PetsController.URL_PREFIX + "/1"))
@@ -133,26 +137,14 @@ public class PetControllerTest {
 		;
 	}
 	
-	@Value("classpath:/static/img/logo-edra.jpg") Resource testPhoto;
-	
 	@Test
 	public void shouldDisplayPetPhoto() throws Exception {
 		String photoPath = "1/photos/0/original";
-
-		StorageResourceDescription description = new StorageResourceDescription();
-		description.setContentLength(testPhoto.contentLength());
-		description.setLastModified(new Date(testPhoto.lastModified()));
-		description.setPath(photoPath);
+		StorageResourceDescription description = createTestResourceDescription(photoPath);
+		StorageResource resource = createTestResource(photoPath);
 		
 		when(storageService.list(anyString()))
 			.thenReturn(Arrays.asList(description));
-		
-		StorageResource resource = new StorageResource();
-		resource.setContentLength(testPhoto.contentLength());
-		resource.setPath(photoPath);
-		resource.setLastModified(new Date(testPhoto.lastModified()));
-		resource.setContentStream(testPhoto.getInputStream());
-		resource.setContentType(MediaType.IMAGE_JPEG_VALUE);
 		
 		when(storageService.load(photoPath)).thenReturn(resource);
 		
@@ -160,6 +152,24 @@ public class PetControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(content().contentTypeCompatibleWith(MediaType.IMAGE_JPEG))
 		;
+	}
+
+	private StorageResourceDescription createTestResourceDescription(String photoPath) throws IOException {
+		StorageResourceDescription description = new StorageResourceDescription();
+		description.setContentLength(testPhoto.contentLength());
+		description.setLastModified(new Date(testPhoto.lastModified()));
+		description.setPath(photoPath);
+		return description;
+	}
+
+	private StorageResource createTestResource(String photoPath) throws IOException {
+		StorageResource resource = new StorageResource();
+		resource.setContentLength(testPhoto.contentLength());
+		resource.setPath(photoPath);
+		resource.setLastModified(new Date(testPhoto.lastModified()));
+		resource.setContentStream(testPhoto.getInputStream());
+		resource.setContentType(MediaType.IMAGE_JPEG_VALUE);
+		return resource;
 	}
 	
 	@Test
