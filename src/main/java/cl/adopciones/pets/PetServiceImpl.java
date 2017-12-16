@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -29,16 +30,12 @@ import io.rebelsouls.chile.Region;
 import io.rebelsouls.services.StorageService;
 import io.rebelsouls.storage.StorageResource;
 import io.rebelsouls.storage.StorageResourceDescription;
+import lombok.Data;
 import net.coobird.thumbnailator.Thumbnails;
 
 @Service
+@Data
 public class PetServiceImpl implements PetService {
-
-	//debería mejorar la configuración del número máximo de fotos
-	private static final int PET_MAX_PHOTOS = 6;
-	private static final String TEMP_FILE_PATH_PREFIX = "/tmp/";
-	private static final String THUMB_TEMP_FILE_SUFFIX = ".png";
-	private static final int FIXED_PHOTO_SIZE = 200;
 
 	@Autowired
 	private PetRepository petRepository;
@@ -47,6 +44,18 @@ public class PetServiceImpl implements PetService {
 	private StorageService storageService;
 
 	private Map<String, StorageResourceDescription> cache = new HashMap<>();
+	
+	@Value("/tmp/")
+	private String tempFilePathPrefix;
+
+	@Value(".png")
+	private String tempFilePathSuffix;
+	
+	@Value("200")
+	private int fixedPhotoDimmensionLength;
+	
+	@Value("6")
+	private int maxPhotosPerPet;
 	
 	@Override
 	@PreAuthorize("isAuthenticated() && #item.isInOrganization(principal.organization)")
@@ -106,15 +115,15 @@ public class PetServiceImpl implements PetService {
 		List<StorageResourceDescription> files = listPetPhotos(pet);
 		
 		int newPhotoNumber = files.size();
-		if(newPhotoNumber >= PET_MAX_PHOTOS) {
+		if(newPhotoNumber >= getMaxPhotosPerPet()) {
 			throw new PetPhotoLimitException();
 		}
 		
 		File fixedHeightFile = new File(getThumbTempFilePath(pet, newPhotoNumber, PhotoSize.fixed_height));
 		File fixedWidthFile = new File(getThumbTempFilePath(pet, newPhotoNumber, PhotoSize.fixed_width));
 		try {
-			Thumbnails.of(photo).height(FIXED_PHOTO_SIZE).toFile(fixedHeightFile);
-			Thumbnails.of(photo).width(FIXED_PHOTO_SIZE).toFile(fixedWidthFile);
+			Thumbnails.of(photo).height(getFixedPhotoDimmensionLength()).toFile(fixedHeightFile);
+			Thumbnails.of(photo).width(getFixedPhotoDimmensionLength()).toFile(fixedWidthFile);
 		} catch (IOException e) {
 			throw new PetPhotoException(e);
 		}
@@ -141,7 +150,7 @@ public class PetServiceImpl implements PetService {
 	}
 
 	private String getThumbTempFilePath(Pet pet, int photoNumber, PhotoSize size) {
-		return TEMP_FILE_PATH_PREFIX + pet.getId() + "-" + photoNumber + "-" + size.name() + THUMB_TEMP_FILE_SUFFIX;
+		return getTempFilePathPrefix() + pet.getId() + "-" + photoNumber + "-" + size.name() + getTempFilePathSuffix();
 	}
 	
 	private String getPhotoStoragePath(Pet pet, int photoNumber, PhotoSize size) {
