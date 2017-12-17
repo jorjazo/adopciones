@@ -22,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import cl.adopciones.users.User;
 import io.rebelsouls.chile.Comuna;
@@ -61,8 +62,8 @@ public class PetServiceImpl implements PetService {
 	@PreAuthorize("isAuthenticated() && #item.isInOrganization(principal.organization)")
 	@Transactional
 	public Pet save(Pet pet) {
-		if(pet.getId() == null)
-			throw new IllegalArgumentException("Cannot save a pet without an Id");
+		Assert.notNull(pet, "Cannot save a null pet");
+		Assert.notNull(pet.getId(), "Cannot save a pet without an Id");
 		return petRepository.save(pet);
 	}
 
@@ -70,8 +71,10 @@ public class PetServiceImpl implements PetService {
 	@PreAuthorize("isAuthenticated() && hasRole('USER')")
 	@Transactional
 	public Pet create(Pet pet, User owner) {
-		if(pet.getId() != null)
-			throw new IllegalArgumentException("Id must not be set to create a pet");
+		Assert.notNull(pet,	"Pet can not be null");
+		Assert.isNull(pet.getId(),	"Id must not be set to create a pet");
+		Assert.notNull(owner,	"Owner can not be null");
+		Assert.notNull(owner.getOrganization(),	"Owner's organization can not be null");
 		
 		pet.setCreationDateTime(LocalDateTime.now());
 		pet.setOwner(owner);

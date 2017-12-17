@@ -71,7 +71,7 @@ public class Pet {
     
     public boolean canUploadPhotos(User user) {
     	return user != null 
-    			&& (user.getRoles().contains(Role.ADMIN)
+    			&& (user.equals(owner) || user.getRoles().contains(Role.ADMIN)
     					|| isInOrganization(user.getOrganization()));
     }
 }
