@@ -2,15 +2,23 @@ package cl.adopciones.pets;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import java.io.File;
+import java.util.LinkedList;
 
 import org.junit.Test;
 
 import cl.adopciones.organizations.Organization;
 import cl.adopciones.users.User;
+import io.rebelsouls.services.StorageService;
+import io.rebelsouls.storage.StorageResource;
+import io.rebelsouls.storage.StorageResourceDescription;
 
 public class PetServiceUnitTest {
 
@@ -106,6 +114,45 @@ public class PetServiceUnitTest {
 		
 		Pet got = petService.getPet(1L);
 		assertThat(got, equalTo(p));
+	}
+	
+	@Test(expected=PetPhotoLimitException.class)
+	public void shouldNotAllowMorePhotosThanLimit() throws PetPhotoException {
+		StorageService storageMock = mock(StorageService.class);
+		PetServiceImpl petService = new PetServiceImpl();
+		petService.setStorageService(storageMock);
 		
+		petService.setMaxPhotosPerPet(0);
+		when(storageMock.list(anyString())).thenReturn(new LinkedList<>());
+		
+		petService.addPetPhoto(new Pet(), new File("bla.txt"));
+	}
+	
+	@Test
+	public void shouldGetPhotoInfoFromCache() {
+		StorageService storageMock = mock(StorageService.class);
+		PetServiceImpl petService = new PetServiceImpl();
+		petService.setStorageService(storageMock);
+		
+		StorageResource resource = new StorageResource();
+		when(storageMock.load(anyString()))
+			.thenReturn(resource)
+			.thenReturn(null);
+		
+		Pet testPet = new Pet();
+		testPet.setId(1L);
+		
+		StorageResource photo = petService.getPetPhoto(testPet, 0, PhotoSize.original);
+		assertThat(photo, equalTo(resource));
+		
+		StorageResourceDescription cache = petService.getPhotoCache(testPet, 0, PhotoSize.original);
+		assertThat(cache, notNullValue());
+		assertThat(cache, equalTo(photo));
+		
+		photo = petService.getPetPhoto(testPet, 0, PhotoSize.original);
+		assertThat(photo, nullValue());
+		
+		cache = petService.getPhotoCache(testPet, 0, PhotoSize.original);
+		assertThat(cache, nullValue());
 	}
 }
