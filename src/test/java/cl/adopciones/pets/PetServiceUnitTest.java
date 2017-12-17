@@ -82,4 +82,30 @@ public class PetServiceUnitTest {
 		assertThat(got.getCreationDateTime(), notNullValue());
 	}
 	
+	
+	@Test
+	public void shouldGetPetFromRepository() {
+		PetServiceImpl petService = new PetServiceImpl();
+		PetRepository mockRepo = mock(PetRepository.class);
+		petService.setPetRepository(mockRepo);
+		
+		Organization o = new Organization();
+		o.setId(1L);
+		o.setContactEmail("bla");
+		
+		User owner = new User();
+		owner.setId(2L);
+		owner.setOrganization(o);
+		
+		Pet p = new Pet();
+		p.setId(1L);
+		p.setOrganization(o);
+		p.setOwner(owner);
+		
+		when(mockRepo.findOne(1L)).thenReturn(p);
+		
+		Pet got = petService.getPet(1L);
+		assertThat(got, equalTo(p));
+		
+	}
 }
