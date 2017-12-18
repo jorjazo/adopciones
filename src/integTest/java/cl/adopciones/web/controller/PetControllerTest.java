@@ -6,6 +6,7 @@ import static io.rebelsouls.test.CompositeResultMatcher.redirectResponseWithUrl;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.startsWith;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -45,6 +46,7 @@ import cl.adopciones.pets.PetType;
 import cl.adopciones.users.User;
 import cl.adopciones.users.UserService;
 import io.rebelsouls.chile.Comuna;
+import io.rebelsouls.photos.PhotoSize;
 import io.rebelsouls.services.StorageService;
 import io.rebelsouls.storage.StorageResource;
 import io.rebelsouls.storage.StorageResourceDescription;
@@ -146,12 +148,12 @@ public class PetControllerTest {
 		when(storageService.list(anyString()))
 			.thenReturn(Arrays.asList(description));
 		
-		when(storageService.load(photoPath)).thenReturn(resource);
+		when(storageService.load(startsWith("1/photos/0"))).thenReturn(resource);
 		
-		mockMvc.perform(get(PetsController.URL_PREFIX + "/1/fotos/0/original"))
-		.andExpect(status().isOk())
-		.andExpect(content().contentTypeCompatibleWith(MediaType.IMAGE_JPEG))
-		;
+		mockMvc.perform(get(PetsController.URL_PREFIX + "/1/fotos/0/" + PhotoSize.ORIGINAL.getName()))
+			.andExpect(status().isOk())
+			.andExpect(content().contentTypeCompatibleWith(MediaType.IMAGE_JPEG))
+			;
 	}
 
 	private StorageResourceDescription createTestResourceDescription(String photoPath) throws IOException {

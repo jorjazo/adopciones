@@ -16,6 +16,7 @@ import org.junit.Test;
 
 import cl.adopciones.organizations.Organization;
 import cl.adopciones.users.User;
+import io.rebelsouls.photos.PhotoSize;
 import io.rebelsouls.services.StorageService;
 import io.rebelsouls.storage.StorageResource;
 import io.rebelsouls.storage.StorageResourceDescription;
@@ -117,7 +118,7 @@ public class PetServiceUnitTest {
 	}
 	
 	@Test(expected=PetPhotoLimitException.class)
-	public void shouldNotAllowMorePhotosThanLimit() throws PetPhotoException {
+	public void shouldNotAllowMorePhotosThanLimit() throws Exception {
 		StorageService storageMock = mock(StorageService.class);
 		PetServiceImpl petService = new PetServiceImpl();
 		petService.setStorageService(storageMock);
@@ -142,17 +143,19 @@ public class PetServiceUnitTest {
 		Pet testPet = new Pet();
 		testPet.setId(1L);
 		
-		StorageResource photo = petService.getPetPhoto(testPet, 0, PhotoSize.original);
+		StorageResource photo = petService.getPetPhoto(testPet, 0, PhotoSize.ORIGINAL);
 		assertThat(photo, equalTo(resource));
 		
-		StorageResourceDescription cache = petService.getPhotoCache(testPet, 0, PhotoSize.original);
+		StorageResourceDescription cache = petService.getPhotoCache(testPet, 0, PhotoSize.ORIGINAL);
 		assertThat(cache, notNullValue());
 		assertThat(cache, equalTo(photo));
 		
-		photo = petService.getPetPhoto(testPet, 0, PhotoSize.original);
+		photo = petService.getPetPhoto(testPet, 0, PhotoSize.ORIGINAL);
 		assertThat(photo, nullValue());
 		
-		cache = petService.getPhotoCache(testPet, 0, PhotoSize.original);
+		cache = petService.getPhotoCache(testPet, 0, PhotoSize.ORIGINAL);
 		assertThat(cache, nullValue());
 	}
+	
+	
 }

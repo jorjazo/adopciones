@@ -11,7 +11,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
@@ -37,6 +36,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import cl.adopciones.users.UserService;
 import io.rebelsouls.chile.Comuna;
+import io.rebelsouls.photos.PhotoSize;
 import io.rebelsouls.services.StorageService;
 import io.rebelsouls.storage.StorageResource;
 import io.rebelsouls.storage.StorageResourceDescription;
@@ -144,14 +144,14 @@ public class PetServiceTest {
 	
 	@Test
 	@WithUserDetails("user")
-	public void shouldUploadPhotoAndTwoThumbs() throws IOException {
+	public void shouldUploadPhotoAndTwoThumbs() throws Exception {
 		
 		when(storageService.list(anyString())).thenReturn(new LinkedList<>());
 
 		Pet pet = petService.getPet(1L);
 		try {
 			petService.addPetPhoto(pet, testPhoto.getFile());
-		} catch (PetPhotoException e) {
+		} catch (ThumbGenerationException e) {
 			fail();
 		}
 		
@@ -171,9 +171,9 @@ public class PetServiceTest {
 			.thenReturn(null);
 		
 		Pet pet = petService.getPet(1L);
-		petService.getPetPhoto(pet, 0, PhotoSize.original);
-		petService.getPetPhoto(pet, 0, PhotoSize.fixed_height);
-		petService.getPetPhoto(pet, 0, PhotoSize.fixed_width);
+		petService.getPetPhoto(pet, 0, PhotoSize.ORIGINAL);
+		petService.getPetPhoto(pet, 0, PhotoSize.FIXED_HEIGHT);
+		petService.getPetPhoto(pet, 0, PhotoSize.FIXED_WIDTH);
 		
 		ArgumentCaptor<String> arg = ArgumentCaptor.forClass(String.class);
 		
@@ -192,9 +192,9 @@ public class PetServiceTest {
 			.thenReturn(photo);
 		
 		Pet pet = petService.getPet(1L);
-		petService.getPetPhoto(pet, 0, PhotoSize.original);
-		StorageResource got = petService.getPetPhoto(pet, 0, PhotoSize.original);
-		StorageResourceDescription gotSecond = petService.getPhotoCache(pet, 0, PhotoSize.original);
+		petService.getPetPhoto(pet, 0, PhotoSize.ORIGINAL);
+		StorageResource got = petService.getPetPhoto(pet, 0, PhotoSize.ORIGINAL);
+		StorageResourceDescription gotSecond = petService.getPhotoCache(pet, 0, PhotoSize.ORIGINAL);
 		assertThat(got).isSameAs(photo).isSameAs(gotSecond);
 		verify(storageService, times(2)).load(anyString());
 	}
@@ -207,16 +207,16 @@ public class PetServiceTest {
 			.thenReturn(null);
 		
 		Pet pet = petService.getPet(1L);
-		petService.getPetPhoto(pet, 0, PhotoSize.original);
-		petService.getPetPhoto(pet, 0, PhotoSize.original);
-		StorageResourceDescription gotCache = petService.getPhotoCache(pet, 0, PhotoSize.original);
+		petService.getPetPhoto(pet, 0, PhotoSize.ORIGINAL);
+		petService.getPetPhoto(pet, 0, PhotoSize.ORIGINAL);
+		StorageResourceDescription gotCache = petService.getPhotoCache(pet, 0, PhotoSize.ORIGINAL);
 		
 		assertThat(gotCache).isNull();
 	}
 	
-	@Test(expected = PetPhotoException.class)
+	@Test(expected = PetPhotoLimitException.class)
 	@WithUserDetails("user")
-	public void shouldLimitNumberOfPhotosPerPet() throws IOException, PetPhotoException {
+	public void shouldLimitNumberOfPhotosPerPet() throws Exception {
 		
 		//debería mejorar la configuración del número máximo de fotos
 		when(storageService.list(anyString())).thenReturn(

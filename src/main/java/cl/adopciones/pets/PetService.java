@@ -10,6 +10,7 @@ import cl.adopciones.users.User;
 import io.rebelsouls.chile.Comuna;
 import io.rebelsouls.chile.Provincia;
 import io.rebelsouls.chile.Region;
+import io.rebelsouls.photos.PhotoSize;
 import io.rebelsouls.storage.StorageResource;
 import io.rebelsouls.storage.StorageResourceDescription;
 
@@ -23,7 +24,7 @@ public interface PetService {
 			PetSizeCategory[] petSizeCategory, Region region, Provincia provincia, Comuna comuna, Pageable page);
 
 	public List<StorageResourceDescription> listPetPhotos(Pet pet);
-	public void addPetPhoto(Pet pet, File photo) throws PetPhotoException;
+	public void addPetPhoto(Pet pet, File photo) throws Exception;
 	public StorageResource getPetPhoto(Pet pet, int photoNumber, PhotoSize size);
 	public StorageResourceDescription getPhotoCache(Pet pet, int photoNumber, PhotoSize size);
 

@@ -34,14 +34,14 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import cl.adopciones.pets.Pet;
-import cl.adopciones.pets.PetPhotoException;
+import cl.adopciones.pets.PetPhotoLimitException;
 import cl.adopciones.pets.PetService;
-import cl.adopciones.pets.PhotoSize;
 import cl.adopciones.users.User;
 import cl.adopciones.web.forms.PetForm;
 import io.rebelsouls.events.Event;
 import io.rebelsouls.events.EventLogger;
 import io.rebelsouls.events.EventResult;
+import io.rebelsouls.photos.PhotoSize;
 import io.rebelsouls.storage.StorageResource;
 import io.rebelsouls.storage.StorageResourceDescription;
 import lombok.extern.slf4j.Slf4j;
@@ -134,16 +134,17 @@ public class PetsController {
 			petService.addPetPhoto(pet, tmpFile);
 	        e.setResult(EventResult.OK);
 		}
-		catch (IOException ex) {
-			e.setResult(EventResult.ERROR);
-			e.setError(ex);
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			petUrl += "?error=error";
-		} catch (PetPhotoException e1) {
+		catch (PetPhotoLimitException e1) {
 			e.setResult(EventResult.ERROR);
 			e.setError(e1);
 			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 			petUrl += "?error=photolimit";
+		}
+		catch (Exception ex) {
+			e.setResult(EventResult.ERROR);
+			e.setError(ex);
+			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+			petUrl += "?error=error";
 		}
 		finally {
 			EventLogger.logEvent(log, e);
@@ -154,10 +155,10 @@ public class PetsController {
 	
 	@GetMapping("/{petId}/fotos/{photoNumber}/{photoSize}")
 	@ResponseBody
-	public ResponseEntity<InputStreamResource> showPhoto(@PathVariable("petId") Pet pet, @PathVariable("photoNumber") int photoNumber, @PathVariable("photoSize") PhotoSize photoSize, HttpServletResponse response, HttpServletRequest request) throws IOException {
+	public ResponseEntity<InputStreamResource> showPhoto(@PathVariable("petId") Pet pet, @PathVariable("photoNumber") int photoNumber, @PathVariable("photoSize") String photoSizeName, HttpServletResponse response, HttpServletRequest request) throws IOException {
 		
 		long ifModifiedSinceHeader = request.getDateHeader(HttpHeaders.IF_MODIFIED_SINCE);
-		
+		PhotoSize photoSize = PhotoSize.fromName(photoSizeName);
 		StorageResourceDescription metadata = petService.getPhotoCache(pet, photoNumber, photoSize);
 		long lastModified = metadata != null ? metadata.getLastModified().getTime() : -1;
 		

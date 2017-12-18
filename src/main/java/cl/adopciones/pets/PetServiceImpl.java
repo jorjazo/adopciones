@@ -9,7 +9,6 @@ import static cl.adopciones.pets.PetSpecifications.typeIn;
 import static org.springframework.data.jpa.domain.Specifications.where;
 
 import java.io.File;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -28,11 +27,12 @@ import cl.adopciones.users.User;
 import io.rebelsouls.chile.Comuna;
 import io.rebelsouls.chile.Provincia;
 import io.rebelsouls.chile.Region;
+import io.rebelsouls.photos.PhotoSize;
+import io.rebelsouls.photos.ThumbnailGenerator;
 import io.rebelsouls.services.StorageService;
 import io.rebelsouls.storage.StorageResource;
 import io.rebelsouls.storage.StorageResourceDescription;
 import lombok.Data;
-import net.coobird.thumbnailator.Thumbnails;
 
 @Service
 @Data
@@ -45,15 +45,6 @@ public class PetServiceImpl implements PetService {
 	private StorageService storageService;
 
 	private Map<String, StorageResourceDescription> cache = new HashMap<>();
-	
-	@Value("/tmp/")
-	private String tempFilePathPrefix;
-
-	@Value(".png")
-	private String tempFilePathSuffix;
-	
-	@Value("200")
-	private int fixedPhotoDimmensionLength;
 	
 	@Value("6")
 	private int maxPhotosPerPet;
@@ -114,26 +105,24 @@ public class PetServiceImpl implements PetService {
 	
 	@Override
 	@PreAuthorize("isAuthenticated() and #pet.canUploadPhotos(principal)")
-	public void addPetPhoto(Pet pet, File photo) throws PetPhotoException {
+	public void addPetPhoto(Pet pet, File original) throws Exception {
 		List<StorageResourceDescription> files = listPetPhotos(pet);
 		
 		int newPhotoNumber = files.size();
 		if(newPhotoNumber >= getMaxPhotosPerPet()) {
-			throw new PetPhotoLimitException();
+			throw new PetPhotoLimitException(newPhotoNumber, getMaxPhotosPerPet());
 		}
 		
-		File fixedHeightFile = new File(getThumbTempFilePath(pet, newPhotoNumber, PhotoSize.fixed_height));
-		File fixedWidthFile = new File(getThumbTempFilePath(pet, newPhotoNumber, PhotoSize.fixed_width));
-		try {
-			Thumbnails.of(photo).height(getFixedPhotoDimmensionLength()).toFile(fixedHeightFile);
-			Thumbnails.of(photo).width(getFixedPhotoDimmensionLength()).toFile(fixedWidthFile);
-		} catch (IOException e) {
-			throw new PetPhotoException(e);
-		}
+		storageService.store(getPhotoStoragePath(pet, newPhotoNumber, PhotoSize.ORIGINAL), original);
 		
-        storageService.store(getPhotoStoragePath(pet, newPhotoNumber, PhotoSize.original), photo);
-        storageService.store(getPhotoStoragePath(pet, newPhotoNumber, PhotoSize.fixed_height), fixedHeightFile);
-        storageService.store(getPhotoStoragePath(pet, newPhotoNumber, PhotoSize.fixed_width), fixedWidthFile);
+		ThumbnailGenerator generator = new ThumbnailGenerator();
+		storageService.store(
+				getPhotoStoragePath(pet, newPhotoNumber, PhotoSize.FIXED_WIDTH),
+				generator.generateThumb(original, PhotoSize.FIXED_WIDTH));
+		storageService.store(
+				getPhotoStoragePath(pet, newPhotoNumber, PhotoSize.FIXED_HEIGHT),
+				generator.generateThumb(original, PhotoSize.FIXED_HEIGHT));
+		
 	}
 	
 	@Override
@@ -152,12 +141,8 @@ public class PetServiceImpl implements PetService {
 		return cache.get(getPhotoStoragePath(pet, photoNumber, size));
 	}
 
-	private String getThumbTempFilePath(Pet pet, int photoNumber, PhotoSize size) {
-		return getTempFilePathPrefix() + pet.getId() + "-" + photoNumber + "-" + size.name() + getTempFilePathSuffix();
-	}
-	
 	private String getPhotoStoragePath(Pet pet, int photoNumber, PhotoSize size) {
-		return getPhotoStorageFolder(pet) + photoNumber + "/" + size.name();
+		return getPhotoStorageFolder(pet) + photoNumber + "/" + size.getName();
 	}
 	
 	private String getPhotoStorageFolder(Pet pet) {
