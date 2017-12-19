@@ -90,10 +90,81 @@
 				</div>
 			</div>
 		</div>
+		<div class="row" th:unless="${currentUser}">
+			<div class="col-12 text-center">
+				<button class="btn btn-warning w-50" id="adopt" data-toggle="modal" data-target="#conditions">
+					¡Quiero Adoptar!
+				</button>
+			</div>
+		</div>
 
 	</div>
 
 	<footer th:replace="~{ base/layout :: footer}"></footer>
+
+	<div class="modal fade" tabindex="-1" role="dialog" id="conditions" aria-labelledby="conditionsTitle" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="conditionsTitle">Adoptar a [[${pet.name}]]</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<form method="post" th:action="@{${'/mascotas' + pet.id + '/adopciones'}}" th:object="${adoptionForm}">
+				<div class="modal-body">
+					<p>¡Qué alegría!</p>
+					<p>Para seguir con el proceso, por favor contesta las siguientes preguntas:</p>
+					
+					<label class="custom-control custom-checkbox">
+						<input type="checkbox" class="custom-control-input" th:field="*{isLegalAge}">
+						<span class="custom-control-indicator"></span>
+						<span class="custom-control-description">
+							Tengo 18 años o más, o estoy acompañado en este proceso por una persona mayor de edad.
+						</span>
+					</label>
+					
+					<label class="custom-control custom-checkbox">
+						<input type="checkbox" class="custom-control-input" th:field="*{acceptsResponsability}">
+						<span class="custom-control-indicator"></span>
+						<span class="custom-control-description">
+							Entiendo que adoptar una mascota conlleva una responsabilidad muy grande, además de
+							un compromiso ético, afectivo y legal con la mascota que estoy adoptando.
+						</span>
+					</label>
+					
+					<label class="custom-control custom-checkbox">
+						<input type="checkbox" class="custom-control-input" th:field="*{understandsCosts}">
+						<span class="custom-control-indicator"></span>
+						<span class="custom-control-description">
+							Entiendo que tener una mascota implicará una carga económica importante en mi hogar.
+						</span>
+					</label>
+					
+					<div class="form-group">
+						<label class="col-form-label" for="name">Nombre:</label>
+						<input type="text" class="form-control" id="name" th:field="*{name}">
+					</div>
+					
+					<div class="form-group">
+						<label class="col-form-label" for="rut">Rut:</label>
+						<input type="text" class="form-control" id="rut" th:field="*{rut}">
+					</div>
+					
+					<div class="form-group">
+						<label class="col-form-label" for="email">Correo electrónico:</label>
+						<input type="text" class="form-control" id="email" th:field="*{email}">
+					</div>
+					
+				</div>
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-primary">Continuar</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+				</div>
+				</form>
+			</div>
+		</div>
+	</div>
 
 </body>
 </html>

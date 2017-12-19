@@ -55,4 +55,11 @@ public class CompositeResultMatcher implements ResultMatcher {
 				.matcher(redirectedUrl(url))
 				.build();
 	}
+	
+	public static CompositeResultMatcher badRequestWithRedirect(final String url) {
+		return CompositeResultMatcher.builder()
+				.matcher(status().isBadRequest())
+				.matcher(redirectedUrl(url))
+				.build();
+	}
 }

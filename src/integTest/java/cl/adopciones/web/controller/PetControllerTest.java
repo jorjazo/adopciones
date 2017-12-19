@@ -1,5 +1,6 @@
 package cl.adopciones.web.controller;
 
+import static io.rebelsouls.test.CompositeResultMatcher.badRequestWithRedirect;
 import static io.rebelsouls.test.CompositeResultMatcher.createdAndRedirectResponse;
 import static io.rebelsouls.test.CompositeResultMatcher.htmlOkResponse;
 import static io.rebelsouls.test.CompositeResultMatcher.redirectResponseWithUrl;
@@ -185,5 +186,57 @@ public class PetControllerTest {
 				)
 			.andExpect(redirectResponseWithUrl(PetsController.URL_PREFIX + "/1"));
 		verify(storageService, times(3)).store(anyString(), any());
+	}
+	
+//	@Test
+//	public void shouldRegisterPetAdoption() throws Exception {
+//		mockMvc.perform(post(PetsController.URL_PREFIX + "/1/adopciones")
+//				.with(csrf())
+//				.with(newTestAdoptionParams())
+//				)
+//			.andExpect(createdAndRedirectResponse("/mascotas/1"));
+//		;
+//		
+//		// Otro rq a la mascota para verificar algun mensaje
+//	}
+//	
+	@Test
+	public void shouldNotAcceptInvalidAdoptionForm() throws Exception {
+		mockMvc.perform(post(PetsController.URL_PREFIX + "/1/adopciones")
+				.with(csrf())
+				.with(newTestAdoptionParams())
+				.with(invalidEmail())
+				)
+			.andExpect(badRequestWithRedirect("/mascotas/1"));
+		;
+		
+	}
+	
+	
+	private RequestPostProcessor newTestAdoptionParams() {
+		return new RequestPostProcessor() {
+			@Override
+			public MockHttpServletRequest postProcessRequest(MockHttpServletRequest request) {
+				request.addParameter("isLegalAge", "1");
+				request.addParameter("acceptsResposability", "1");
+				request.addParameter("understandsCosts", "1");
+				request.addParameter("name", "Jorge Valencia");
+				request.addParameter("rut", "1.234.567-8");
+				request.addParameter("email", "jorge.valencia@bodoque.cl");
+				request.addParameter("phoneNumber", "987654321");
+				return request;
+			}
+		};
+	}
+	
+	private RequestPostProcessor invalidEmail() {
+		return new RequestPostProcessor() {
+			@Override
+			public MockHttpServletRequest postProcessRequest(MockHttpServletRequest request) {
+				request.removeParameter("email");
+				request.addParameter("email", "not valid");
+				return request;
+			}
+		};
 	}
 }

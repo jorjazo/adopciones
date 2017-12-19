@@ -37,6 +37,7 @@ import cl.adopciones.pets.Pet;
 import cl.adopciones.pets.PetPhotoLimitException;
 import cl.adopciones.pets.PetService;
 import cl.adopciones.users.User;
+import cl.adopciones.web.forms.AdoptionForm;
 import cl.adopciones.web.forms.PetForm;
 import io.rebelsouls.events.Event;
 import io.rebelsouls.events.EventLogger;
@@ -79,7 +80,12 @@ public class PetsController {
 	}
 
 	@GetMapping("/{petId}")
-	public String displayItem(@PathVariable("petId") Pet pet, Model model, @AuthenticationPrincipal User user, Locale locale) {
+	public String displayItem(
+			@PathVariable("petId") Pet pet,
+			Model model, @AuthenticationPrincipal User user,
+			Locale locale,
+			AdoptionForm form
+			) {
 		model.addAttribute("pet", pet);
 		
 		String photoUrlPrefix = "/mascotas/" + pet.getId() + "/fotos/";
@@ -182,4 +188,17 @@ public class PetsController {
 				.body(new InputStreamResource(resource.getContentStream()));
 	}
 	
+	@PostMapping("/{petId}/adopciones")
+	public void adopt(
+			@Valid AdoptionForm form,
+			BindingResult validation,
+			@PathVariable("petId") Pet pet,
+			HttpServletResponse response
+			) {
+		
+		if(validation.hasErrors()) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			response.setHeader(HttpHeaders.LOCATION, URL_PREFIX + "/" + pet.getId());
+		}
+	}
 }
